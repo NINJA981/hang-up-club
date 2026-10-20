@@ -1,0 +1,368 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-20T15:11:32.900Z",
+  "title": "Design System: Hang Up Club",
+  "extensions": {
+    "colorMeta": {
+      "accent": {
+        "role": "primary",
+        "displayName": "Moss",
+        "canonical": "oklch(0.48 0.10 140)",
+        "tonalRamp": [
+          "oklch(0.15 0.064 140)",
+          "oklch(0.27 0.075 140)",
+          "oklch(0.39 0.086 140)",
+          "oklch(0.5 0.096 140)",
+          "oklch(0.62 0.094 140)",
+          "oklch(0.74 0.083 140)",
+          "oklch(0.86 0.072 140)",
+          "oklch(0.95 0.064 140)"
+        ]
+      },
+      "accent-dark": {
+        "role": "primary",
+        "displayName": "Moss (dusk)",
+        "canonical": "oklch(0.78 0.085 138)",
+        "tonalRamp": [
+          "oklch(0.15 0.054 138)",
+          "oklch(0.27 0.064 138)",
+          "oklch(0.39 0.073 138)",
+          "oklch(0.5 0.081 138)",
+          "oklch(0.62 0.080 138)",
+          "oklch(0.74 0.070 138)",
+          "oklch(0.86 0.061 138)",
+          "oklch(0.95 0.054 138)"
+        ]
+      },
+      "bg": {
+        "role": "neutral",
+        "displayName": "Field Stone",
+        "canonical": "oklch(0.985 0.004 110)",
+        "tonalRamp": [
+          "oklch(0.15 0.005 110)",
+          "oklch(0.27 0.006 110)",
+          "oklch(0.39 0.007 110)",
+          "oklch(0.5 0.008 110)",
+          "oklch(0.62 0.007 110)",
+          "oklch(0.74 0.007 110)",
+          "oklch(0.86 0.006 110)",
+          "oklch(0.95 0.005 110)"
+        ]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Moss-Black Ink",
+        "canonical": "oklch(0.24 0.012 120)",
+        "tonalRamp": [
+          "oklch(0.15 0.008 120)",
+          "oklch(0.27 0.009 120)",
+          "oklch(0.39 0.010 120)",
+          "oklch(0.5 0.011 120)",
+          "oklch(0.62 0.011 120)",
+          "oklch(0.74 0.010 120)",
+          "oklch(0.86 0.009 120)",
+          "oklch(0.95 0.008 120)"
+        ]
+      },
+      "call-bg": {
+        "role": "neutral",
+        "displayName": "The Line",
+        "canonical": "oklch(0.17 0.008 120)",
+        "tonalRamp": [
+          "oklch(0.15 0.006 120)",
+          "oklch(0.27 0.007 120)",
+          "oklch(0.39 0.009 120)",
+          "oklch(0.5 0.010 120)",
+          "oklch(0.62 0.009 120)",
+          "oklch(0.74 0.008 120)",
+          "oklch(0.86 0.007 120)",
+          "oklch(0.95 0.006 120)"
+        ]
+      },
+      "call-hangup": {
+        "role": "secondary",
+        "displayName": "Line Red",
+        "canonical": "oklch(0.53 0.20 27)",
+        "tonalRamp": [
+          "oklch(0.15 0.122 27)",
+          "oklch(0.27 0.142 27)",
+          "oklch(0.39 0.163 27)",
+          "oklch(0.5 0.181 27)",
+          "oklch(0.62 0.178 27)",
+          "oklch(0.74 0.158 27)",
+          "oklch(0.86 0.137 27)",
+          "oklch(0.95 0.122 27)"
+        ]
+      },
+      "danger": {
+        "role": "secondary",
+        "displayName": "Ask Red",
+        "canonical": "oklch(0.50 0.18 27)",
+        "tonalRamp": [
+          "oklch(0.15 0.115 27)",
+          "oklch(0.27 0.135 27)",
+          "oklch(0.39 0.154 27)",
+          "oklch(0.5 0.172 27)",
+          "oklch(0.62 0.169 27)",
+          "oklch(0.74 0.149 27)",
+          "oklch(0.86 0.130 27)",
+          "oklch(0.95 0.115 27)"
+        ]
+      },
+      "warning": {
+        "role": "tertiary",
+        "displayName": "Late Ochre",
+        "canonical": "oklch(0.48 0.11 65)",
+        "tonalRamp": [
+          "oklch(0.15 0.070 65)",
+          "oklch(0.27 0.082 65)",
+          "oklch(0.39 0.094 65)",
+          "oklch(0.5 0.105 65)",
+          "oklch(0.62 0.103 65)",
+          "oklch(0.74 0.091 65)",
+          "oklch(0.86 0.079 65)",
+          "oklch(0.95 0.070 65)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "result-display": {
+        "displayName": "Result",
+        "purpose": "The \"Hung up at 0:06.\" headline, on the result screen only."
+      },
+      "caller": {
+        "displayName": "Caller",
+        "purpose": "Caller name on the call screen (The Line)."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "All reading text, with a 20px floor."
+      },
+      "caption-live": {
+        "displayName": "Live caption",
+        "purpose": "Call captions, showing the last two lines."
+      },
+      "mono-timer": {
+        "displayName": "Timer",
+        "purpose": "The call timer, in tabular mono."
+      },
+      "mono-number": {
+        "displayName": "Number",
+        "purpose": "Phone numbers, seconds and codes: anything read exactly."
+      },
+      "meta": {
+        "displayName": "Meta",
+        "purpose": "Labels of four words or fewer. 18px, the absolute floor."
+      }
+    },
+    "shadows": [
+      {
+        "name": "e1",
+        "value": "0 0 0 1px oklch(0.905 0.008 110), 0 1px 2px oklch(0.25 0.02 110 / .04)",
+        "purpose": "Cards and inputs at rest (hairline-first)."
+      },
+      {
+        "name": "e3",
+        "value": "0 0 0 1px oklch(0.25 0.02 110 / .06), 0 2px 4px -1px oklch(0.25 0.02 110 / .06), 0 8px 16px -4px oklch(0.25 0.02 110 / .10)",
+        "purpose": "Toasts and the install hint."
+      },
+      {
+        "name": "e4",
+        "value": "0 0 0 1px oklch(0.25 0.02 110 / .06), 0 8px 16px -4px oklch(0.25 0.02 110 / .08), 0 24px 48px -12px oklch(0.25 0.02 110 / .20)",
+        "purpose": "Sheets and dialogs."
+      }
+    ],
+    "motion": [
+      {
+        "name": "dur-1",
+        "value": "100ms",
+        "purpose": "Hover and press colour, and button scale."
+      },
+      {
+        "name": "dur-2",
+        "value": "150ms",
+        "purpose": "Caption lines, chips, crossfades and the reduced-motion fallback."
+      },
+      {
+        "name": "dur-3",
+        "value": "200ms",
+        "purpose": "Headline fades and toast exit."
+      },
+      {
+        "name": "dur-sheet",
+        "value": "500ms in / 300ms out",
+        "purpose": "Bottom sheets."
+      },
+      {
+        "name": "dur-ring",
+        "value": "1200ms",
+        "purpose": "One ring-halo cycle, for at most 20 s."
+      },
+      {
+        "name": "dur-cut-max",
+        "value": "2000ms",
+        "purpose": "Ceiling for the whole signature moment."
+      },
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.23, 1, 0.32, 1)",
+        "purpose": "Default enter and exit."
+      },
+      {
+        "name": "ease-sheet",
+        "value": "cubic-bezier(0.32, 0.72, 0, 1)",
+        "purpose": "Sheets."
+      },
+      {
+        "name": "ease-fall",
+        "value": "cubic-bezier(0.55, 0, 1, 0.45)",
+        "purpose": "Only the falling shards in The Cut."
+      },
+      {
+        "name": "ease-scene",
+        "value": "cubic-bezier(0.65, 0.05, 0, 1)",
+        "purpose": "Only the landing hero tilt settle."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "phone",
+        "value": "375px"
+      },
+      {
+        "name": "tablet",
+        "value": "768px"
+      },
+      {
+        "name": "coach-2col",
+        "value": "1024px"
+      },
+      {
+        "name": "desktop",
+        "value": "1440px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "One per view, e.g. \"Take today's call\".",
+      "html": "<button class=\"ds-btn-primary\">Take today's call</button>",
+      "css": ".ds-btn-primary{background:oklch(0.48 0.10 140);color:oklch(0.99 0.008 140);font:600 1.25rem/1.3 'Atkinson Hyperlegible Next Variable',system-ui,sans-serif;height:64px;padding:0 24px;border:0;border-radius:14px;width:100%;max-width:400px;transition:background-color 100ms cubic-bezier(0.23,1,0.32,1),transform 100ms cubic-bezier(0.23,1,0.32,1)}.ds-btn-primary:hover{background:oklch(0.43 0.095 140)}.ds-btn-primary:active{transform:scale(.97);background:oklch(0.43 0.095 140)}.ds-btn-primary:focus-visible{outline:3px solid oklch(0.48 0.10 140);outline-offset:3px}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "A supporting action, e.g. \"See what gave it away\".",
+      "html": "<button class=\"ds-btn-secondary\">See what gave it away</button>",
+      "css": ".ds-btn-secondary{background:oklch(1 0 0);color:oklch(0.24 0.012 120);font:600 1.25rem/1.3 'Atkinson Hyperlegible Next Variable',system-ui,sans-serif;height:56px;padding:0 20px;border:1px solid oklch(0.60 0.012 110);border-radius:14px;transition:background-color 100ms}.ds-btn-secondary:hover{background:oklch(0.958 0.006 110)}.ds-btn-secondary:active{transform:scale(.97)}.ds-btn-secondary:focus-visible{outline:3px solid oklch(0.48 0.10 140);outline-offset:3px}"
+    },
+    {
+      "name": "Hang Up",
+      "kind": "custom",
+      "refersTo": "call-hangup",
+      "description": "A 96px red circle on The Line, with its label beneath.",
+      "html": "<div class=\"ds-line\"><button class=\"ds-hangup\" aria-label=\"Hang up\"><svg width=\"36\" height=\"36\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"transform:rotate(135deg)\"><path d=\"M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z\"/></svg></button><span class=\"ds-hangup-label\">Hang up</span></div>",
+      "css": ".ds-line{background:oklch(0.17 0.008 120);padding:32px;display:flex;flex-direction:column;align-items:center;gap:12px;border-radius:20px}.ds-hangup{width:96px;height:96px;border-radius:9999px;border:0;background:oklch(0.53 0.20 27);color:oklch(0.985 0.004 27);display:grid;place-items:center;transition:transform 100ms cubic-bezier(0.23,1,0.32,1)}.ds-hangup:active{transform:scale(.95)}.ds-hangup:focus-visible{outline:3px solid oklch(0.96 0.005 120);outline-offset:4px}.ds-hangup-label{color:oklch(0.96 0.005 120);font:600 1.25rem/1.3 'Atkinson Hyperlegible Next Variable',system-ui,sans-serif}"
+    },
+    {
+      "name": "Call Back",
+      "kind": "button",
+      "refersTo": "call-callback",
+      "description": "The second call button: end the call and call a trusted number.",
+      "html": "<div class=\"ds-line2\"><button class=\"ds-callback\">Hang up and call the number on my card</button></div>",
+      "css": ".ds-line2{background:oklch(0.17 0.008 120);padding:24px;border-radius:20px}.ds-callback{width:100%;min-height:64px;padding:0 20px;border-radius:14px;border:1px solid oklch(0.52 0.01 120);background:oklch(0.30 0.012 120);color:oklch(0.96 0.005 120);font:600 1.25rem/1.3 'Atkinson Hyperlegible Next Variable',system-ui,sans-serif}.ds-callback:active{transform:scale(.97)}.ds-callback:focus-visible{outline:3px solid oklch(0.96 0.005 120);outline-offset:3px}"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "text-input",
+      "description": "Coach setup fields.",
+      "html": "<label class=\"ds-field\"><span>What should we call you?</span><input class=\"ds-input\" value=\"Arjun\"></label>",
+      "css": ".ds-field{display:grid;gap:8px;font:600 1.25rem/1.3 'Atkinson Hyperlegible Next Variable',system-ui,sans-serif;color:oklch(0.24 0.012 120)}.ds-input{height:60px;padding:0 16px;border:1px solid oklch(0.60 0.012 110);border-radius:14px;background:oklch(1 0 0);color:oklch(0.24 0.012 120);font:400 1.25rem/1.5 'Atkinson Hyperlegible Next Variable',system-ui,sans-serif}.ds-input:focus{outline:none;border-color:oklch(0.48 0.10 140);box-shadow:0 0 0 4px oklch(0.48 0.10 140 / .25)}"
+    },
+    {
+      "name": "Tactic Stamp",
+      "kind": "chip",
+      "refersTo": "tactic-stamp",
+      "description": "A red-flag replay label. Never coloured by severity.",
+      "html": "<span class=\"ds-stamp\">They're rushing you</span>",
+      "css": ".ds-stamp{display:inline-flex;align-items:center;height:36px;padding:4px 10px;border-radius:6px;background:oklch(0.958 0.006 110);color:oklch(0.24 0.012 120);font:500 1.125rem/1.45 'Atkinson Hyperlegible Next Variable',system-ui,sans-serif}"
+    },
+    {
+      "name": "Daily Card",
+      "kind": "card",
+      "refersTo": "daily-card",
+      "description": "The only card on the Today screen.",
+      "html": "<section class=\"ds-card\"><h2>Today's call is ready</h2><p>One practice call, about a minute. Some calls are real, so listen before you hang up.</p></section>",
+      "css": ".ds-card{background:oklch(1 0 0);color:oklch(0.24 0.012 120);border-radius:20px;padding:24px;box-shadow:0 0 0 1px oklch(0.905 0.008 110),0 1px 2px oklch(0.25 0.02 110 / .04);max-width:560px}.ds-card h2{margin:0 0 12px;font:600 2rem/1.19 'Atkinson Hyperlegible Next Variable',system-ui,sans-serif;letter-spacing:-0.018em}.ds-card p{margin:0;font:400 1.25rem/1.5 'Atkinson Hyperlegible Next Variable',system-ui,sans-serif;color:oklch(0.44 0.012 120)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Practice Line",
+    "overview": "Hang Up Club is a quiet daylight notebook (stone paper, moss ink, generous margins) that holds exactly one dark object: the phone line. Everything around a call lives on the notebook. The call itself lives on The Line, a near-black AAA screen with two hardware-like circles that looks the same in light and dark themes. When you cut a scammer off, the Line breaks apart and falls away to show the notebook underneath, with the evidence written on it.",
+    "keyCharacteristics": [
+      "Two worlds: the Notebook (theme-aware, light by default) and The Line (always dark, AAA).",
+      "One accent (moss) for every positive interactive signal. Red exists only for Hang Up and the scammer's ASK marker.",
+      "Senior-first scale: body 20/30, nothing below 18px, targets ≥ 56px, primary 64px, call circles 96px.",
+      "Soft rectangles for actions (14px) and true circles for call hardware. No pills.",
+      "Hairline-first depth on the notebook; tonal steps on the Line; shadows only on things that float.",
+      "Motion is near-zero in daily use. One orchestrated moment, \"The Cut\", when a scam call is hung up."
+    ],
+    "rules": [
+      {
+        "name": "The One Moss Rule",
+        "body": "At most one filled moss button per view, and moss covers ≤ 5% of the pixels on any notebook screen.",
+        "section": "colors"
+      },
+      {
+        "name": "The Red Means Them Rule",
+        "body": "Red marks only the Hang Up circle and the ASK marker. It is never decoration, never a badge, and never \"wrong\" on a legitimate-call miss.",
+        "section": "colors"
+      },
+      {
+        "name": "The Line Is Always Dark Rule",
+        "body": "The call screen uses call-* tokens in both themes.",
+        "section": "colors"
+      },
+      {
+        "name": "The Twenty Floor Rule",
+        "body": "Reading text is never below 20px. The 18px meta size is allowed only for labels of four words or fewer.",
+        "section": "typography"
+      },
+      {
+        "name": "The Read-It-Exactly Rule",
+        "body": "Numbers, codes and seconds are set in Atkinson Hyperlegible Mono. Mono is never used for decoration.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Notebook Rule",
+        "body": "Nothing at rest on the notebook casts a shadow.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep reading text ≥ 20px and targets ≥ 56px. Measure them in e2e.",
+      "Do keep the Line dark in both themes with AAA contrast.",
+      "Do set every phone number, second and code in Atkinson Hyperlegible Mono, grouped for reading.",
+      "Do use one filled moss button per view, placed in the bottom third on phone.",
+      "Do pair every outcome with a word and an icon.",
+      "Do write callers as fictional organisations with (NXX) 555-01xx numbers.",
+      "Do keep captions on by default and make the demo readable muted.",
+      "Do let any tap finish the signature moment immediately."
+    ],
+    "donts": [
+      "Don't use a pill.",
+      "Don't use red for anything except the Hang Up circle and the scammer's ASK marker.",
+      "Don't set reading text below 20px or any text below 18px, and don't ship a target below 56px.",
+      "Don't add mascots, badges, trophies, XP, leaderboards or exclamation-mark praise.",
+      "Don't show red-flag hints during a call.",
+      "Don't use shadows on the Line, or on resting notebook cards.",
+      "Don't animate daily navigation.",
+      "Don't use any real bank, agency, company or person name, logo or number."
+    ]
+  }
+}
