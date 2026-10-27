@@ -36,6 +36,8 @@ export const SettingsSchema = z.strictObject({
     .regex(/^([01]\d|2[0-3]):[0-5]\d$/)
     .optional(),
   audioFormat: z.enum(['opus', 'aac']).optional(),
+  /** The player chose "Don't show again" on the install hint. */
+  installHintDismissed: z.boolean().optional(),
 });
 export type Settings = z.infer<typeof SettingsSchema>;
 

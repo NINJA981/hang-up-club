@@ -49,26 +49,37 @@ describe('useStore', () => {
   });
 });
 
-describe('placeholder App', () => {
-  it('loads the library and manifest from the same origin and reports real numbers', async () => {
+describe('App', () => {
+  const stubBrowser = (): void => {
+    vi.stubGlobal('matchMedia', () => ({
+      matches: false,
+      addEventListener: () => undefined,
+      removeEventListener: () => undefined,
+    }));
+  };
+
+  it('loads the library and manifest from the same origin, then asks a new player what to call them', async () => {
+    stubBrowser();
     const urls: string[] = [];
     vi.stubGlobal('fetch', (url: string) => {
       urls.push(url);
       return respond(url.endsWith('library.json') ? realLibrary() : realManifest());
     });
     render(<App />);
-    expect(screen.getByRole('heading', { name: 'Hang Up Club' })).toBeTruthy();
-    const summary = await screen.findByTestId('library-summary');
-    expect(summary.textContent).toContain('20 calls ready');
-    expect(summary.textContent).toContain(`${String(Object.keys(realManifest().clips).length)} voice clips`);
+    const heading = await screen.findByRole('heading', { name: /Practice saying no to phone scams/ });
+    expect(heading).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Set up for me' })).toBeTruthy();
+    expect(urls.length).toBeGreaterThan(0);
     expect(urls.every((u) => u.startsWith('/'))).toBe(true);
   });
   it('shows a plain, non-technical error when the calls cannot load', async () => {
+    stubBrowser();
     vi.stubGlobal('fetch', () => respond({}, false));
     render(<App />);
     await waitFor(() => {
-      expect(screen.getByRole('alert').textContent).toMatch(/could not be loaded/);
+      expect(screen.getByRole('alert').textContent).toMatch(/Check your connection/);
     });
+    expect(screen.getByRole('heading', { name: 'The calls could not be loaded' })).toBeTruthy();
   });
 });
 

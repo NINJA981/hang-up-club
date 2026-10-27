@@ -1,0 +1,224 @@
+/*
+ * Component-level CSS that Tailwind utilities cannot express: keyframes for
+ * sheets, the ring halo, selection and scrollbar theming. Every value is a
+ * DESIGN.md token (durations, easings, colours); nothing here is new.
+ */
+
+/* ── Sheets and dialogs (DESIGN.md: 500ms in, 300ms out, --ease-sheet) ──── */
+@keyframes huc-sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes huc-sheet-out {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+@keyframes huc-scrim-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes huc-scrim-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes huc-dialog-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 8px)) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+@keyframes huc-dialog-out {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 4px)) scale(0.99);
+  }
+}
+
+[data-slot='sheet-scrim'][data-state='open'] {
+  animation: huc-scrim-in var(--dur-4) var(--ease-out) both;
+}
+[data-slot='sheet-scrim'][data-state='closed'] {
+  animation: huc-scrim-out var(--dur-3) var(--ease-out) both;
+}
+[data-slot='sheet-content'][data-state='open'] {
+  animation: huc-sheet-in var(--dur-sheet-in) var(--ease-sheet) both;
+}
+[data-slot='sheet-content'][data-state='closed'] {
+  animation: huc-sheet-out var(--dur-sheet-out) var(--ease-sheet) both;
+}
+@media (min-width: 48rem) {
+  [data-slot='sheet-content'][data-state='open'] {
+    animation: huc-dialog-in var(--dur-4) var(--ease-out) both;
+  }
+  [data-slot='sheet-content'][data-state='closed'] {
+    animation: huc-dialog-out var(--dur-3) var(--ease-out) both;
+  }
+}
+
+/* ── Ring halo: two concentric rings, scale 1 to 1.25, 1200ms loop ───────── */
+@keyframes huc-ring {
+  from {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  to {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+}
+.huc-ring-halo {
+  animation: huc-ring var(--dur-ring) var(--ease-out) infinite;
+}
+.huc-ring-halo[data-delay='1'] {
+  animation-delay: 600ms;
+}
+.huc-ring-halo[data-paused='true'] {
+  animation: none;
+  opacity: 0.35;
+}
+
+/* ── Dialling dots on the Call back screen (3 dots, 900ms) ────────────────── */
+@keyframes huc-dial {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  33% {
+    opacity: 1;
+  }
+}
+.huc-dial-dot {
+  animation: huc-dial 900ms var(--ease-in-out) infinite;
+}
+.huc-dial-dot:nth-child(2) {
+  animation-delay: 150ms;
+}
+.huc-dial-dot:nth-child(3) {
+  animation-delay: 300ms;
+}
+
+/* ── Skeleton shimmer is a plain opacity pulse (no gradients) ─────────────── */
+@keyframes huc-pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+.huc-skeleton {
+  animation: huc-pulse 1400ms var(--ease-in-out) infinite;
+}
+
+/* ── Browser surfaces that ship with defaults ─────────────────────────────── */
+::selection {
+  background: var(--accent-soft);
+  color: var(--text);
+}
+[data-surface='call'] ::selection {
+  background: var(--call-surface-2);
+  color: var(--call-text);
+}
+html {
+  scrollbar-color: var(--border-strong) transparent;
+  scrollbar-width: thin;
+}
+input,
+textarea {
+  caret-color: var(--accent);
+}
+a {
+  text-underline-offset: 0.25em;
+  text-decoration-thickness: 2px;
+}
+button {
+  cursor: pointer;
+}
+input[type='time']::-webkit-calendar-picker-indicator {
+  opacity: 0.7;
+}
+
+/* Hatch for "the time you did not give them" on the timeline (45deg, 2px lines) */
+.huc-hatch {
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--accent) 0,
+    var(--accent) 2px,
+    transparent 2px,
+    transparent 7px
+  );
+  background-color: var(--accent-soft);
+}
+
+/* The Line fills the viewport; on wide screens the handset area is centred (DESIGN.md Layout). */
+.huc-handset {
+  width: 100%;
+  max-width: 26.875rem;
+  min-height: 100dvh;
+  margin-inline: auto;
+}
+
+/* Safe areas */
+.huc-safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.huc-safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+/* Focus moves to the page heading on navigation; it needs no ring of its own. */
+h1[tabindex='-1']:focus {
+  outline: none;
+}
+
+/* Caption lines and reply chips arrive with a 150ms fade (captions also rise 8px). */
+@keyframes huc-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes huc-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.huc-line-in {
+  animation: huc-rise var(--dur-2) var(--ease-out) both;
+}
+.huc-fade-in {
+  animation: huc-fade var(--dur-2) var(--ease-out) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .huc-line-in {
+    animation-name: huc-fade;
+  }
+}

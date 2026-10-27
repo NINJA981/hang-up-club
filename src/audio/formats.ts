@@ -16,13 +16,14 @@ export function chooseAudioFormat(el: CanPlay, preferred?: AudioFormat): AudioFo
 }
 
 /**
- * The container the coach's device should record the cheer in. MP4 plays
- * almost everywhere, so it is preferred when MediaRecorder offers it
- * (SPEC §11 cross-device cheer playback).
+ * Opus first: Chromium also offers `audio/mp4` but ignores the bitrate cap there
+ * (about 30 KB for 2.5 s against the 8 KB cheer-link cap, measured), while Opus
+ * comes out near 3 KB. Safari has no WebM recorder before 18.4 and honours the cap
+ * for MP4, so it falls through to `audio/mp4`.
  */
 export const CHEER_MIME_PREFERENCE = [
-  'audio/mp4',
   'audio/webm;codecs=opus',
+  'audio/mp4',
   'audio/ogg;codecs=opus',
 ] as const;
 

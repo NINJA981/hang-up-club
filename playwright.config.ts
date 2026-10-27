@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const PORT = 4173;
+const PORT = Number(process.env.E2E_PORT ?? 4173);
 
 export default defineConfig({
   testDir: 'tests/e2e',
@@ -18,7 +18,7 @@ export default defineConfig({
   ],
   // e2e runs against the production build so the CSP and service worker are real.
   webServer: {
-    command: 'pnpm build && pnpm preview',
+    command: `pnpm build && pnpm exec vite preview --port ${String(PORT)} --strictPort`,
     url: `http://localhost:${PORT}`,
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,

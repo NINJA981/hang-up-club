@@ -139,9 +139,10 @@ describe('format choice', () => {
     expect(chooseAudioFormat(can('probably'), 'aac')).toBe('aac');
     expect(chooseAudioFormat(can(''), 'opus')).toBe('opus');
   });
-  it('records the cheer in MP4 when offered, because it plays almost everywhere', () => {
-    expect(CHEER_MIME_PREFERENCE[0]).toBe('audio/mp4');
-    expect(chooseCheerMime(() => true)).toBe('audio/mp4');
+  it('records the cheer in Opus first, because Chromium ignores the bitrate cap for MP4 (30 KB vs the 8 KB link cap)', () => {
+    expect(CHEER_MIME_PREFERENCE[0]).toBe('audio/webm;codecs=opus');
+    expect(chooseCheerMime(() => true)).toBe('audio/webm;codecs=opus');
+    expect(chooseCheerMime((m) => m === 'audio/mp4')).toBe('audio/mp4');
     expect(chooseCheerMime((m) => m.startsWith('audio/webm'))).toBe('audio/webm;codecs=opus');
     expect(chooseCheerMime((m) => m.startsWith('audio/ogg'))).toBe('audio/ogg;codecs=opus');
     expect(chooseCheerMime(() => false)).toBeUndefined();
@@ -560,7 +561,7 @@ describe('cheer recorder (AC-F8-2)', () => {
     },
   });
 
-  it('hard-stops at 2.5 s at 12 kbps in MP4 when available', async () => {
+  it('hard-stops at 2.5 s at 12 kbps in Opus when available', async () => {
     expect(CHEER_MAX_MS).toBe(2500);
     expect(CHEER_BITS_PER_SECOND).toBe(12_000);
     const t = timers();
@@ -568,12 +569,12 @@ describe('cheer recorder (AC-F8-2)', () => {
     let made: FakeRecorder | undefined;
     const create: RecorderFactory = (_s, options) => (made = new FakeRecorder(options));
     const rec = recordCheer({ stream: s.stream, isTypeSupported: () => true, create, timers: t });
-    expect(made?.options).toEqual({ mimeType: 'audio/mp4', audioBitsPerSecond: 12_000 });
+    expect(made?.options).toEqual({ mimeType: 'audio/webm;codecs=opus', audioBitsPerSecond: 12_000 });
     expect(made?.state).toBe('recording');
     expect(t.at.map((x) => x.ms)).toEqual([2500]);
     t.at[0]?.fn(); // the hard stop fires
     const result = await rec.done;
-    expect(result.mime).toBe('audio/mp4');
+    expect(result.mime).toBe('audio/webm;codecs=opus');
     expect(result.blob.size).toBe(4);
     expect(result.durationMs).toBeLessThanOrEqual(2500);
     for (const track of s.tracks) expect(track.stop).toHaveBeenCalled(); // the microphone is released

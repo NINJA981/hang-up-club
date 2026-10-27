@@ -25,6 +25,7 @@ export default tseslint.config(
       'test-results/**',
       'node_modules/**',
       'site/**',
+      'scripts/*.mjs', // QA capture tools run by hand, not part of the build
       'public/**',
     ],
   },

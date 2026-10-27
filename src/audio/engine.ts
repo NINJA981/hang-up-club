@@ -91,8 +91,15 @@ export class CallAudioEngine implements Pick<CallPort, 'answer' | 'reschedule' |
   async prepare(
     lines: readonly Pick<ResolvedLine, 'voice' | 'text'>[],
     bed?: string,
+    onProgress?: (done: number, total: number) => void,
   ): Promise<{ missing: number }> {
     let missing = 0;
+    let done = 0;
+    const total = new Set(lines.map((l) => this.bufferKey(l))).size + (bed ? 1 : 0);
+    const tick = (): void => {
+      done += 1;
+      onProgress?.(Math.min(done, total), total);
+    };
     await Promise.all(
       lines.map(async (line) => {
         const clip = clipFor(this.opts.manifest, line);
@@ -101,6 +108,7 @@ export class CallAudioEngine implements Pick<CallPort, 'answer' | 'reschedule' |
         if (!clip) {
           this.buffers.set(key, null);
           missing += 1;
+          tick();
           return;
         }
         this.buffers.set(key, null); // claim the slot so duplicate lines fetch once
@@ -110,6 +118,7 @@ export class CallAudioEngine implements Pick<CallPort, 'answer' | 'reschedule' |
         } catch {
           missing += 1;
         }
+        tick();
       }),
     );
     const bedDef = bed ? this.opts.manifest.beds[bed] : undefined;
@@ -120,6 +129,7 @@ export class CallAudioEngine implements Pick<CallPort, 'answer' | 'reschedule' |
       } catch {
         this.bedBuffer = null; // a call without ambience is still a call
       }
+      tick();
     }
     return { missing };
   }

@@ -1,9 +1,9 @@
 import { expect, test, type Page } from '@playwright/test';
 
 /**
- * Stage 2 smoke tests: the shell loads from the production build, makes no
- * off-origin request (AC-F10-6), is installable, and still works offline
- * (AC-F10-1, shell part). The full daily-flow e2e suite arrives with the UI.
+ * Smoke tests: the shell loads from the production build, makes no
+ * off-origin request (AC-F10-6), is installable, and still opens offline.
+ * The product flows are in app.spec.ts and a11y.spec.ts.
  */
 
 /** Records every request that leaves the app's own origin. data: and blob: URLs never touch the network. */
@@ -21,9 +21,9 @@ function guardOrigin(page: Page, baseURL: string): string[] {
 test('loads the shell and the content from this origin only', async ({ page, baseURL }) => {
   const offOrigin = guardOrigin(page, baseURL ?? 'http://localhost:4173');
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'Hang Up Club' })).toBeVisible();
-  await expect(page.getByTestId('library-summary')).toContainText('20 calls ready');
-  await expect(page.getByTestId('library-summary')).toContainText('voice clips');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Practice saying no to phone scams');
+  const lib = await page.request.get('/scenarios/library.json');
+  expect(lib.ok()).toBe(true);
   expect(offOrigin).toEqual([]);
 });
 
@@ -64,7 +64,7 @@ test('serves a valid scenario library and audio manifest', async ({ request }) =
 
 test('still opens offline after the first visit (AC-F10-1, shell)', async ({ page, context }) => {
   await page.goto('/');
-  await expect(page.getByTestId('library-summary')).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   // Wait for the service worker to take control of the page.
   await page.evaluate(async () => {
     const reg = await navigator.serviceWorker.ready;
@@ -75,7 +75,6 @@ test('still opens offline after the first visit (AC-F10-1, shell)', async ({ pag
 
   await context.setOffline(true);
   await page.reload();
-  await expect(page.getByRole('heading', { name: 'Hang Up Club' })).toBeVisible();
-  await expect(page.getByTestId('library-summary')).toContainText('20 calls ready');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Practice saying no to phone scams');
   await context.setOffline(false);
 });
