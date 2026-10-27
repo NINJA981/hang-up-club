@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="{{csp}}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#fafaf7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#131411" media="(prefers-color-scheme: dark)" />
+    <title>Hang Up Club: practise hanging up on scammers</title>
+    <meta
+      name="description"
+      content="One realistic practice call a day for older adults. Some calls are real. Free, open source, no server."
+    />
+    {{canonical}}
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Hang Up Club: practise hanging up on scammers" />
+    <meta
+      property="og:description"
+      content="One realistic practice call a day for older adults. Some calls are real. Free, open source, no server."
+    />
+    <meta property="og:image" content="{{og_image}}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Hung up at {{fact:hangClock}}. The scammer needed {{fact:askClock}}." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <noscript><link rel="stylesheet" href="./noscript.css" /></noscript>
+    <script type="module" src="/src/main.ts"></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to the page</a>
+
+    <header class="topbar">
+      <div class="wrap topbar__in">
+        <a class="wordmark" href="#top" aria-label="Hang Up Club, top of page">
+          <span class="wordmark__cord">{{cord:64}}</span>
+          <span>Hang Up Club</span>
+        </a>
+        <nav class="topnav" aria-label="Page sections">
+          <a href="#how-it-works">How it works</a>
+          <a href="#privacy">Privacy</a>
+          <a href="#code">Code</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- ─────────────── Beat 1: hook, with the real call screen as the hero ─────────────── -->
+      <section class="hero" id="top" aria-labelledby="h1">
+        <div class="hero__field" aria-hidden="true"></div>
+        <div class="wrap hero__grid">
+          <div class="hero__copy">
+            <h1 id="h1" class="display">Practise hanging up on scammers. Not on your pharmacy.</h1>
+            <p class="lead hero__lead">
+              Hang Up Club gives your parents one realistic practice call a day. Some calls are
+              scams and some are real, so they learn to tell the difference. The score is how early
+              they spot the trick.
+            </p>
+            <div class="hero__cta">
+              <a class="btn btn--primary" href="{{app_url}}">Open the app</a>
+              <div class="hero__cta-row">
+                <button class="btn btn--quiet js-only" id="try-call" type="button">
+                  {{icon:phone:20}}<span>Try the call</span>
+                </button>
+                <button
+                  class="btn btn--quiet js-only"
+                  id="sound"
+                  type="button"
+                  aria-pressed="false"
+                >
+                  <span class="sound__off">{{icon:volume-x:20}}</span
+                  ><span class="sound__on">{{icon:volume-2:20}}</span
+                  ><span id="sound-label">Sound: Off</span>
+                </button>
+              </div>
+            </div>
+            <p class="trust">Free and open source. No account. No server. Every caller is made up.</p>
+          </div>
+
+          <div class="hero__demo">
+            <div class="handset-wrap">
+              <div
+                class="handset"
+                id="handset"
+                data-state="incall"
+                data-mode="poster"
+                role="group"
+                aria-labelledby="demo-label"
+              >
+                <p id="demo-label" class="sr-only">
+                  Demonstration of Hang Up Club. A practice call from a made-up bank is on the line.
+                  A caller is rushing you toward a code. Hanging up after the first warning sign and
+                  before the ask is the best result.
+                </p>
+                <p class="sr-only" id="sr-status" role="status"></p>
+                <div class="handset__bezel">
+                  <div class="screen" id="screen">
+                    <!-- The notebook sits under the Line; the result is already mounted -->
+                    <section class="nb" id="nb" aria-hidden="true">
+                      <div class="nb__body">
+                        <p class="nb__head" id="res-head-wrap">
+                          <span class="nb__icon" data-icon="check">{{icon:circle-check:32}}</span>
+                          <span class="nb__icon" data-icon="info">{{icon:info:32}}</span>
+                          <span class="nb__icon" data-icon="clock">{{icon:clock:32}}</span>
+                          <span class="nb__icon" data-icon="flag">{{icon:flag:32}}</span>
+                          <span class="result" id="res-head">Hung up at {{fact:hangClock}}.</span>
+                        </p>
+                        <p class="headline" id="res-sub">The scammer needed {{fact:askClock}}.</p>
+                        {{timeline:screen}}
+                        <p class="ask-quote" id="res-quote">
+                          <span class="meta">They said</span>
+                          <span>“{{fact:askQuote}}”</span>
+                        </p>
+                      </div>
+                      <div class="nb__actions" id="res-fake" aria-hidden="true">
+                        <span class="btn btn--primary">Send to family</span>
+                        <span class="btn btn--secondary">See what gave it away</span>
+                      </div>
+                      <div class="nb__actions" id="res-real" hidden>
+                        <button class="btn btn--primary" id="again" type="button">
+                          Try another call
+                        </button>
+                        <a class="btn btn--secondary" href="#replay">See what gave it away</a>
+                      </div>
+                    </section>
+
+                    <!-- The Line: always dark -->
+                    <section class="line" id="line" aria-label="Phone call screen">
+                      <div class="line__top">
+                        <span class="meta line__status" id="status">On call</span>
+                        <span class="mono-timer line__timer" id="timer">0:09</span>
+                      </div>
+                      <div class="line__who">
+                        <p class="line__name" id="who-name">{{fact:callerName}}</p>
+                        <p class="mono-number line__num" id="who-num">{{fact:callerNumber}}</p>
+                      </div>
+                      <div class="captions" id="captions" aria-live="off">
+                        <p class="cap cap--prev" id="cap-prev">
+                          <span class="meta cap__who">Caller</span
+                          ><span class="cap__text">Hello, is this Paati?</span>
+                        </p>
+                        <p class="cap cap--now" id="cap-now">
+                          <span class="meta cap__who">Caller</span
+                          ><span class="cap__text"
+                            >This is Dana from the fraud department at First Meridian Bank. Thank you
+                            for picking up.</span
+                          >
+                        </p>
+                      </div>
+                      <div class="chips" id="chips" hidden></div>
+                      <div class="controls">
+                        <button class="ctl ctl--answer" id="btn-answer" type="button">
+                          <span class="circle circle--answer">{{icon:phone:32}}</span>
+                          <span class="ui">Answer</span>
+                        </button>
+                        <button class="ctl ctl--hangup" id="btn-hangup" type="button">
+                          <span class="circle circle--hangup">{{icon:phone:32}}</span>
+                          <span class="ui">Hang up</span>
+                        </button>
+                      </div>
+                      <button class="callback" id="btn-callback" type="button">
+                        {{fact:callbackLabel}}
+                      </button>
+                    </section>
+                    <div class="shards" id="shards" aria-hidden="true"></div>
+                    <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="handset-tools js-only">
+                <button class="btn btn--quiet" id="pause" type="button" aria-pressed="false">
+                  <span class="pause__pause">{{icon:pause:20}}</span
+                  ><span class="pause__play">{{icon:play:20}}</span
+                  ><span id="pause-label">Pause the demo</span>
+                </button>
+                <p class="meta handset-note" id="demo-note">
+                  Every caller here is made up. Take the call yourself: tap Hang up.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─────────────── Beat 2: the real product in motion ─────────────── -->
+      <section class="band" id="how-it-works" aria-labelledby="h-signature">
+        <div class="wrap">
+          <div class="split">
+            <div class="split__text">
+              <h2 id="h-signature" class="h1">
+                Hung up at {{fact:hangClock}}. The scammer needed {{fact:askClock}}.
+              </h2>
+              <p class="body-lg">
+                Every scam call has a moment where the caller asks for something: a code, a gift
+                card, a payment. Hang Up Club marks that moment. Hanging up after the first warning
+                sign and before the ask is the best score you can get.
+              </p>
+              <p class="body-lg text-muted">
+                The hatched stretch is the time you did not give them.
+              </p>
+            </div>
+          </div>
+          <figure class="board" data-board>
+            <div class="board__top">
+              <p class="title">First Meridian Bank Fraud Dept</p>
+              <p class="mono-number text-muted">(614) 555-0148</p>
+            </div>
+            {{timeline:big}}
+            <p class="ask-quote">
+              <span class="meta">They said</span>
+              <span>“{{fact:askQuote}}”</span>
+            </p>
+            <figcaption class="board__foot">
+              <button class="btn btn--quiet js-only" type="button" data-replay-tl>
+                {{icon:rotate-ccw:20}}<span>Replay</span>
+              </button>
+              <p class="meta text-muted">
+                A made-up caller at a made-up bank. Drawn live from the same data as the app.
+              </p>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ─────────────── Beat 3: three proofs ─────────────── -->
+      <section class="band band--tight" aria-labelledby="h-proofs">
+        <div class="wrap">
+          <h2 id="h-proofs" class="sr-only">What makes it different</h2>
+
+          <article class="proof" aria-labelledby="p1">
+            <div class="proof__visual">
+              <div class="frame" data-board>
+                <div class="frame__bezel">
+                  <div class="frame__screen nb nb--static">
+                    <div class="nb__body">
+                      <p class="nb__head">
+                        <span class="nb__icon is-on">{{icon:circle-check:32}}</span>
+                        <span class="result">That was the real pharmacy.</span>
+                      </p>
+                      <p class="headline">Staying on was right. They didn’t ask for anything.</p>
+                      {{timeline:legit}}
+                      <p class="ask-quote">
+                        <span class="meta">Alder Lane Pharmacy</span>
+                        <span class="mono-number">(614) 555-0171</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="proof__text">
+              <h3 id="p1" class="h1">Some calls are real.</h3>
+              <p class="body-lg">
+                About 4 in 10 calls are ordinary calls (the pharmacy, the clinic, a grandchild
+                saying hello). Hang up on everything and your score drops. The skill is judgement,
+                not reflex.
+              </p>
+            </div>
+          </article>
+
+          <article class="proof proof--flip" id="replay" aria-labelledby="p2">
+            <div class="proof__visual">
+              <div class="frame">
+                <div class="frame__bezel">
+                  <div class="frame__screen nb nb--static">
+                    <div class="nb__body">
+                      <p class="title">What gave it away</p>
+                      <ol class="rp">
+                        {{replay}}
+                      </ol>
+                      <p class="advice">{{fact:advice}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="proof__text">
+              <h3 id="p2" class="h1">See what gave it away.</h3>
+              <p class="body-lg">
+                After each call, a plain-language replay shows the exact second each trick was used,
+                and one thing to do next time.
+              </p>
+            </div>
+          </article>
+
+          <article class="proof" aria-labelledby="p3">
+            <div class="proof__visual">
+              <div class="frame">
+                <div class="frame__bezel">
+                  <div class="frame__screen nb nb--static">
+                    <div class="nb__body nb__body--coach">
+                      <p class="title">Setup link ready</p>
+                      <dl class="kv">
+                        <div>
+                          <dt class="meta">They call you</dt>
+                          <dd class="ui">Paati</dd>
+                        </div>
+                        <div>
+                          <dt class="meta">Your cheer</dt>
+                          <dd class="ui"><span class="mono">2.4&nbsp;s</span> recorded</dd>
+                        </div>
+                      </dl>
+                      <div class="qr-tile">{{qr}}</div>
+                      <div class="nb__actions nb__actions--inline" aria-hidden="true">
+                        <span class="btn btn--primary">Share link</span>
+                        <span class="btn btn--secondary">Copy</span>
+                      </div>
+                      <p class="bubble">
+                        <span class="ui">Arjun:</span> <span>Nice one, Paati!</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="proof__text">
+              <h3 id="p3" class="h1">Set it up from your phone. Cheer from anywhere.</h3>
+              <p class="body-lg">
+                You send one link. Your recorded cheer plays when they get it right, and they can
+                send you their result in the family chat. No accounts, no app store.
+              </p>
+            </div>
+          </article>
+
+          <p class="stats">
+            People over 60 reported <strong class="mono">$7.7 billion</strong> lost to internet
+            crime in 2025
+            <a
+              href="https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf"
+              rel="noopener"
+              >[FBI IC3, p.44]</a
+            >. In 2024, <strong class="mono">40%</strong> of older adults’ loss reports for scams
+            that started with a phone call involved someone pretending to be a business, such as a
+            bank
+            <a
+              href="https://www.ftc.gov/system/files/ftc_gov/pdf/P144400-OlderAdultsReportDec2025.pdf"
+              rel="noopener"
+              >[FTC, <cite>Protecting Older Consumers 2024–2025</cite>, p.26]</a
+            >.
+          </p>
+        </div>
+      </section>
+
+      <!-- ─────────────── Beat 4: privacy proof and how it is made ─────────────── -->
+      <section class="band" id="privacy" aria-labelledby="h-privacy">
+        <div class="wrap">
+          <h2 id="h-privacy" class="h1 privacy__title">
+            No server. Nothing to hack, nothing to sell.
+          </h2>
+
+          <figure class="diagram" aria-labelledby="diagram-cap">
+            <div class="diagram__row">
+              <div class="node">
+                <p class="title">Your phone</p>
+                <p>Calls, scores, streak and cheers are saved on the phone itself.</p>
+              </div>
+              <div class="link" aria-hidden="true">
+                <span class="link__line"></span>
+                <span class="link__tag mono">…/#/join/…</span>
+                <span class="link__line"></span>
+              </div>
+              <div class="node">
+                <p class="title">Their phone</p>
+                <p>
+                  Opens the link and the setup is applied there. A result comes back the same way,
+                  only if they choose to send it.
+                </p>
+              </div>
+            </div>
+            <div class="diagram__server">
+              <div class="void">
+                <p class="title void__name">Server</p>
+                <p class="meta">There isn’t one.</p>
+              </div>
+              <p class="meta text-muted" id="diagram-cap">
+                The part of a link after the <span class="mono">#</span> stays in the browser. It
+                never reaches any server, because there is none to receive it. Hang Up Club makes no
+                requests to other sites.
+              </p>
+            </div>
+          </figure>
+
+          <div class="made">
+            <h3 class="title made__title">How it’s made</h3>
+            <ol class="steps">
+              <li>
+                <h4 class="ui">The decision</h4>
+                <p>
+                  Train judgement, not reflex. 8 of the 20 call scripts are real calls, and the
+                  scheduler keeps about 4 in 10 daily calls ordinary. The 20 scripts expand to 1,317
+                  playable variants.
+                </p>
+              </li>
+              <li>
+                <h4 class="ui">The obvious version</h4>
+                <p>
+                  Speak every line with the phone’s own voice at call time. That depends on whatever
+                  voices a phone happens to have, and it can’t give a call the narrow, slightly
+                  noisy sound of a real phone line.
+                </p>
+              </li>
+              <li>
+                <h4 class="ui">The trick</h4>
+                <p>
+                  Every line is voiced at build time by a free local text-to-speech engine,
+                  band-passed to 300–3,400&nbsp;Hz telephone sound, and shipped as 16&nbsp;kbps
+                  Opus. The whole library is 3.8&nbsp;MB, and an iPhone gets an AAC copy.
+                </p>
+              </li>
+              <li>
+                <h4 class="ui">How it degrades</h4>
+                <p>
+                  Offline after the first download. Captions on every call. If audio can’t play,
+                  your phone’s own voice reads it. If there’s no voice, the call is a read-along.
+                </p>
+              </li>
+              <li>
+                <h4 class="ui">Stack and license</h4>
+                <p>React, Vite, Web Audio, IndexedDB. MIT licensed.</p>
+              </li>
+            </ol>
+            <p class="meta text-muted made__src">
+              Each script maps to a scam category in the FTC and FBI reports and cites its page. See
+              {{repo_source_link}}.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─────────────── Open source call to action and quickstart ─────────────── -->
+      <section class="band band--code" id="code" aria-labelledby="h-code">
+        <div class="wrap">
+          <div class="code__grid">
+            <div class="code__text">
+              <h2 id="h-code" class="h1">Read it, run it, fork it.</h2>
+              <p class="body-lg">
+                Hang Up Club is MIT licensed. Every call script is a plain YAML file you can read,
+                and <span class="mono">pnpm check</span> fails a script that has no source or uses a
+                real bank’s name. To add one for your own family, add a file and run the check.
+              </p>
+              <p>
+                <a class="btn btn--secondary" id="repo-cta" href="{{repo_href}}">{{repo_label}}</a>
+              </p>
+            </div>
+            <div class="code__run" id="run-it">
+              <p class="ui">Run it from source</p>
+              <p class="meta text-muted">Needs Node 24 and pnpm 10. Clone the repository, then:</p>
+              <pre class="term" tabindex="0" aria-label="Commands"><code>pnpm install
+pnpm dev
+pnpm build &amp;&amp; pnpm preview
+pnpm check</code></pre>
+              <p class="meta text-muted">
+                The second command serves the app on a local port. The third builds the offline
+                version. The last one checks every script’s sources, names and audio.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─────────────── Beat 5: install, the Line as a closing band ─────────────── -->
+      <section class="closing" id="install" aria-labelledby="h-install">
+        <div class="wrap closing__grid">
+          <div class="closing__copy">
+            <h2 id="h-install" class="h1">Set it up for someone you love.</h2>
+            <ol class="how">
+              <li><span class="how__n mono-number">1</span><span>Open the app on your phone.</span></li>
+              <li>
+                <span class="how__n mono-number">2</span
+                ><span>Tap “I’m setting this up for someone else”.</span>
+              </li>
+              <li>
+                <span class="how__n mono-number">3</span
+                ><span>Send them the link, or show them the QR code.</span>
+              </li>
+            </ol>
+            <div class="closing__cta">
+              <a class="btn btn--answer" href="{{app_url}}">Open the app</a>
+              <a class="btn btn--line" href="{{repo_href}}">{{repo_label}}</a>
+            </div>
+            <p class="closing__platform">
+              Works on Android, iPhone (Add to Home Screen) and any modern desktop browser.
+            </p>
+          </div>
+          <div class="closing__qr">
+            <div class="qr-tile qr-tile--line">{{qr}}</div>
+            <p class="meta">On a computer? Scan this with your phone to open the app.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <div class="wrap foot__in">
+        <p class="foot__cord">{{cord:96}}</p>
+        <p>Every caller, bank and agency in Hang Up Club is fictional.</p>
+        <p>
+          Hang Up Club is a practice tool, not a call blocker. If you think you’re talking to a
+          scammer, hang up and call a number you trust.
+        </p>
+        <p class="meta text-muted">
+          MIT license. Statistics are from the FBI IC3 <cite>2025 Internet Crime Report</cite> and the
+          FTC <cite>Protecting Older Consumers 2024–2025</cite>, linked above. This page makes no
+          requests to other sites and has no analytics.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

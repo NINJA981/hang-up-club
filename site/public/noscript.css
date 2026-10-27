@@ -1,0 +1,4 @@
+/* Loaded only when JavaScript is off: hide controls that need it. */
+.js-only {
+  display: none !important;
+}

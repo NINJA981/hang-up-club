@@ -1,0 +1,653 @@
+/*
+ * The handset and the product screens drawn from DESIGN.md: the Line (always dark),
+ * the notebook result, the Timeline, replay rows. This is a live HTML/CSS
+ * reproduction, not an image.
+ */
+
+/* ── Frame ─────────────────────────────────────────────────────────────── */
+.handset-wrap {
+  width: min(100%, 390px);
+  margin-inline: auto;
+}
+.handset,
+.frame {
+  /* Phone-width type, not viewport-width type: the frame is a phone. */
+  --fs-result: 2.5rem;
+  --fs-caller: 2.25rem;
+  width: 100%;
+}
+.handset {
+  --handset-h: 800px;
+  height: var(--handset-h);
+}
+.frame {
+  height: auto;
+}
+.frame__screen {
+  min-height: 560px;
+}
+.handset__bezel,
+.frame__bezel {
+  height: 100%;
+  padding: var(--s-2);
+  border-radius: var(--r-lg);
+  background: var(--call-surface);
+  box-shadow: 0 0 0 2px var(--call-border);
+}
+.screen,
+.frame__screen {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: calc(var(--r-lg) - var(--s-2));
+  background: var(--bg);
+  color: var(--text);
+}
+@media (min-width: 1024px) {
+  .handset {
+    --handset-h: clamp(720px, calc(100dvh - 128px), 844px);
+  }
+}
+
+/* Resting tilt on desktop only; it settles flat on hover or focus. */
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .handset-wrap {
+    perspective: 1400px;
+  }
+  .handset {
+    transform: rotateY(-10deg) rotateX(4deg);
+    transition: transform 600ms var(--ease-scene);
+  }
+  .handset-wrap:hover .handset,
+  .handset-wrap:focus-within .handset {
+    transform: none;
+  }
+}
+
+.handset-tools {
+  display: grid;
+  gap: var(--s-1);
+  margin-top: var(--s-3);
+  justify-items: start;
+}
+.handset-tools .btn {
+  margin-left: calc(-1 * var(--s-4));
+}
+.handset-note {
+  color: var(--text-muted);
+  max-width: 28em;
+}
+
+/* ── The notebook (result) ─────────────────────────────────────────────── */
+.nb {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  padding: var(--s-6) var(--s-5);
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+.nb--static {
+  position: relative;
+  inset: auto;
+}
+.nb__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+.nb__head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-3);
+}
+.nb__icon {
+  display: none;
+  flex: none;
+  margin-top: var(--s-2);
+  color: var(--accent-text);
+}
+.nb__icon.is-on,
+.nb[data-icon='check'] .nb__icon[data-icon='check'],
+.nb[data-icon='info'] .nb__icon[data-icon='info'],
+.nb[data-icon='clock'] .nb__icon[data-icon='clock'],
+.nb[data-icon='flag'] .nb__icon[data-icon='flag'] {
+  display: block;
+}
+.nb[data-icon='flag'] .nb__icon[data-icon='flag'],
+.nb[data-icon='clock'] .nb__icon[data-icon='clock'] {
+  color: var(--text);
+}
+.nb[data-icon='clock'] .nb__icon[data-icon='clock'] {
+  color: var(--warning);
+}
+.nb .headline {
+  color: var(--text-muted);
+}
+.nb__actions {
+  display: grid;
+  gap: var(--s-3);
+  flex: none;
+}
+.nb__actions .btn {
+  width: 100%;
+}
+.nb__actions--inline {
+  grid-template-columns: 1fr 1fr;
+}
+.ask-quote {
+  display: grid;
+  gap: var(--s-0-5);
+  margin-top: var(--s-2);
+  color: var(--text-muted);
+}
+.ask-quote .meta {
+  color: var(--text-subtle);
+}
+.board .ask-quote {
+  max-width: 40em;
+  margin-top: var(--s-8);
+}
+
+/* ── Timeline (DESIGN.md Components → Timeline) ────────────────────────── */
+.tl {
+  container-type: inline-size;
+  width: 100%;
+  margin-top: var(--s-4);
+}
+.tl__stage {
+  position: relative;
+  height: 204px;
+}
+.tl__label {
+  position: absolute;
+  top: 0;
+  display: grid;
+  width: max-content;
+  line-height: 1.2;
+}
+.tl__label--you {
+  left: var(--you);
+  color: var(--text);
+}
+.tl__label--ask {
+  left: var(--ask);
+  color: var(--danger);
+}
+.tl__label[data-pos='mid'] {
+  transform: translateX(-50%);
+  justify-items: center;
+}
+.tl__label[data-pos='end'] {
+  transform: translateX(-100%);
+  justify-items: end;
+}
+.tl__label[data-pos='start'] {
+  transform: none;
+  justify-items: start;
+}
+.tl__label[data-pos='start'].tl__label--you {
+  left: 0;
+}
+.tl__stem {
+  position: absolute;
+  top: 92px;
+  left: var(--you);
+  width: 4px;
+  height: 28px;
+  margin-left: -2px;
+  background: var(--accent);
+}
+.tl__dot {
+  position: absolute;
+  top: 64px;
+  left: var(--you);
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin-left: -14px;
+  border-radius: var(--r-full);
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.tl__dot .icon {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.5;
+}
+.tl__askbar {
+  position: absolute;
+  top: 80px;
+  left: var(--ask);
+  width: 4px;
+  height: 40px;
+  margin-left: -2px;
+  background: var(--danger);
+}
+.tl__track {
+  position: absolute;
+  top: 120px;
+  left: 0;
+  right: 0;
+  height: 12px;
+  border-radius: var(--r-xs);
+  background: var(--surface-2);
+}
+.tl__fill,
+.tl__gift {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+.tl__fill {
+  left: 0;
+  width: var(--you);
+  background: var(--accent);
+  border-radius: var(--r-xs) 0 0 var(--r-xs);
+  transform-origin: left center;
+}
+.tl__gift {
+  left: var(--you);
+  width: calc(var(--ask) - var(--you));
+  /* accent-soft stripes, firmed with a mix of the accent so the hatch is visible on the track */
+  background: repeating-linear-gradient(
+    45deg,
+    color-mix(in oklch, var(--accent) 55%, var(--accent-soft)) 0 2px,
+    var(--accent-soft) 2px 7px
+  );
+  transform-origin: left center;
+}
+.tl[data-ask='false'] .tl__fill {
+  border-radius: var(--r-xs);
+}
+.tl__flag {
+  position: absolute;
+  top: 132px;
+  left: var(--at);
+  display: grid;
+  justify-items: center;
+  gap: var(--s-0-5);
+  width: 20px;
+  margin-left: -10px;
+  color: var(--text-muted);
+}
+.tl__flag-tick {
+  width: 2px;
+  height: 16px;
+  background: var(--border-strong);
+}
+.tl__scale {
+  position: absolute;
+  top: 176px;
+  left: 0;
+  right: 0;
+  height: 26px;
+}
+.tl__scale-n {
+  position: absolute;
+  top: 0;
+  left: var(--at);
+  transform: translateX(-50%);
+  font-size: var(--fs-meta);
+  line-height: 1.45;
+  color: var(--text-subtle);
+}
+.tl__scale-n[data-first='true'] {
+  transform: none;
+}
+.tl[data-armed] [data-anim] {
+  opacity: 0;
+}
+
+/* ── Replay rows (DESIGN.md → Replay, tactic stamps) ───────────────────── */
+.rp {
+  display: grid;
+  gap: var(--s-4);
+  margin-top: var(--s-2);
+}
+.rp__row {
+  display: grid;
+  grid-template-columns: var(--s-12) minmax(0, 1fr);
+  gap: var(--s-3);
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--border);
+}
+.rp__t {
+  color: var(--text-muted);
+  font-size: var(--fs-meta);
+}
+.rp__who {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3);
+  color: var(--text-subtle);
+}
+.rp__ask {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+  color: var(--danger);
+}
+.rp__line {
+  font-size: var(--fs-body);
+  line-height: 1.5;
+}
+.rp__stamps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin-top: var(--s-2);
+}
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1-5);
+  min-height: 36px;
+  padding: var(--s-1) 10px;
+  border-radius: var(--r-xs);
+  background: var(--surface-2);
+  color: var(--text);
+}
+.advice {
+  margin-top: var(--s-4);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--border);
+  font-size: var(--fs-lead);
+  line-height: 1.42;
+  letter-spacing: -0.01em;
+}
+
+/* ── Coach setup (proof 3) ─────────────────────────────────────────────── */
+.kv {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-3);
+  margin: 0;
+}
+.kv dt {
+  color: var(--text-muted);
+}
+.kv dd {
+  margin: 0;
+}
+.nb__body--coach {
+  gap: var(--s-4);
+}
+.nb__body--coach .qr-tile {
+  align-self: center;
+  max-width: 200px;
+}
+.bubble {
+  margin-top: auto;
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-md);
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+/* ── The Line ──────────────────────────────────────────────────────────── */
+.line {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  padding: var(--s-6) var(--s-5);
+  background: var(--call-bg);
+  color: var(--call-text);
+  transition: opacity var(--dur-2) linear;
+}
+.handset[data-state='result'] .line,
+.handset[data-state='ended'] .line {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.line__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  min-height: var(--s-8);
+}
+.line__status {
+  color: var(--call-muted);
+}
+.line__who {
+  margin-top: var(--s-4);
+}
+.line__name {
+  font-size: var(--fs-caller);
+  line-height: 1.1;
+  letter-spacing: -0.022em;
+  font-weight: 600;
+  text-wrap: balance;
+}
+.line__num {
+  margin-top: var(--s-2);
+  color: var(--call-muted);
+}
+.captions {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--s-3);
+  margin-top: var(--s-4);
+  overflow: hidden;
+}
+.cap {
+  display: grid;
+}
+.cap__who {
+  color: var(--call-muted);
+}
+.cap__text {
+  font-size: var(--fs-caption);
+  line-height: 1.38;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  overflow: hidden;
+}
+.cap--prev {
+  color: var(--call-muted);
+}
+.cap--prev .cap__text {
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+.cap--now.is-new {
+  animation: cap-in var(--dur-2) var(--ease-out) both;
+}
+@keyframes cap-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+.chips {
+  display: grid;
+  gap: var(--s-2);
+  margin-top: var(--s-3);
+}
+.chips[hidden] {
+  display: none;
+}
+.chip {
+  min-height: var(--s-14);
+  padding: 0 var(--s-5);
+  border-radius: var(--r-md);
+  background: var(--call-surface);
+  box-shadow: inset 0 0 0 1px var(--call-border);
+  color: var(--call-text);
+  text-align: left;
+  font-weight: 600;
+  animation: cap-in var(--dur-2) var(--ease-out) both;
+}
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: var(--s-12);
+  margin-top: var(--s-4);
+}
+.ctl {
+  display: grid;
+  justify-items: center;
+  gap: var(--s-2);
+  min-width: 96px;
+  color: var(--call-text);
+}
+.circle {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  border-radius: var(--r-full);
+  transition: transform var(--dur-1) var(--ease-out);
+}
+.circle .icon {
+  width: 32px;
+  height: 32px;
+}
+.ctl:active .circle {
+  transform: scale(0.95);
+}
+.circle--answer {
+  background: var(--call-answer);
+  color: var(--on-call-answer);
+}
+.circle--hangup {
+  background: var(--call-hangup);
+  color: var(--on-call-hangup);
+}
+.circle--hangup .icon {
+  transform: rotate(135deg);
+}
+.callback {
+  margin-top: var(--s-4);
+  min-height: var(--s-16);
+  width: 100%;
+  padding: var(--s-2) var(--s-5);
+  border-radius: var(--r-md);
+  background: var(--call-surface-2);
+  box-shadow: inset 0 0 0 1px var(--call-border);
+  color: var(--call-text);
+  font-size: var(--fs-body);
+  line-height: 1.3;
+  font-weight: 600;
+  text-align: center;
+  transition: transform var(--dur-1) var(--ease-out);
+}
+.callback:active {
+  transform: scale(0.97);
+}
+
+/* state: which controls exist */
+.handset[data-state='ringing'] .ctl--hangup,
+.handset[data-state='ringing'] .callback,
+.handset[data-state='ringing'] .captions > * {
+  display: none;
+}
+.handset[data-state='ringing'] .timer-hide,
+.handset[data-state='ringing'] .line__timer {
+  visibility: hidden;
+}
+.handset:not([data-state='ringing']) .ctl--answer {
+  display: none;
+}
+.handset[data-state='dialing'] .controls,
+.handset[data-state='dialing'] .callback,
+.handset[data-state='ivr'] .controls,
+.handset[data-state='ivr'] .callback {
+  visibility: hidden;
+}
+
+/* ring halo: two concentric rings, 1200 ms, only while ringing */
+.handset[data-state='ringing'] .circle--answer::before,
+.handset[data-state='ringing'] .circle--answer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--r-full);
+  border: 2px solid var(--call-ring);
+  opacity: 0;
+}
+.handset[data-state='ringing'][data-motion='on'] .circle--answer::before {
+  animation: halo var(--dur-ring) var(--ease-out) infinite;
+}
+.handset[data-state='ringing'][data-motion='on'] .circle--answer::after {
+  animation: halo var(--dur-ring) var(--ease-out) 400ms infinite;
+}
+.handset[data-state='ringing']:not([data-motion='on']) .circle--answer::before {
+  opacity: 1;
+  transform: scale(1.18);
+}
+@keyframes halo {
+  from {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.25);
+  }
+}
+
+/* ── Shatter layer and confetti ────────────────────────────────────────── */
+.shards,
+.confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.shards {
+  z-index: 3;
+}
+.confetti {
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+}
+.shard {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.shard .line {
+  transition: none;
+  opacity: 1;
+  visibility: visible;
+}
+.handset[data-state='cut'] .line {
+  visibility: hidden;
+}
+
+/* Timeline transform origins and states */
+.tl__track {
+  transform-origin: left center;
+}
+.tl__askbar {
+  transform-origin: 50% 100%;
+}
+.tl[data-nogift] .tl__gift {
+  display: none;
+}
+
+/* Focus ring on the always-dark surfaces: the notebook's moss ring would vanish on near-black. */
+.line :focus-visible,
+.closing :focus-visible {
+  outline-color: var(--call-ring);
+}

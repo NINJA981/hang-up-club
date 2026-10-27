@@ -1,0 +1,41 @@
+{
+  "name": "hang-up-club-site",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Launch landing page for Hang Up Club. Static Vite build, no framework, no third-party requests.",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@10.34.6",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build && node scripts/check-budget.mjs",
+    "preview": "vite preview --port 47213 --strictPort",
+    "typecheck": "tsc --noEmit",
+    "budget": "node scripts/check-budget.mjs",
+    "contours": "node scripts/build-contours.mjs",
+    "og": "node scripts/render-og.mjs",
+    "verify": "node scripts/verify.mjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@fontsource-variable/atkinson-hyperlegible-mono": "5.3.0",
+    "@fontsource-variable/atkinson-hyperlegible-next": "5.3.0",
+    "@types/d3-contour": "3.0.6",
+    "@types/node": "26.6.5",
+    "@types/qrcode": "1.5.6",
+    "d3-contour": "4.0.2",
+    "lucide-static": "1.62.0",
+    "playwright": "1.64.1",
+    "qrcode": "1.5.4",
+    "typescript": "6.0.3",
+    "vite": "8.3.5"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}

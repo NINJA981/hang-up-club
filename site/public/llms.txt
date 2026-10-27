@@ -1,0 +1,13 @@
+# Hang Up Club
+
+> A free, open-source practice tool for older adults: one realistic practice phone call a day. Some calls are scams and some are ordinary calls, so people learn to tell the difference. It is an installable offline web app with no account and no server.
+
+- The score is judgement, not reflex: hanging up after the first warning sign and before the caller's ask is the best result, and hanging up on a real call counts as a miss.
+- Every caller, bank and agency in the app is fictional. It is a practice tool, not a call blocker.
+- Calls, scores and cheers stay on the device. A setup link carries its data after the "#", which never reaches a server. This site makes no requests to other sites and has no analytics.
+- Licence: MIT. The call scripts are plain YAML files that cite FTC and FBI IC3 reports.
+
+## Sources
+
+- [FBI IC3, 2025 Internet Crime Report](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf): losses reported by people over 60.
+- [FTC, Protecting Older Consumers 2024-2025](https://www.ftc.gov/system/files/ftc_gov/pdf/P144400-OlderAdultsReportDec2025.pdf): phone-call scams and business impersonation.

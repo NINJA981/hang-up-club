@@ -1,0 +1,189 @@
+/*
+ * DESIGN.md tokens as CSS variables. Source of truth: ../DESIGN.md frontmatter
+ * (the repo root). Values here are copied, not invented: scripts/check-tokens.mjs
+ * fails the build if a colour drifts from DESIGN.md.
+ *
+ * Role tokens only. The page never uses a raw colour, an off-scale radius or an
+ * off-scale font size.
+ */
+
+/* ── Notebook, light (default) ─────────────────────────────────────────── */
+:root {
+  color-scheme: light;
+  --bg: oklch(0.985 0.004 110);
+  --surface: oklch(1 0 0);
+  --surface-2: oklch(0.958 0.006 110);
+  --border: oklch(0.905 0.008 110);
+  --border-strong: oklch(0.6 0.012 110);
+  --text: oklch(0.24 0.012 120);
+  --text-muted: oklch(0.44 0.012 120);
+  --text-subtle: oklch(0.5 0.01 120);
+  --accent: oklch(0.48 0.1 140);
+  --accent-hover: oklch(0.43 0.095 140);
+  --on-accent: oklch(0.99 0.008 140);
+  --accent-soft: oklch(0.95 0.03 140);
+  --accent-text: oklch(0.42 0.09 140);
+  --danger: oklch(0.5 0.18 27);
+  --danger-soft: oklch(0.95 0.026 25);
+  --on-danger: oklch(0.99 0.005 27);
+  --warning: oklch(0.48 0.11 65);
+  --warning-soft: oklch(0.95 0.045 80);
+  --ring: oklch(0.48 0.1 140);
+  /* Contour field opacity (DESIGN.md Appendix B: 6% light, 8% dark) */
+  --contour-alpha: 0.06;
+
+  --shadow-e1: 0 0 0 1px var(--border), 0 1px 2px oklch(0.25 0.02 110 / 0.04);
+  --shadow-e3:
+    0 0 0 1px oklch(0.25 0.02 110 / 0.06), 0 2px 4px -1px oklch(0.25 0.02 110 / 0.06),
+    0 8px 16px -4px oklch(0.25 0.02 110 / 0.1);
+  --shadow-e4:
+    0 0 0 1px oklch(0.25 0.02 110 / 0.06), 0 8px 16px -4px oklch(0.25 0.02 110 / 0.08),
+    0 24px 48px -12px oklch(0.25 0.02 110 / 0.2);
+
+  /* The Line: identical in both themes */
+  --call-bg: oklch(0.17 0.008 120);
+  --call-surface: oklch(0.235 0.009 120);
+  --call-surface-2: oklch(0.3 0.012 120);
+  --call-border: oklch(0.52 0.01 120);
+  --call-text: oklch(0.96 0.005 120);
+  --call-muted: oklch(0.83 0.01 120);
+  --call-answer: oklch(0.78 0.085 138);
+  --on-call-answer: oklch(0.2 0.03 140);
+  --call-hangup: oklch(0.53 0.2 27);
+  --on-call-hangup: oklch(0.985 0.004 27);
+  --call-ring: oklch(0.86 0.07 138);
+
+  /* Dark-theme accent, used by the confetti palette in both themes */
+  --accent-dark: oklch(0.78 0.085 138);
+
+  /* Radius (Soft) */
+  --r-none: 0px;
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-full: 9999px;
+
+  /* Spacing, 4px base */
+  --s-0-5: 2px;
+  --s-1: 4px;
+  --s-1-5: 6px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-8: 32px;
+  --s-10: 40px;
+  --s-12: 48px;
+  --s-14: 56px;
+  --s-16: 64px;
+  --s-20: 80px;
+  --s-24: 96px;
+  --s-32: 128px;
+
+  /* Type */
+  --font-sans: 'Atkinson Hyperlegible Next Variable', 'Atkinson Fallback', system-ui, sans-serif;
+  --font-mono: 'Atkinson Hyperlegible Mono Variable', 'Atkinson Mono Fallback', ui-monospace, monospace;
+  --fs-landing-display: clamp(3.5rem, 2rem + 6vw, 7rem);
+  --fs-result: clamp(2.5rem, 1.9rem + 2.6vw, 3.5rem);
+  --fs-caller: clamp(2.25rem, 1.75rem + 2vw, 2.75rem);
+  --fs-h1: 2.5rem;
+  --fs-headline: 2rem;
+  --fs-title: 1.625rem;
+  --fs-lead: 1.5rem;
+  --fs-caption: 1.625rem;
+  --fs-body: 1.25rem;
+  --fs-meta: 1.125rem;
+  --fs-timer: 1.75rem;
+  --fs-number: 1.375rem;
+
+  /* Layout */
+  --gutter: 20px;
+  --band-gap: 80px;
+
+  /* Motion (DESIGN.md Appendix A) */
+  --dur-1: 100ms;
+  --dur-2: 150ms;
+  --dur-3: 200ms;
+  --dur-5: 300ms;
+  --dur-ring: 1200ms;
+  --dur-timeline: 600ms;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-out-soft: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-fall: cubic-bezier(0.55, 0, 1, 0.45);
+  --ease-scene: cubic-bezier(0.65, 0.05, 0, 1);
+
+  /* Z-index */
+  --z-sticky: 10;
+  --z-line: 80;
+  --z-shatter: 90;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter: 32px;
+    --band-gap: 128px;
+  }
+}
+@media (min-width: 1440px) {
+  :root {
+    --gutter: 40px;
+  }
+}
+
+/* ── Notebook, dark (re-derived, not inverted) ─────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --bg: oklch(0.19 0.006 120);
+    --surface: oklch(0.225 0.007 120);
+    --surface-2: oklch(0.265 0.008 120);
+    --border: oklch(0.31 0.008 120);
+    --border-strong: oklch(0.54 0.01 120);
+    --text: oklch(0.95 0.006 120);
+    --text-muted: oklch(0.82 0.01 120);
+    --text-subtle: oklch(0.73 0.01 120);
+    --accent: oklch(0.78 0.085 138);
+    --accent-hover: oklch(0.83 0.075 138);
+    --on-accent: oklch(0.2 0.03 140);
+    --accent-soft: oklch(0.29 0.045 140);
+    --accent-text: oklch(0.8 0.08 138);
+    --danger: oklch(0.77 0.13 25);
+    --danger-soft: oklch(0.28 0.06 25);
+    --on-danger: oklch(0.18 0.03 25);
+    --warning: oklch(0.82 0.13 80);
+    --warning-soft: oklch(0.29 0.05 75);
+    --ring: oklch(0.78 0.085 138);
+    --contour-alpha: 0.08;
+    --shadow-e1: 0 0 0 1px var(--border), inset 0 1px 0 oklch(1 0 0 / 0.05);
+    --shadow-e3: 0 0 0 1px var(--border), inset 0 1px 0 oklch(1 0 0 / 0.05);
+    --shadow-e4: 0 0 0 1px oklch(1 0 0 / 0.06), 0 24px 48px -12px oklch(0 0 0 / 0.6);
+  }
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: oklch(0.19 0.006 120);
+  --surface: oklch(0.225 0.007 120);
+  --surface-2: oklch(0.265 0.008 120);
+  --border: oklch(0.31 0.008 120);
+  --border-strong: oklch(0.54 0.01 120);
+  --text: oklch(0.95 0.006 120);
+  --text-muted: oklch(0.82 0.01 120);
+  --text-subtle: oklch(0.73 0.01 120);
+  --accent: oklch(0.78 0.085 138);
+  --accent-hover: oklch(0.83 0.075 138);
+  --on-accent: oklch(0.2 0.03 140);
+  --accent-soft: oklch(0.29 0.045 140);
+  --accent-text: oklch(0.8 0.08 138);
+  --danger: oklch(0.77 0.13 25);
+  --danger-soft: oklch(0.28 0.06 25);
+  --on-danger: oklch(0.18 0.03 25);
+  --warning: oklch(0.82 0.13 80);
+  --warning-soft: oklch(0.29 0.05 75);
+  --ring: oklch(0.78 0.085 138);
+  --contour-alpha: 0.08;
+  --shadow-e1: 0 0 0 1px var(--border), inset 0 1px 0 oklch(1 0 0 / 0.05);
+  --shadow-e3: 0 0 0 1px var(--border), inset 0 1px 0 oklch(1 0 0 / 0.05);
+  --shadow-e4: 0 0 0 1px oklch(1 0 0 / 0.06), 0 24px 48px -12px oklch(0 0 0 / 0.6);
+}

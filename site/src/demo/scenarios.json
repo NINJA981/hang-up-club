@@ -1,0 +1,332 @@
+{
+  "s01": {
+    "id": "S01-bank-code",
+    "kind": "scam",
+    "caller": {
+      "display": "First Meridian Bank Fraud Dept",
+      "number": "(614) 555-0148"
+    },
+    "lines": [
+      {
+        "id": "hello",
+        "text": "Hello, is this Paati?",
+        "speaker": "Caller",
+        "durationMs": 2472,
+        "pauseAfterMs": 700,
+        "cueAt": 0.5,
+        "flag": false,
+        "ask": false,
+        "tactics": [],
+        "replies": [],
+        "next": null,
+        "opus": "zira-calm-1c0e9667af45f2.webm",
+        "aac": "zira-calm-1c0e9667af45f2.m4a"
+      },
+      {
+        "id": "intro",
+        "text": "This is Dana from the fraud department at First Meridian Bank. Thank you for picking up.",
+        "speaker": "Caller",
+        "durationMs": 6416,
+        "pauseAfterMs": 450,
+        "cueAt": 0.5,
+        "flag": false,
+        "ask": false,
+        "tactics": [],
+        "replies": [
+          {
+            "label": "Who is this?",
+            "goto": "verify"
+          },
+          {
+            "label": "Go ahead",
+            "goto": "warning"
+          }
+        ],
+        "next": "warning",
+        "opus": "zira-calm-119d54d4c8439f.webm",
+        "aac": "zira-calm-119d54d4c8439f.m4a"
+      },
+      {
+        "id": "warning",
+        "text": "Your account has been compromised, and we need to act quickly.",
+        "speaker": "Caller",
+        "durationMs": 4316,
+        "pauseAfterMs": 450,
+        "cueAt": 0.4,
+        "flag": true,
+        "ask": false,
+        "tactics": [
+          "authority",
+          "urgency"
+        ],
+        "replies": [],
+        "next": null,
+        "opus": "zira-calm-0c24fd2254c878.webm",
+        "aac": "zira-calm-0c24fd2254c878.m4a"
+      },
+      {
+        "id": "pressure",
+        "text": "Someone is trying to move your savings right now. Please stay on the line, and don't hang up, or the account locks.",
+        "speaker": "Caller",
+        "durationMs": 8356,
+        "pauseAfterMs": 450,
+        "cueAt": 0.5,
+        "flag": false,
+        "ask": false,
+        "tactics": [
+          "fear",
+          "isolation"
+        ],
+        "replies": [],
+        "next": null,
+        "opus": "zira-calm-080c3475e384ac.webm",
+        "aac": "zira-calm-080c3475e384ac.m4a"
+      },
+      {
+        "id": "ask",
+        "text": "I'll need the code we just texted you. Please read it to me now.",
+        "speaker": "Caller",
+        "durationMs": 4831,
+        "pauseAfterMs": 450,
+        "cueAt": 0.5,
+        "flag": false,
+        "ask": true,
+        "tactics": [
+          "code-request",
+          "urgency"
+        ],
+        "replies": [],
+        "next": null,
+        "opus": "zira-calm-13f120015bdd15.webm",
+        "aac": "zira-calm-13f120015bdd15.m4a"
+      },
+      {
+        "id": "coda",
+        "text": "Okay, read it to me now. I'll wait.",
+        "speaker": "Caller",
+        "durationMs": 3952,
+        "pauseAfterMs": 450,
+        "cueAt": 0.5,
+        "flag": false,
+        "ask": false,
+        "tactics": [],
+        "replies": [],
+        "next": "END",
+        "opus": "zira-calm-1eaeb075b21398.webm",
+        "aac": "zira-calm-1eaeb075b21398.m4a"
+      },
+      {
+        "id": "verify",
+        "text": "I understand. This is a fraud alert on your account, and it can't wait.",
+        "speaker": "Caller",
+        "durationMs": 5716,
+        "pauseAfterMs": 450,
+        "cueAt": 0.5,
+        "flag": false,
+        "ask": false,
+        "tactics": [],
+        "replies": [],
+        "next": "warning",
+        "opus": "zira-calm-17e9db395c901d.webm",
+        "aac": "zira-calm-17e9db395c901d.m4a"
+      }
+    ],
+    "callback": {
+      "label": "Hang up and call the number on my card",
+      "trustedSource": "the number on your card",
+      "number": "(614) 555-0120",
+      "ivr": [
+        {
+          "id": "ivr1",
+          "text": "Thank you for calling First Meridian Bank. We did not call you today. We never ask for a text code over the phone.",
+          "durationMs": 10546,
+          "opus": "ivr-0a4892cbaefd34.webm",
+          "aac": "ivr-0a4892cbaefd34.m4a"
+        }
+      ]
+    },
+    "advice": "A real bank never asks you to read out a code. Hang up and call the number on the back of your card.",
+    "markers": {
+      "tFlagMs": 12364,
+      "tAskMs": 29041,
+      "tEndMs": 33443
+    },
+    "who": null,
+    "plan": [
+      {
+        "id": "hello",
+        "startMs": 600,
+        "endMs": 3072,
+        "cueMs": 600
+      },
+      {
+        "id": "intro",
+        "startMs": 3772,
+        "endMs": 10188,
+        "cueMs": 3772
+      },
+      {
+        "id": "warning",
+        "startMs": 10638,
+        "endMs": 14954,
+        "cueMs": 12364
+      },
+      {
+        "id": "pressure",
+        "startMs": 15404,
+        "endMs": 23760,
+        "cueMs": 15404
+      },
+      {
+        "id": "ask",
+        "startMs": 24210,
+        "endMs": 29041,
+        "cueMs": 24210
+      },
+      {
+        "id": "coda",
+        "startMs": 29491,
+        "endMs": 33443,
+        "cueMs": 29491
+      }
+    ]
+  },
+  "l01": {
+    "id": "L01-pharmacy-refill",
+    "kind": "legit",
+    "caller": {
+      "display": "Alder Lane Pharmacy",
+      "number": "(614) 555-0171"
+    },
+    "lines": [
+      {
+        "id": "hello",
+        "text": "Hello, Paati.",
+        "speaker": "Caller",
+        "durationMs": 2087,
+        "pauseAfterMs": 600,
+        "cueAt": 0.5,
+        "flag": false,
+        "ask": false,
+        "tactics": [],
+        "replies": [],
+        "next": null
+      },
+      {
+        "id": "intro",
+        "text": "This is Priya at Alder Lane Pharmacy.",
+        "speaker": "Caller",
+        "durationMs": 2966,
+        "pauseAfterMs": 450,
+        "cueAt": 0.5,
+        "flag": false,
+        "ask": false,
+        "tactics": [],
+        "replies": [],
+        "next": null
+      },
+      {
+        "id": "news",
+        "text": "Your prescription refill is ready to collect. We're open until six tonight.",
+        "speaker": "Caller",
+        "durationMs": 5616,
+        "pauseAfterMs": 450,
+        "cueAt": 0.5,
+        "flag": false,
+        "ask": false,
+        "tactics": [],
+        "replies": [],
+        "next": null
+      },
+      {
+        "id": "nothing",
+        "text": "There's nothing you need to do on this call. Pick it up any time that suits you.",
+        "speaker": "Caller",
+        "durationMs": 5481,
+        "pauseAfterMs": 450,
+        "cueAt": 0.5,
+        "flag": false,
+        "ask": false,
+        "tactics": [],
+        "replies": [],
+        "next": null
+      },
+      {
+        "id": "goodbye",
+        "text": "Thank you, and have a lovely day.",
+        "speaker": "Caller",
+        "durationMs": 2862,
+        "pauseAfterMs": 450,
+        "cueAt": 0.5,
+        "flag": false,
+        "ask": false,
+        "tactics": [],
+        "replies": [],
+        "next": "END"
+      }
+    ],
+    "callback": {
+      "label": "Hang up and call the pharmacy's number",
+      "trustedSource": "the pharmacy's own number",
+      "number": "(614) 555-0172",
+      "ivr": [
+        {
+          "id": "ivr1",
+          "text": "Thank you for calling Alder Lane Pharmacy. Yes, your refill is ready. Our hours are nine to six on weekdays.",
+          "durationMs": 10901
+        }
+      ]
+    },
+    "advice": "This call gave information and asked for nothing. That is what a real call looks like.",
+    "markers": {
+      "tFlagMs": null,
+      "tAskMs": null,
+      "tEndMs": 21562
+    },
+    "who": "the real pharmacy",
+    "plan": [
+      {
+        "id": "hello",
+        "startMs": 600,
+        "endMs": 2687,
+        "cueMs": 600
+      },
+      {
+        "id": "intro",
+        "startMs": 3287,
+        "endMs": 6253,
+        "cueMs": 3287
+      },
+      {
+        "id": "news",
+        "startMs": 6703,
+        "endMs": 12319,
+        "cueMs": 6703
+      },
+      {
+        "id": "nothing",
+        "startMs": 12769,
+        "endMs": 18250,
+        "cueMs": 12769
+      },
+      {
+        "id": "goodbye",
+        "startMs": 18700,
+        "endMs": 21562,
+        "cueMs": 18700
+      }
+    ]
+  },
+  "tacticLabels": {
+    "urgency": "They're rushing you",
+    "authority": "Says they're official",
+    "fear": "Threatens you",
+    "secrecy": "Wants it kept secret",
+    "unusual-payment": "Strange way to pay",
+    "code-request": "Asks for a code",
+    "remote-access": "Wants into your computer",
+    "personal-info": "Asks for private numbers",
+    "too-good": "Too good to be true",
+    "isolation": "Keeps you on the line"
+  }
+}
