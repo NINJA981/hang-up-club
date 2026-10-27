@@ -95,7 +95,10 @@ export function shatter(host: HTMLElement, line: HTMLElement, o: ShatterOptions)
       shard.animate(
         [
           { transform: 'translate(0px, 0px) rotate(0deg)', opacity: 1 },
-          { transform: `translate(${dx.toFixed(1)}px, ${(o.height * 1.1).toFixed(0)}px) rotate(${rot.toFixed(1)}deg)`, opacity: 1 },
+          {
+            transform: `translate(${dx.toFixed(1)}px, ${(o.height * 1.1).toFixed(0)}px) rotate(${rot.toFixed(1)}deg)`,
+            opacity: 1,
+          },
         ],
         {
           duration,
@@ -122,7 +125,11 @@ interface Particle {
   color: string;
 }
 
-export function confetti(canvas: HTMLCanvasElement, origin: { x: number; y: number }, colors: string[]): () => void {
+export function confetti(
+  canvas: HTMLCanvasElement,
+  origin: { x: number; y: number },
+  colors: string[],
+): () => void {
   const ctx = canvas.getContext('2d');
   if (!ctx) return () => undefined;
   const dpr = Math.min(window.devicePixelRatio || 1, 2);

@@ -15,9 +15,7 @@ export function springEasing(visualDuration: number, bounce: number): { easing: 
   for (let i = 0; i <= n; i++) {
     const t = (i / n) * settle;
     const x =
-      i === n
-        ? 1
-        : 1 - Math.exp(-zeta * w0 * t) * (Math.cos(wd * t) + ((zeta * w0) / wd) * Math.sin(wd * t));
+      i === n ? 1 : 1 - Math.exp(-zeta * w0 * t) * (Math.cos(wd * t) + ((zeta * w0) / wd) * Math.sin(wd * t));
     pts.push((Math.round(x * 1000) / 1000).toString());
   }
   return { easing: `linear(${pts.join(', ')})`, duration: settle * 1000 };
@@ -34,16 +32,29 @@ function q(root: Element, key: string): HTMLElement[] {
 export function drawTimeline(tl: HTMLElement, delay = 0): Animation[] {
   const out: Animation[] = [];
   const fade = (el: HTMLElement, at: number, dur = 150): void => {
-    out.push(el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: dur, delay: delay + at, easing: EASE_OUT, fill: 'both' }));
-  };
-  const scaleX = (el: HTMLElement, at: number, dur: number): void => {
     out.push(
-      el.animate([{ transform: 'scaleX(0)', opacity: 1 }, { transform: 'scaleX(1)', opacity: 1 }], {
+      el.animate([{ opacity: 0 }, { opacity: 1 }], {
         duration: dur,
         delay: delay + at,
         easing: EASE_OUT,
         fill: 'both',
       }),
+    );
+  };
+  const scaleX = (el: HTMLElement, at: number, dur: number): void => {
+    out.push(
+      el.animate(
+        [
+          { transform: 'scaleX(0)', opacity: 1 },
+          { transform: 'scaleX(1)', opacity: 1 },
+        ],
+        {
+          duration: dur,
+          delay: delay + at,
+          easing: EASE_OUT,
+          fill: 'both',
+        },
+      ),
     );
   };
   q(tl, 'track').forEach((el) => scaleX(el, 0, 600));
@@ -53,12 +64,18 @@ export function drawTimeline(tl: HTMLElement, delay = 0): Animation[] {
   });
   q(tl, 'ask-bar').forEach((el) => {
     out.push(
-      el.animate([{ transform: 'scaleY(0)', opacity: 1 }, { transform: 'scaleY(1)', opacity: 1 }], {
-        duration: 200,
-        delay: delay + 360,
-        easing: EASE_OUT,
-        fill: 'both',
-      }),
+      el.animate(
+        [
+          { transform: 'scaleY(0)', opacity: 1 },
+          { transform: 'scaleY(1)', opacity: 1 },
+        ],
+        {
+          duration: 200,
+          delay: delay + 360,
+          easing: EASE_OUT,
+          fill: 'both',
+        },
+      ),
     );
   });
   q(tl, 'ask-label').forEach((el) => fade(el, 410));
@@ -81,7 +98,13 @@ export function drawTimeline(tl: HTMLElement, delay = 0): Animation[] {
 }
 
 /** Roll a clock-style text from 0:00 to its final value. */
-export function rollClock(el: HTMLElement, toSeconds: number, template: (c: string) => string, delay: number, duration: number): () => void {
+export function rollClock(
+  el: HTMLElement,
+  toSeconds: number,
+  template: (c: string) => string,
+  delay: number,
+  duration: number,
+): () => void {
   let raf = 0;
   const start = performance.now() + delay;
   const fmt = (s: number): string => `${String(Math.floor(s / 60))}:${String(s % 60).padStart(2, '0')}`;

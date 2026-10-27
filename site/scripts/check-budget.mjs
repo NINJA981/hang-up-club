@@ -43,15 +43,22 @@ if (jsGz > 120 * KB) fail(`initial JS is ${(jsGz / KB).toFixed(1)} KB gzip, over
 const html = readFileSync(join(DIST, 'index.html'), 'utf8');
 const scriptTags = [...html.matchAll(/<script\b[^>]*>/g)].map((m) => m[0]);
 if (scriptTags.length !== 1) fail(`expected exactly one <script> tag, found ${String(scriptTags.length)}`);
-if (js.length > 1) fail(`expected a single JS file (no lazy 3D chunk), found ${String(js.length)}: ${js.map(rel).join(', ')}`);
+if (js.length > 1)
+  fail(`expected a single JS file (no lazy 3D chunk), found ${String(js.length)}: ${js.map(rel).join(', ')}`);
 
 /* 2. No WebGL ------------------------------------------------------------- */
-const webgl = /getContext\(\s*["'`](?:webgl2?|experimental-webgl|webgpu)["'`]|WebGLRenderingContext|\bTHREE\b|three\.module/;
-for (const f of js) if (webgl.test(readFileSync(f, 'utf8'))) fail(`${rel(f)} references WebGL or three.js (the page budget for 3D is 0 KB)`);
+const webgl =
+  /getContext\(\s*["'`](?:webgl2?|experimental-webgl|webgpu)["'`]|WebGLRenderingContext|\bTHREE\b|three\.module/;
+for (const f of js)
+  if (webgl.test(readFileSync(f, 'utf8')))
+    fail(`${rel(f)} references WebGL or three.js (the page budget for 3D is 0 KB)`);
 
 /* 3. Same-origin only ----------------------------------------------------- */
 const loadable = [];
-for (const m of html.matchAll(/<(?:script|img|source|video|audio|iframe|embed)\b[^>]*\bsrc=["']([^"']+)["']/g)) loadable.push(m[1]);
+for (const m of html.matchAll(
+  /<(?:script|img|source|video|audio|iframe|embed)\b[^>]*\bsrc=["']([^"']+)["']/g,
+))
+  loadable.push(m[1]);
 for (const m of html.matchAll(/<link\b[^>]*\bhref=["']([^"']+)["']/g)) loadable.push(m[1]);
 for (const f of files.filter((x) => /\.(css|js|svg)$/.test(x))) {
   const text = readFileSync(f, 'utf8');
@@ -61,7 +68,9 @@ for (const f of files.filter((x) => /\.(css|js|svg)$/.test(x))) {
   for (const m of text.matchAll(/new\s+(?:WebSocket|EventSource)\(\s*["']([^"']+)/g)) loadable.push(m[1]);
   for (const m of text.matchAll(/sendBeacon\(\s*["']([^"']+)/g)) loadable.push(m[1]);
   if (/\.(js)$/.test(f) && /XMLHttpRequest|sendBeacon|navigator\.serviceWorker\.register/.test(text)) {
-    fail(`${rel(f)} uses XMLHttpRequest, sendBeacon or a service worker; none is expected on the landing page`);
+    fail(
+      `${rel(f)} uses XMLHttpRequest, sendBeacon or a service worker; none is expected on the landing page`,
+    );
   }
 }
 for (const url of loadable) {
@@ -83,7 +92,8 @@ const triple = (s) => {
 const tokensCss = readFileSync(join(SITE, 'src', 'styles', 'tokens.css'), 'utf8');
 const lightBlock = /:root\s*\{([\s\S]*?)\n\}/.exec(tokensCss)?.[1] ?? '';
 const darkBlock = /:root\[data-theme='dark'\]\s*\{([\s\S]*?)\n\}/.exec(tokensCss)?.[1] ?? '';
-const decl = (block) => new Map([...block.matchAll(/^\s*--([a-z0-9-]+):\s*([^;]+);/gm)].map((m) => [m[1], m[2].trim()]));
+const decl = (block) =>
+  new Map([...block.matchAll(/^\s*--([a-z0-9-]+):\s*([^;]+);/gm)].map((m) => [m[1], m[2].trim()]));
 const light = decl(lightBlock);
 const dark = decl(darkBlock);
 let tokenCount = 0;
@@ -100,7 +110,8 @@ for (const [name, value] of designColors) {
   }
   const a = triple(value);
   const b = triple(got);
-  if (!a || !b || a.some((n, i) => Math.abs(n - b[i]) > 0.0005)) fail(`--${base}${isDark ? ' (dark)' : ''} is ${got} but DESIGN.md says ${value}`);
+  if (!a || !b || a.some((n, i) => Math.abs(n - b[i]) > 0.0005))
+    fail(`--${base}${isDark ? ' (dark)' : ''} is ${got} but DESIGN.md says ${value}`);
   tokenCount++;
 }
 notes.push(`tokens verified against DESIGN.md: ${String(tokenCount)}`);
@@ -108,11 +119,15 @@ const styles = join(SITE, 'src', 'styles');
 for (const f of readdirSync(styles).filter((n) => n.endsWith('.css') && n !== 'tokens.css')) {
   const text = readFileSync(join(styles, f), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
   const raw = text.match(/#[0-9a-fA-F]{3,8}\b|\brgba?\(|\bhsla?\(|\boklch\((?![^)]*var\()/g);
-  if (raw) fail(`${f} has raw colour values (${[...new Set(raw)].join(', ')}); use a token (a transparent mix of a token via color-mix is fine)`);
+  if (raw)
+    fail(
+      `${f} has raw colour values (${[...new Set(raw)].join(', ')}); use a token (a transparent mix of a token via color-mix is fine)`,
+    );
 }
 
 /* 5. Critical font, no image on the critical path -------------------------- */
-if (!/<link rel="preload"[^>]*as="font"[^>]*type="font\/woff2"/.test(html)) fail('the critical font is not preloaded');
+if (!/<link rel="preload"[^>]*as="font"[^>]*type="font\/woff2"/.test(html))
+  fail('the critical font is not preloaded');
 const fontBytes = files.filter((f) => f.endsWith('.woff2')).reduce((n, f) => n + statSync(f).size, 0);
 notes.push(`fonts: ${(fontBytes / KB).toFixed(1)} KB (2 files, self-hosted)`);
 
@@ -124,10 +139,13 @@ for (const f of demoAudio) {
   if (ext in bytesByFormat) bytesByFormat[ext] += statSync(f).size;
 }
 for (const [fmt, bytes] of Object.entries(bytesByFormat)) {
-  notes.push(`demo audio (${fmt}): ${(bytes / KB).toFixed(1)} KB (budget 150, fetched only after Sound is turned on)`);
+  notes.push(
+    `demo audio (${fmt}): ${(bytes / KB).toFixed(1)} KB (budget 150, fetched only after Sound is turned on)`,
+  );
   if (bytes > 150 * KB) fail(`demo audio ${fmt} is ${(bytes / KB).toFixed(1)} KB, over 150 KB`);
 }
-if (/<(?:audio|video)\b/.test(html)) fail('index.html contains an <audio> or <video> element; sound must be created on demand');
+if (/<(?:audio|video)\b/.test(html))
+  fail('index.html contains an <audio> or <video> element; sound must be created on demand');
 
 /* Totals -------------------------------------------------------------------*/
 const css = files.filter((f) => f.endsWith('.css'));

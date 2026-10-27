@@ -85,6 +85,8 @@ describe('fictional-name deny-list (AC-F3-5)', () => {
     expect(allow).toEqual([
       { path: 'scenarios/SOURCES.md', term: 'Federal Trade Commission' },
       { path: 'public/audio/CREDITS.md', term: 'Microsoft' },
+      { path: 'src/ui/sources.ts', term: 'Federal Trade Commission' },
+      { path: 'site/index.html', term: 'Twitter' },
     ]);
     const text = 'Federal Trade Commission, Protecting Older Consumers';
     expect(findNameHits(text, entries, new Set(['Federal Trade Commission']))).toEqual([]);

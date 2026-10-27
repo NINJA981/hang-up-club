@@ -15,6 +15,8 @@ pnpm og               # re-render public/og.jpg from the real result screen (nee
 pnpm contours         # regenerate public/contours.svg (seeded, d3-contour)
 ```
 
+Tests that live at the repo root (they need the root install): `tests/unit/site-parity.test.ts` holds `src/call/logic.ts` and `src/demo/scenarios.json` to the app's own timeline, scoring and result copy (run with the root `pnpm test`), and `tests/site/smoke.spec.ts` is the Playwright smoke test of the production build (the `site` project in the root `playwright.config.ts`). Formatting is checked by the root `pnpm lint` (Prettier covers `site/`; ESLint does not).
+
 Build-time configuration (none is a secret):
 
 | Variable | Default | Meaning |

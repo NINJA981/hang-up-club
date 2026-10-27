@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useMemo, type ReactNode } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useMemo, useSyncExternalStore, type ReactNode } from 'react';
 import { CallLayer } from '../ui/call/Line';
 import { OfflineBanner, Page, TabBar, TopBar, Wordmark } from '../ui/Shell';
 import { Button } from '../ui/parts/base';
@@ -7,6 +7,7 @@ import { TodayScreen } from '../ui/screens/Today';
 import { WelcomeScreen } from '../ui/screens/Welcome';
 import { LinkErrorScreen } from '../ui/screens/LinkError';
 import { loadResult } from './preload';
+import type { CallRunner } from './callRunner';
 import { AppProvider, useApp, useAppSnapshot } from './AppContext';
 import { watchInstall } from './install';
 import { navigate, parseRoute, useHash, type Route } from './router';
@@ -111,6 +112,28 @@ function Screen({ route }: { route: Route }): ReactNode {
   }
 }
 
+/**
+ * While the Line is open the app underneath it is `inert`: not focusable, not reachable by a screen
+ * reader, not clickable. Otherwise Tab (or a swipe) could walk off the call onto a control on Today, and
+ * "Restart now" would reload the page in the middle of a call (AC-F10-4).
+ */
+function BehindTheLine({ runner, children }: { runner: CallRunner | undefined; children: ReactNode }) {
+  const subscribe = useCallback(
+    (notify: () => void) => runner?.store.subscribe(notify) ?? (() => undefined),
+    [runner],
+  );
+  const calling = useSyncExternalStore(
+    subscribe,
+    () => runner?.state.phase === 'call',
+    () => false,
+  );
+  return (
+    <div style={{ display: 'contents' }} inert={calling}>
+      {children}
+    </div>
+  );
+}
+
 function Routes() {
   const { state, meta } = useApp();
   const app = useAppSnapshot();
@@ -171,18 +194,20 @@ function Routes() {
 
   return (
     <>
-      {showTop && <TopBar route={effective} />}
-      <OfflineBanner />
-      <Suspense fallback={null}>
-        {NO_MOTION.includes(effective.name) ? (
-          <Screen route={effective} />
-        ) : (
-          <MotionRoot>
+      <BehindTheLine runner={meta.runner}>
+        {showTop && <TopBar route={effective} />}
+        <OfflineBanner />
+        <Suspense fallback={null}>
+          {NO_MOTION.includes(effective.name) ? (
             <Screen route={effective} />
-          </MotionRoot>
-        )}
-      </Suspense>
-      {showTabs && <TabBar route={effective} />}
+          ) : (
+            <MotionRoot>
+              <Screen route={effective} />
+            </MotionRoot>
+          )}
+        </Suspense>
+        {showTabs && <TabBar route={effective} />}
+      </BehindTheLine>
       {meta.runner && <CallLayer />}
       <ToastHost aboveTabBar={showTabs} />
     </>

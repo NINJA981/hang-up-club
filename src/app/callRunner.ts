@@ -152,16 +152,22 @@ export class CallRunner {
       family: s.family,
     };
     if (s.familyCallId !== undefined) request.familyCallId = s.familyCallId;
-    const { attempt, summary } = await this.env.controller.recordCall({
+    // Score and show the result now; the writes to disk finish behind the animation (AC-F9-1).
+    const { attempt, summary, saved } = this.env.controller.scoreCall({
       ended,
       scenario: s.scenario,
       scored: s.scored,
       family: s.family,
     });
-    if (s.familyCallId !== undefined) await this.env.controller.markFamilyCallPlayed(s.familyCallId);
     this.store.set((st) => ({ ...st, outcome: { attempt, summary, ended, request } }));
     // A hang-up reveals the result at once; a call back first goes to the Call back screen.
     if (ended.action !== 'callback') this.reveal();
+    try {
+      await saved;
+      if (s.familyCallId !== undefined) await this.env.controller.markFamilyCallPlayed(s.familyCallId);
+    } catch {
+      /* The result is on screen and in memory; a full disk is not something to interrupt a call about. */
+    }
   }
 
   /** The Line gives way to the result. */

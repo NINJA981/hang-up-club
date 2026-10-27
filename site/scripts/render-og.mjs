@@ -12,13 +12,20 @@ import { chromium } from 'playwright';
 
 const SITE = join(import.meta.dirname, '..');
 const DIST = join(SITE, 'dist');
-const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.woff2': 'font/woff2' };
+const MIME = {
+  '.html': 'text/html; charset=utf-8',
+  '.js': 'text/javascript',
+  '.css': 'text/css',
+  '.svg': 'image/svg+xml',
+  '.woff2': 'font/woff2',
+};
 
 const server = createServer((req, res) => {
   let p = decodeURIComponent((req.url ?? '/').split('?')[0]);
   if (p.endsWith('/')) p += 'index.html';
   const file = normalize(join(DIST, p));
-  if (!file.startsWith(DIST) || !existsSync(file) || !statSync(file).isFile()) return void res.writeHead(404).end();
+  if (!file.startsWith(DIST) || !existsSync(file) || !statSync(file).isFile())
+    return void res.writeHead(404).end();
   res.writeHead(200, { 'content-type': MIME[extname(file)] ?? 'application/octet-stream' });
   createReadStream(file).pipe(res);
 });
@@ -28,15 +35,21 @@ const ORIGIN = `http://127.0.0.1:${server.address().port}`;
 const browser = await chromium.launch();
 
 // 1. Capture the real result screen.
-const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2, reducedMotion: 'reduce' });
+const ctx = await browser.newContext({
+  viewport: { width: 1440, height: 900 },
+  deviceScaleFactor: 2,
+  reducedMotion: 'reduce',
+});
 const page = await ctx.newPage();
 await page.goto(ORIGIN, { waitUntil: 'load' });
 await page.waitForTimeout(800);
 await page.click('#pause');
-await page.waitForFunction(() => document.getElementById('handset').dataset.state === 'result', null, { timeout: 15000 });
+await page.waitForFunction(() => document.getElementById('handset').dataset.state === 'result', null, {
+  timeout: 15000,
+});
 await page.waitForTimeout(1500);
 const shot = await page.locator('.handset__bezel').screenshot({ type: 'png' });
-const head = await page.locator("#res-head").innerText();
+const head = await page.locator('#res-head').innerText();
 const sub = await page.locator('#res-sub').innerText();
 await ctx.close();
 
@@ -45,7 +58,9 @@ const fonts = readdirSync(join(DIST, 'assets')).filter((n) => n.endsWith('.woff2
 const sans = fonts.find((n) => n.includes('next'));
 const mono = fonts.find((n) => n.includes('mono'));
 const b64 = (n) => readFileSync(join(DIST, 'assets', n)).toString('base64');
-const tokens = readFileSync(join(SITE, 'src', 'styles', 'tokens.css'), 'utf8').split('/* ── Notebook, dark')[0];
+const tokens = readFileSync(join(SITE, 'src', 'styles', 'tokens.css'), 'utf8').split(
+  '/* ── Notebook, dark',
+)[0];
 const html = `<!doctype html><html><head><meta charset="utf-8"><style>
 ${tokens}
 @font-face{font-family:'Atkinson Hyperlegible Next Variable';font-weight:200 800;src:url(data:font/woff2;base64,${b64(sans)}) format('woff2')}

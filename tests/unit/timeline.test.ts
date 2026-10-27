@@ -75,7 +75,7 @@ describe('line graph', () => {
   });
 });
 
-describe('planning a path in time', () => {
+describe('planning a path in time (AC-F4-3)', () => {
   it('starts after the lead-in and adds each line plus its pause', () => {
     const plan = planTimeline(scam.lines, durationOf);
     expect(plan.map((l) => [l.id, l.startMs, l.endMs])).toEqual([

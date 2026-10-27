@@ -127,7 +127,8 @@ export class Hero {
     if (this.rm.matches) {
       this.mode = 'poster';
       this.setPause(true, 'Play the demo');
-      this.note.textContent = 'The demo is paused because your device asks for less motion. Press Play to watch one call.';
+      this.note.textContent =
+        'The demo is paused because your device asks for less motion. Press Play to watch one call.';
       return;
     }
     this.mode = 'loop';
@@ -294,7 +295,8 @@ export class Hero {
     this.mode = 'play';
     this.handset.dataset.mode = 'play';
     this.pauseBtn.hidden = true;
-    this.note.textContent = 'You are on the call. Hang up when you hear the first warning sign, or call the number on your card.';
+    this.note.textContent =
+      'You are on the call. Hang up when you hear the first warning sign, or call the number on your card.';
     this.syncResultActions();
   }
 
@@ -418,7 +420,14 @@ export class Hero {
       this.timeouts.push(
         window.setTimeout(() => {
           const cs = getComputedStyle(this.handset);
-          const colors = ['--accent', '--accent-dark', '--accent-soft', '--surface-2', '--border-strong', '--call-text']
+          const colors = [
+            '--accent',
+            '--accent-dark',
+            '--accent-soft',
+            '--surface-2',
+            '--border-strong',
+            '--call-text',
+          ]
             .map((v) => cs.getPropertyValue(v).trim())
             .filter(Boolean);
           this.stopConfetti = confetti(this.canvas, origin, colors);
@@ -444,7 +453,11 @@ export class Hero {
     }
   }
 
-  private fillResult(copy: { headline: string; subline: string; icon: string }, kind: Action, t: number): void {
+  private fillResult(
+    copy: { headline: string; subline: string; icon: string },
+    kind: Action,
+    t: number,
+  ): void {
     this.nb.dataset.icon = copy.icon;
     this.resHead.textContent = copy.headline;
     this.resSub.textContent = copy.subline;
@@ -460,7 +473,9 @@ export class Hero {
     if (tm) tm.textContent = clock(t);
     tl.toggleAttribute('data-nogift', t >= this.m.tAskMs);
     const dot = tl.querySelector<HTMLElement>('[data-tl-dot]');
-    const src = this.nb.querySelector(copy.icon === 'check' ? '[data-icon="check"] svg' : '[data-icon="info"] svg');
+    const src = this.nb.querySelector(
+      copy.icon === 'check' ? '[data-icon="check"] svg' : '[data-icon="info"] svg',
+    );
     if (dot && src) {
       const svg = src.cloneNode(true) as SVGElement;
       svg.setAttribute('class', 'icon icon-20');
@@ -536,7 +551,8 @@ export class Hero {
         this.updateTimer(t);
         this.updateCaptions(t, false);
         if (this.mode === 'loop' && t >= HANG_MS) this.act('hangup');
-        else if (this.mode === 'play' && t >= this.m.tEndMs + 300) this.finish(score('none', t, this.m), this.m.tEndMs, 'none');
+        else if (this.mode === 'play' && t >= this.m.tEndMs + 300)
+          this.finish(score('none', t, this.m), this.m.tEndMs, 'none');
         break;
       }
       case 'dialing': {
@@ -563,7 +579,8 @@ export class Hero {
         break;
       }
       case 'result': {
-        if (this.mode === 'loop' && this.repeat && g - this.phaseStart > SEQUENCE_MS + HOLD_MS) this.resetToRinging();
+        if (this.mode === 'loop' && this.repeat && g - this.phaseStart > SEQUENCE_MS + HOLD_MS)
+          this.resetToRinging();
         break;
       }
     }

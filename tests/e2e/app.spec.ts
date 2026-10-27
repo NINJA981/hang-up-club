@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, newDevice, test } from './fixtures';
 import {
   TEST_URL,
   callSeconds,
@@ -144,8 +144,28 @@ test.describe('first run and the daily call', () => {
     await page.getByRole('button', { name: 'Hang up and call the number on my card' }).click();
     await expect(page.getByText('Calling back')).toBeVisible();
     await expect(page.getByTestId('the-line')).toContainText('555-01');
+    // A scam: the real line says it did not call.
+    await expect(page.getByText(/We did not call you today/)).toBeVisible({ timeout: 8000 });
     await page.getByRole('button', { name: /See your result/ }).click();
     await expect(page.getByTestId('result-headline')).toBeVisible();
+  });
+});
+
+test.describe('calling back a real alert (AC-F2-3, AC-F6-4)', () => {
+  // seed f on 2026-10-22 is L04, the real bank fraud alert.
+  test.use({ today: new Date(2026, 9, 22, 10, 0, 0) });
+
+  test('L04 carries the same call-back label, and the real line confirms the alert', async ({ page }) => {
+    await onboard(page, { url: '/?test=1&seed=f#/today' });
+    await startCall(page);
+    await expect(page.getByTestId('the-line').getByRole('heading', { level: 1 })).toContainText('Fraud Dept');
+    await page.getByRole('button', { name: 'Answer' }).click();
+    await waitForCallSecond(page, 2);
+    await page.getByRole('button', { name: 'Hang up and call the number on my card' }).click();
+    await expect(page.getByTestId('the-line').getByText('Calling back')).toBeVisible();
+    await expect(page.getByText(/we did place a precautionary hold on your card/)).toBeVisible({
+      timeout: 8000,
+    });
   });
 });
 
@@ -193,7 +213,7 @@ test.describe('The Cut and the result', () => {
     await expect(page.getByRole('heading', { level: 1 })).toContainText(/Hung up at \d:\d\d\./);
   });
 
-  test('the replay shows tactics, the ask, a play control per line and the advice (AC-F6-1..3)', async ({
+  test('the replay shows tactics, the ask, a play control per line and the advice (AC-F6-1, AC-F6-2, AC-F6-3)', async ({
     page,
   }) => {
     await onboard(page);
@@ -259,8 +279,7 @@ test.describe('The Cut and the result', () => {
     expect(url.length).toBeLessThan(1100);
 
     // The coach opens it on another phone: the card, then the inbox.
-    const coach = await context.browser()?.newContext({ viewport: { width: 390, height: 844 } });
-    if (!coach) throw new Error('no browser');
+    const coach = await newDevice(context.browser());
     const cp = await coach.newPage();
     await cp.goto(`${(baseURL ?? '').replace(/\/$/, '')}/?test=1${url.slice(url.indexOf('#'))}`);
     await expect(cp.getByRole('heading', { level: 1 })).toContainText('A result from Paati');
@@ -296,8 +315,7 @@ test.describe('the family loop', () => {
     const link = await page.evaluate(() => navigator.clipboard.readText());
     expect(link.length).toBeLessThanOrEqual(1000);
 
-    const fresh = await context.browser()?.newContext({ viewport: { width: 390, height: 844 } });
-    if (!fresh) throw new Error('no browser');
+    const fresh = await newDevice(context.browser());
     const p = await fresh.newPage();
     await p.goto(`${(baseURL ?? '').replace(/\/$/, '')}/?test=1${link.slice(link.indexOf('#'))}`);
     await expect(p.getByRole('heading', { level: 1 })).toContainText('Arjun set this up for you, Paati.');
@@ -337,8 +355,7 @@ test.describe('the family loop', () => {
     const link = await page.evaluate(() => navigator.clipboard.readText());
     expect(link).toContain('#/family');
 
-    const player = await context.browser()?.newContext({ viewport: { width: 390, height: 844 } });
-    if (!player) throw new Error('no browser');
+    const player = await newDevice(context.browser());
     const p = await player.newPage();
     await onboard(p);
     await p.goto(`${(baseURL ?? '').replace(/\/$/, '')}/?test=1&seed=7${link.slice(link.indexOf('#'))}`);
@@ -368,8 +385,9 @@ test.describe('settings and privacy', () => {
     await page.getByRole('link', { name: 'Settings' }).click();
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Settings');
     await page.getByRole('radio', { name: 'Larger' }).click();
-    const rootSize = await page.evaluate(() => getComputedStyle(document.documentElement).fontSize);
-    expect(Number.parseFloat(rootSize)).toBeGreaterThan(18);
+    await expect
+      .poll(() => page.evaluate(() => Number.parseFloat(getComputedStyle(document.documentElement).fontSize)))
+      .toBeGreaterThan(18);
     await page.getByRole('radio', { name: 'Dark' }).click();
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
     await page.getByRole('radio', { name: 'Standard' }).click();

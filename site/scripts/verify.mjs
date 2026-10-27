@@ -86,7 +86,11 @@ async function open(opts = {}) {
   const cls = await page.evaluate(() => window.__cls);
   check('LCP element is the H1', lcp?.tag === 'H1', JSON.stringify(lcp));
   check('CLS < 0.001 (0.00 at two decimals)', cls < 0.001, String(cls));
-  check('no off-origin request', requests.every((u) => u.startsWith(ORIGIN) || u.startsWith('data:')), requests.filter((u) => !u.startsWith(ORIGIN) && !u.startsWith('data:')).join(' '));
+  check(
+    'no off-origin request',
+    requests.every((u) => u.startsWith(ORIGIN) || u.startsWith('data:')),
+    requests.filter((u) => !u.startsWith(ORIGIN) && !u.startsWith('data:')).join(' '),
+  );
   check('no console errors', errors.length === 0, errors.join(' | '));
   check('CSP meta present', (await page.locator('meta[http-equiv="Content-Security-Policy"]').count()) === 1);
   check('exactly one h1', (await page.locator('h1').count()) === 1);
@@ -94,7 +98,11 @@ async function open(opts = {}) {
   check('no audio fetched before Sound is turned on', sound.length === 0, sound.join(' '));
   await page.screenshot({ path: join(QA, 'desktop-hero.png') });
   const axe = await new AxeBuilder({ page }).analyze();
-  check('axe: no violations (desktop, loop running)', axe.violations.length === 0, axe.violations.map((v) => `${v.id}:${v.nodes.length}`).join(' '));
+  check(
+    'axe: no violations (desktop, loop running)',
+    axe.violations.length === 0,
+    axe.violations.map((v) => `${v.id}:${v.nodes.length}`).join(' '),
+  );
   await ctx.close();
 }
 
@@ -114,7 +122,11 @@ async function open(opts = {}) {
   await page.goto(ORIGIN, { waitUntil: 'load' });
   await page.waitForTimeout(2500);
   const cls = await page.evaluate(() => window.__cls);
-  check('CLS < 0.001 even when the webfont arrives 700 ms late (metric-matched fallback)', cls < 0.001, String(cls));
+  check(
+    'CLS < 0.001 even when the webfont arrives 700 ms late (metric-matched fallback)',
+    cls < 0.001,
+    String(cls),
+  );
   await ctx.close();
 }
 
@@ -150,7 +162,11 @@ for (const w of [320, 375, 768, 1024, 1920]) {
     label: document.getElementById('pause-label').textContent,
     transform: getComputedStyle(document.getElementById('handset')).transform,
   }));
-  check('reduced motion: demo does not autoplay', state.view === 'incall' && state.timer === '0:09', JSON.stringify(state));
+  check(
+    'reduced motion: demo does not autoplay',
+    state.view === 'incall' && state.timer === '0:09',
+    JSON.stringify(state),
+  );
   check('reduced motion: offers Play', state.label === 'Play the demo');
   check('reduced motion: no resting tilt', state.transform === 'none', state.transform);
   await page.screenshot({ path: join(QA, 'reduced-motion-hero.png') });
@@ -161,7 +177,11 @@ for (const w of [320, 375, 768, 1024, 1920]) {
     if ((await page.locator('.shard').count()) > 0) sawShards = true;
   }
   const view = await page.evaluate(() => document.getElementById('handset').dataset.state);
-  check('reduced motion: Play runs the call and ends on the result with no shards', view === 'result' && !sawShards, `${view} shards:${sawShards}`);
+  check(
+    'reduced motion: Play runs the call and ends on the result with no shards',
+    view === 'result' && !sawShards,
+    `${view} shards:${sawShards}`,
+  );
   await page.screenshot({ path: join(QA, 'reduced-motion-result.png') });
   await ctx.close();
 }
@@ -171,7 +191,9 @@ for (const w of [320, 375, 768, 1024, 1920]) {
   const { ctx, page } = await open({ javaScriptEnabled: false });
   await page.goto(ORIGIN, { waitUntil: 'load' });
   const h1 = await page.locator('h1').innerText();
-  const jsOnlyVisible = await page.locator('.js-only').evaluateAll((els) => els.filter((e) => getComputedStyle(e).display !== 'none').length);
+  const jsOnlyVisible = await page
+    .locator('.js-only')
+    .evaluateAll((els) => els.filter((e) => getComputedStyle(e).display !== 'none').length);
   check('no JS: H1 present', h1.startsWith('Practise hanging up on scammers.'));
   check('no JS: controls that need JS are hidden', jsOnlyVisible === 0, String(jsOnlyVisible));
   check('no JS: poster shows the call screen', await page.locator('#line').isVisible());
@@ -185,34 +207,65 @@ for (const w of [320, 375, 768, 1024, 1920]) {
   await page.goto(ORIGIN, { waitUntil: 'load' });
   await page.waitForTimeout(500);
   await page.click('#try-call');
-  check('Try the call: starts at the ringing screen', (await page.locator('#handset').getAttribute('data-state')) === 'ringing');
+  check(
+    'Try the call: starts at the ringing screen',
+    (await page.locator('#handset').getAttribute('data-state')) === 'ringing',
+  );
   await page.click('#btn-answer');
   await page.waitForSelector('.chip', { timeout: 8000 });
   const chips = await page.locator('.chip').allInnerTexts();
   check('reply chips appear on the intro line', chips.join('|') === 'Who is this?|Go ahead', chips.join('|'));
   await page.click('.chip >> text=Who is this?');
-  await page.waitForFunction(() => document.getElementById('cap-now').textContent.includes('fraud alert'), null, { timeout: 12000 });
+  await page.waitForFunction(
+    () => document.getElementById('cap-now').textContent.includes('fraud alert'),
+    null,
+    { timeout: 12000 },
+  );
   check('"Who is this?" branches to the verify line', true);
-  await page.waitForFunction(() => document.getElementById('cap-now').textContent.includes('compromised'), null, { timeout: 14000 });
+  await page.waitForFunction(
+    () => document.getElementById('cap-now').textContent.includes('compromised'),
+    null,
+    { timeout: 14000 },
+  );
   await page.waitForTimeout(2300);
   await page.click('#btn-hangup');
-  await page.waitForFunction(() => document.getElementById('handset').dataset.state === 'result', null, { timeout: 6000 });
+  await page.waitForFunction(() => document.getElementById('handset').dataset.state === 'result', null, {
+    timeout: 6000,
+  });
   const head = await page.locator('#res-head').innerText();
   const sub = await page.locator('#res-sub').innerText();
-  check('hanging up after the first warning, before the ask, scores "sharp"', /^Hung up at 0:\d\d\.$/.test(head) && /^The scammer needed 0:\d\d\.$/.test(sub), `${head} / ${sub}`);
+  check(
+    'hanging up after the first warning, before the ask, scores "sharp"',
+    /^Hung up at 0:\d\d\.$/.test(head) && /^The scammer needed 0:\d\d\.$/.test(sub),
+    `${head} / ${sub}`,
+  );
   await page.waitForTimeout(2400);
   await page.screenshot({ path: join(QA, 'play-result-sharp.png') });
   check('result offers Try another call', await page.locator('#again').isVisible());
   // call back path
   await page.click('#again');
   await page.click('#btn-answer');
-  await page.waitForFunction(() => document.getElementById('timer').textContent >= '0:02', null, { timeout: 8000 });
+  await page.waitForFunction(() => document.getElementById('timer').textContent >= '0:02', null, {
+    timeout: 8000,
+  });
   await page.click('#btn-callback');
-  await page.waitForFunction(() => document.getElementById('handset').dataset.state === 'ivr', null, { timeout: 4000 });
-  await page.waitForFunction(() => document.getElementById('handset').dataset.state === 'result' || document.getElementById('handset').dataset.state === 'cut', null, { timeout: 12000 });
+  await page.waitForFunction(() => document.getElementById('handset').dataset.state === 'ivr', null, {
+    timeout: 4000,
+  });
+  await page.waitForFunction(
+    () =>
+      document.getElementById('handset').dataset.state === 'result' ||
+      document.getElementById('handset').dataset.state === 'cut',
+    null,
+    { timeout: 12000 },
+  );
   await page.waitForTimeout(2400);
   const vhead = await page.locator('#res-head').innerText();
-  check('calling the number on the card scores "verified"', vhead === 'You called the number on your card.', vhead);
+  check(
+    'calling the number on the card scores "verified"',
+    vhead === 'You called the number on your card.',
+    vhead,
+  );
   await page.screenshot({ path: join(QA, 'play-result-verified.png') });
   // jumpy path: hang up early
   await page.click('#again');
@@ -221,7 +274,11 @@ for (const w of [320, 375, 768, 1024, 1920]) {
   await page.click('#btn-hangup');
   await page.waitForTimeout(3000);
   const jhead = await page.locator('#res-head').innerText();
-  check('hanging up before any warning scores "jumpy"', jhead === 'You hung up before they gave anything away.', jhead);
+  check(
+    'hanging up before any warning scores "jumpy"',
+    jhead === 'You hung up before they gave anything away.',
+    jhead,
+  );
   check('no console errors while playing', errors.length === 0, errors.join(' | '));
   await ctx.close();
 }
@@ -232,14 +289,22 @@ for (const w of [320, 375, 768, 1024, 1920]) {
   await page.goto(ORIGIN, { waitUntil: 'load' });
   await page.waitForTimeout(500);
   await page.click('#sound');
-  await page.waitForFunction(() => document.getElementById('sound').getAttribute('aria-pressed') === 'true', null, { timeout: 8000 });
+  await page.waitForFunction(
+    () => document.getElementById('sound').getAttribute('aria-pressed') === 'true',
+    null,
+    { timeout: 8000 },
+  );
   const clips = requests.filter((u) => u.includes('/audio/demo/'));
   let bytes = 0;
   for (const u of new Set(clips)) {
     const r = await page.request.get(u);
     bytes += (await r.body()).length;
   }
-  check('Sound on: only same-origin demo clips fetched', clips.length > 0 && clips.every((u) => u.startsWith(ORIGIN)), `${clips.length} requests`);
+  check(
+    'Sound on: only same-origin demo clips fetched',
+    clips.length > 0 && clips.every((u) => u.startsWith(ORIGIN)),
+    `${clips.length} requests`,
+  );
   check('Sound on: clips total <= 150 KB', bytes <= 150 * 1024, `${(bytes / 1024).toFixed(1)} KB`);
   await ctx.close();
 }
@@ -250,8 +315,14 @@ for (const w of [320, 375, 768, 1024, 1920]) {
   await page.goto(ORIGIN, { waitUntil: 'load' });
   await page.waitForTimeout(600);
   await page.screenshot({ path: join(QA, 'desktop-dark-hero.png') });
-  const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
-  check('axe: no violations in dark scheme', axe.violations.length === 0, axe.violations.map((v) => `${v.id}:${v.nodes.length}`).join(' '));
+  const axe = await new AxeBuilder({ page })
+    .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+    .analyze();
+  check(
+    'axe: no violations in dark scheme',
+    axe.violations.length === 0,
+    axe.violations.map((v) => `${v.id}:${v.nodes.length}`).join(' '),
+  );
   await ctx.close();
 }
 

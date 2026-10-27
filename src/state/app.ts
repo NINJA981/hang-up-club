@@ -163,6 +163,18 @@ export class AppController {
 
   /** Score an ended call, persist it and update spaced repetition. */
   async recordCall(input: RecordCallInput): Promise<{ attempt: Attempt; summary: CallSummary }> {
+    const { attempt, summary, saved } = this.scoreCall(input);
+    await saved;
+    return { attempt, summary };
+  }
+
+  /**
+   * Score an ended call and show it at once; `saved` resolves when it is on disk. The signature
+   * moment starts from the result of this call, so it must not wait for two IndexedDB writes
+   * (AC-F9-1: the shards begin within 40 ms of the press). If a write fails, `saved` rejects and
+   * the in-memory state is already ahead of the database until the next load.
+   */
+  scoreCall(input: RecordCallInput): { attempt: Attempt; summary: CallSummary; saved: Promise<void> } {
     const { scenario, ended } = input;
     const today = this.deps.clock.today();
     const summary = summarise(ended, scenario, {
@@ -188,7 +200,6 @@ export class AppController {
     if (markers.tFlagMs !== undefined) attempt.tFlagMs = markers.tFlagMs;
     if (markers.tAskMs !== undefined) attempt.tAskMs = markers.tAskMs;
 
-    await this.deps.repo.addAttempt(attempt);
     let boxes = this.state.tacticBoxes;
     if (scored) {
       boxes = applyAttempt(
@@ -196,10 +207,13 @@ export class AppController {
         { kind: scenario.kind, outcome: result.outcome, tacticsBeforeAsk: summary.tacticsBeforeAsk },
         today,
       );
-      await this.deps.repo.putTacticBoxes(boxes);
     }
     this.store.set((s) => ({ ...s, today, attempts: [...s.attempts, attempt], tacticBoxes: boxes }));
-    return { attempt, summary };
+    const saved = (async (): Promise<void> => {
+      await this.deps.repo.addAttempt(attempt);
+      if (scored) await this.deps.repo.putTacticBoxes(boxes);
+    })();
+    return { attempt, summary, saved };
   }
 
   // ── links received ───────────────────────────────────────────────────

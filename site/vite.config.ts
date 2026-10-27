@@ -3,10 +3,14 @@ import { fontPreload, htmlTemplates, readConfig } from './vite/plugins.ts';
 
 const cfg = readConfig(process.env);
 if (!process.env.SITE_REPO_URL) {
-  console.warn('[site] SITE_REPO_URL is not set: the GitHub call to action falls back to the in-page "Run it from source" section.');
+  console.warn(
+    '[site] SITE_REPO_URL is not set: the GitHub call to action falls back to the in-page "Run it from source" section.',
+  );
 }
 if (!process.env.SITE_APP_URL) {
-  console.warn('[site] SITE_APP_URL is not set: "Open the app" points to /app/ (placeholder; set it to the deployed PWA).');
+  console.warn(
+    '[site] SITE_APP_URL is not set: "Open the app" points to /app/ (placeholder; set it to the deployed PWA).',
+  );
 }
 
 export default defineConfig({

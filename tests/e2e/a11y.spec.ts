@@ -1,91 +1,14 @@
-import AxeBuilder from '@axe-core/playwright';
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test } from './fixtures';
+import { SCHEMES, SIZES, checkScreen, type Finding } from './a11y-helpers';
 import { TEST_URL, onboard, startCall, waitForCallSecond } from './helpers';
 
 /**
  * Cross-cutting checks (SPEC section 12): AC-X-1 axe on every screen in light
  * and dark at 375, 768 and 1440 px; AC-X-2 no text below 18px; the 56px target
  * floor; AC-X-3 keyboard reach and a visible focus ring. The desktop project
- * runs them because each test resizes the viewport itself.
+ * runs them because each test resizes the viewport itself. The screens that need
+ * a link, the sheets, the coach steps and the call-back are in a11y-surfaces.spec.ts.
  */
-
-const SIZES = [
-  { w: 375, h: 812 },
-  { w: 768, h: 1024 },
-  { w: 1440, h: 900 },
-] as const;
-const SCHEMES = ['light', 'dark'] as const;
-
-interface Finding {
-  where: string;
-  detail: string;
-}
-
-/** Text smaller than 18px, and body copy smaller than 20px, among visible text. */
-async function textSizeFindings(page: Page, screen: string): Promise<Finding[]> {
-  const found = await page.evaluate(() => {
-    const out: string[] = [];
-    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-    for (let n = walker.nextNode(); n; n = walker.nextNode()) {
-      const text = n.textContent?.trim() ?? '';
-      if (text === '') continue;
-      const el = n.parentElement;
-      if (!el || el.closest('script,style,noscript,[aria-hidden="true"] svg')) continue;
-      const range = document.createRange();
-      range.selectNodeContents(n);
-      const r = range.getBoundingClientRect();
-      if (r.width < 2 || r.height < 2) continue;
-      const cs = getComputedStyle(el);
-      if (cs.visibility === 'hidden' || cs.display === 'none' || Number(cs.opacity) === 0) continue;
-      const px = Number.parseFloat(cs.fontSize);
-      if (px < 17.99) out.push(`${String(px)}px "${text.slice(0, 40)}"`);
-    }
-    return out;
-  });
-  return found.map((detail) => ({ where: screen, detail }));
-}
-
-/** Interactive controls smaller than 56 x 56 (a control inside a wider labelled row counts as the row). */
-async function targetFindings(page: Page, screen: string): Promise<Finding[]> {
-  const found = await page.evaluate(() => {
-    const out: string[] = [];
-    const sel =
-      'button, a[href], input:not([type=hidden]), select, textarea, [role=radio], [role=switch], [role=checkbox]';
-    for (const el of document.querySelectorAll<HTMLElement>(sel)) {
-      const cs = getComputedStyle(el);
-      if (cs.visibility === 'hidden' || cs.display === 'none' || el.closest('[inert],[aria-hidden="true"]'))
-        continue;
-      let box = el.getBoundingClientRect();
-      const row = el.closest('label');
-      if (row) box = row.getBoundingClientRect();
-      if (box.width < 1 || box.height < 1) continue;
-      if (box.width < 55.5 || box.height < 55.5) {
-        out.push(
-          `${el.tagName.toLowerCase()} ${String(Math.round(box.width))}x${String(Math.round(box.height))} "${(el.getAttribute('aria-label') ?? el.textContent).trim().slice(0, 40)}"`,
-        );
-      }
-    }
-    return out;
-  });
-  return found.map((detail) => ({ where: screen, detail }));
-}
-
-async function axeFindings(page: Page, screen: string): Promise<Finding[]> {
-  const res = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
-  return res.violations
-    .filter((v) => v.impact === 'serious' || v.impact === 'critical')
-    .map((v) => ({
-      where: screen,
-      detail: `${v.id} (${v.impact ?? ''}): ${v.nodes
-        .slice(0, 2)
-        .map((n) => n.target.join(' '))
-        .join(' | ')}`,
-    }));
-}
-
-async function settled(page: Page): Promise<void> {
-  await page.waitForTimeout(350);
-}
 
 for (const scheme of SCHEMES) {
   for (const { w, h } of SIZES) {
@@ -99,10 +22,7 @@ for (const scheme of SCHEMES) {
       }) => {
         const problems: Finding[] = [];
         const check = async (screen: string, opts: { targets?: boolean } = {}): Promise<void> => {
-          await settled(page);
-          problems.push(...(await axeFindings(page, screen)));
-          problems.push(...(await textSizeFindings(page, screen)));
-          if (opts.targets !== false) problems.push(...(await targetFindings(page, screen)));
+          problems.push(...(await checkScreen(page, screen, opts)));
         };
 
         await page.goto(`${TEST_URL}#/today`);
@@ -158,7 +78,7 @@ test.describe('keyboard (AC-X-3)', () => {
     page,
   }) => {
     await onboard(page);
-    for (const route of ['#/today', '#/settings', '#/calls']) {
+    for (const route of ['#/today', '#/settings', '#/calls', '#/coach', '#/coach/call', '#/inbox']) {
       await page.goto(`${TEST_URL}${route}`);
       await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
       const want = await page
@@ -182,8 +102,9 @@ test.describe('keyboard (AC-X-3)', () => {
           };
         });
         if (!info) continue;
-        if (info.tag !== 'INPUT') expect(info.ok, `${info.id} has :focus-visible`).toBe(true);
-        if (info.tag === 'INPUT') {
+        const isField = info.tag === 'INPUT' || info.tag === 'TEXTAREA';
+        if (!isField) expect(info.ok, `${info.id} has :focus-visible`).toBe(true);
+        if (isField) {
           // A time field has the soft ring on its fields; its picker button is a browser part.
           if (info.ok) expect(info.shadow, `${info.id} shows the soft focus ring`).not.toBe('none');
         } else expect(info.ring, `${info.id} shows an outline`).toMatch(/solid 3px/);
@@ -191,5 +112,40 @@ test.describe('keyboard (AC-X-3)', () => {
       }
       expect(rings.size, `${route}: Tab reaches the controls`).toBeGreaterThanOrEqual(Math.min(want, 3));
     }
+  });
+
+  test('every control in a call can be reached with Tab and shows a focus ring (AC-X-3)', async ({
+    page,
+  }) => {
+    await onboard(page);
+    await startCall(page);
+    const seen = new Map<string, string>();
+    const sweep = async (label: string, minimum: number): Promise<void> => {
+      for (let i = 0; i < 14; i++) {
+        await page.keyboard.press('Tab');
+        const info = await page.evaluate(() => {
+          const el = document.activeElement;
+          if (!el || el === document.body || el.closest('[data-testid="the-line"]') === null)
+            return undefined;
+          return {
+            id: (el.getAttribute('aria-label') ?? el.textContent).trim().slice(0, 40),
+            ring: `${getComputedStyle(el).outlineStyle} ${getComputedStyle(el).outlineWidth}`,
+            visible: el.matches(':focus-visible'),
+          };
+        });
+        if (!info) continue;
+        expect(info.visible, `${info.id} is :focus-visible`).toBe(true);
+        expect(info.ring, `${info.id} shows an outline`).toMatch(/solid [3-9]px/);
+        seen.set(`${label}:${info.id}`, info.ring);
+      }
+      expect(
+        [...seen.keys()].filter((k) => k.startsWith(label)).length,
+        `${label}: Tab reaches the controls`,
+      ).toBeGreaterThanOrEqual(minimum);
+    };
+    await sweep('ringing', 2);
+    await page.getByRole('button', { name: 'Answer' }).click();
+    await waitForCallSecond(page, 1);
+    await sweep('in-call', 3);
   });
 });

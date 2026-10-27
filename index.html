@@ -14,6 +14,9 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" />
     <script src="/theme-init.js"></script>
+    <!-- The first screen waits for these two files; asking for them now overlaps them with the JS (AC-X-4). -->
+    <link rel="preload" href="/scenarios/library.json" as="fetch" type="application/json" crossorigin />
+    <link rel="preload" href="/audio/audio-manifest.json" as="fetch" type="application/json" crossorigin />
   </head>
   <body>
     <div id="root"></div>

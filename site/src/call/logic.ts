@@ -150,7 +150,10 @@ export function clock(ms: number): string {
 const NBSP = ' ';
 export function seconds(ms: number): string {
   const s = Math.max(0, Math.floor(ms / 1000));
-  return s < 60 ? `${String(s)}${NBSP}s` : `${String(Math.floor(s / 60))}${NBSP}min ${String(s % 60)}${NBSP}s`;
+  if (s < 60) return `${String(s)}${NBSP}s`;
+  // Whole minutes read "1 min", as the app's formatSeconds does (tests/unit/site-parity.test.ts).
+  const min = `${String(Math.floor(s / 60))}${NBSP}min`;
+  return s % 60 === 0 ? min : `${min} ${String(s % 60)}${NBSP}s`;
 }
 
 export interface OutcomeCopy {

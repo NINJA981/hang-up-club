@@ -22,7 +22,11 @@ const lib = JSON.parse(readFileSync(resolve(root, 'public/scenarios/library.json
 const man = JSON.parse(readFileSync(resolve(root, 'public/audio/audio-manifest.json'), 'utf8'));
 mkdirSync(resolve(here, '../public/audio/demo'), { recursive: true });
 
-interface Clip { opus: string; aac: string; durationMs: number }
+interface Clip {
+  opus: string;
+  aac: string;
+  durationMs: number;
+}
 let copied = 0;
 let bytesOpus = 0;
 let bytesAac = 0;
@@ -41,7 +45,8 @@ function clipOf(voice: string, text: string): Clip {
 function build(id: string, vars: Record<string, string>, withClips: boolean) {
   const t = lib.templates.find((x: { id: string }) => x.id === id);
   const r = resolveWithVars(t, vars, id);
-  const dur = (l: { voice: string; text: string }) => man.clips[clipKey(l.voice, l.text)].durationMs as number;
+  const dur = (l: { voice: string; text: string }) =>
+    man.clips[clipKey(l.voice, l.text)].durationMs as number;
   const plan = planTimeline(r.lines, dur);
   const m = markers(plan);
   const lines = r.lines.map((l: any) => {
@@ -66,7 +71,11 @@ function build(id: string, vars: Record<string, string>, withClips: boolean) {
     return entry;
   });
   const ivr = r.callback.ivr.map((l: any) => {
-    const entry: Record<string, unknown> = { id: l.id, text: l.say, durationMs: dur({ voice: r.callback.voice, text: l.say }) };
+    const entry: Record<string, unknown> = {
+      id: l.id,
+      text: l.say,
+      durationMs: dur({ voice: r.callback.voice, text: l.say }),
+    };
     if (withClips) {
       const c = clipOf(r.callback.voice, l.say);
       entry.opus = c.opus;
@@ -79,7 +88,12 @@ function build(id: string, vars: Record<string, string>, withClips: boolean) {
     kind: r.kind,
     caller: { display: r.caller.display, number: r.caller.number },
     lines,
-    callback: { label: r.callback.label, trustedSource: r.callback.trustedSource, number: r.callback.number, ivr },
+    callback: {
+      label: r.callback.label,
+      trustedSource: r.callback.trustedSource,
+      number: r.callback.number,
+      ivr,
+    },
     advice: r.advice,
     markers: { tFlagMs: m.tFlagMs ?? null, tAskMs: m.tAskMs ?? null, tEndMs: m.tEndMs },
     who: r.who ?? null,
@@ -93,5 +107,7 @@ writeFileSync(
   resolve(here, '../src/demo/scenarios.json'),
   JSON.stringify({ s01, l01, tacticLabels: TACTIC_LABELS }, null, 2) + '\n',
 );
-console.log(`clips copied: ${copied}  opus ${(bytesOpus / 1024).toFixed(1)} KB  aac ${(bytesAac / 1024).toFixed(1)} KB`);
+console.log(
+  `clips copied: ${copied}  opus ${(bytesOpus / 1024).toFixed(1)} KB  aac ${(bytesAac / 1024).toFixed(1)} KB`,
+);
 console.log('S01 markers', s01.markers);

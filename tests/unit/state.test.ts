@@ -192,6 +192,43 @@ describe('recording calls', () => {
     expect(todaysScoredAttempt(app.state)).toEqual(attempt);
     expect(app.hasScoredToday()).toBe(true);
   });
+  it('scoreCall shows the result before it is on disk, and saved resolves once it is (AC-F9-1)', async () => {
+    const scenario = s01();
+    const ended = playCall(scenario, { type: 'HANG_UP', tMs: justAfterFlag(scenario) });
+    const { attempt, summary, saved } = app.scoreCall({ ended, scenario, scored: true });
+    // Synchronously: the state already holds the call, so the signature moment can start at once.
+    expect(summary.result.outcome).toBe('sharp');
+    expect(todaysScoredAttempt(app.state)).toEqual(attempt);
+    expect(app.state.tacticBoxes.length).toBeGreaterThan(0);
+    await saved;
+    expect(await repo.listAttempts()).toEqual([attempt]);
+    expect(await repo.getTacticBoxes()).toHaveLength(app.state.tacticBoxes.length);
+  });
+  it('a failed save rejects `saved` but does not take the result away', async () => {
+    const scenario = s01();
+    const spy = vi.spyOn(repo, 'addAttempt').mockRejectedValueOnce(new Error('disk full'));
+    const { attempt, saved } = app.scoreCall({
+      ended: playCall(scenario, { type: 'HANG_UP', tMs: justAfterFlag(scenario) }),
+      scenario,
+      scored: true,
+    });
+    await expect(saved).rejects.toThrow('disk full');
+    expect(todaysScoredAttempt(app.state)).toEqual(attempt);
+    spy.mockRestore();
+  });
+  it('recordCall still resolves only after the write', async () => {
+    const scenario = s01();
+    const order: string[] = [];
+    const real = repo.addAttempt.bind(repo);
+    vi.spyOn(repo, 'addAttempt').mockImplementation(async (a) => {
+      await Promise.resolve();
+      order.push('written');
+      return real(a);
+    });
+    await app.recordCall({ ended: letItRing(scenario), scenario, scored: true });
+    order.push('resolved');
+    expect(order).toEqual(['written', 'resolved']);
+  });
   it('updates spaced repetition for a scored scam call: caught resets, sharp promotes', async () => {
     const scenario = s01();
     await app.recordCall({ ended: letItRing(scenario), scenario, scored: true });
@@ -498,6 +535,31 @@ describe('loading content (same origin only)', () => {
     expect(c.infos).toHaveLength(20);
     expect(Object.keys(c.manifest.clips).length).toBe(Object.keys(realManifest().clips).length);
     expect(calls.every((u) => u.startsWith('/'))).toBe(true); // never an absolute URL
+  });
+  it('asks for both files at once, not one after the other (AC-X-4: a round trip off the first paint)', async () => {
+    const started: string[] = [];
+    let release: () => void = () => undefined;
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const fetchJson: FetchLike = async (url) => {
+      started.push(url);
+      await gate; // nothing answers until both requests are out
+      return url.endsWith('library.json') ? json(realLibrary()) : json(realManifest());
+    };
+    const loading = loadContent(fetchJson);
+    await Promise.resolve();
+    expect(started).toEqual(['/scenarios/library.json', '/audio/audio-manifest.json']);
+    release();
+    expect((await loading).library.templates).toHaveLength(20);
+  });
+  it('a missing library is still fatal even though the manifest is requested alongside it', async () => {
+    const fetchJson: FetchLike = (url) =>
+      url.endsWith('library.json') ? json({}, false, 404) : json(realManifest());
+    await expect(loadContent(fetchJson)).rejects.toThrow(/404/);
+    const down: FetchLike = (url) =>
+      url.endsWith('library.json') ? Promise.reject(new Error('offline')) : json(realManifest());
+    await expect(loadContent(down)).rejects.toThrow('offline');
   });
   it('still works without audio: lines fall back to Web Speech', async () => {
     const offline: FetchLike = (url) =>

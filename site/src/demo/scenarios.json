@@ -55,10 +55,7 @@
         "cueAt": 0.4,
         "flag": true,
         "ask": false,
-        "tactics": [
-          "authority",
-          "urgency"
-        ],
+        "tactics": ["authority", "urgency"],
         "replies": [],
         "next": null,
         "opus": "zira-calm-0c24fd2254c878.webm",
@@ -73,10 +70,7 @@
         "cueAt": 0.5,
         "flag": false,
         "ask": false,
-        "tactics": [
-          "fear",
-          "isolation"
-        ],
+        "tactics": ["fear", "isolation"],
         "replies": [],
         "next": null,
         "opus": "zira-calm-080c3475e384ac.webm",
@@ -91,10 +85,7 @@
         "cueAt": 0.5,
         "flag": false,
         "ask": true,
-        "tactics": [
-          "code-request",
-          "urgency"
-        ],
+        "tactics": ["code-request", "urgency"],
         "replies": [],
         "next": null,
         "opus": "zira-calm-13f120015bdd15.webm",

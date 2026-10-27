@@ -50,8 +50,7 @@ const clock = (ms: number): string => {
   const s = Math.max(0, Math.floor(ms / 1000));
   return `${String(Math.floor(s / 60))}:${String(s % 60).padStart(2, '0')}`;
 };
-const pct = (ms: number, domain: number): string =>
-  `${(Math.round((ms / domain) * 1000) / 10).toString()}%`;
+const pct = (ms: number, domain: number): string => `${(Math.round((ms / domain) * 1000) / 10).toString()}%`;
 
 /* ── icons (Lucide, ISC) read from lucide-static ──────────────────────── */
 const iconCache = new Map<string, string>();
@@ -290,10 +289,7 @@ export function htmlTemplates(cfg: SiteConfig): Plugin {
           .replaceAll('{{app_url}}', cfg.appUrl)
           .replaceAll('{{csp}}', CSP)
           .replaceAll('{{og_image}}', abs('/og.jpg'))
-          .replaceAll(
-            '{{canonical}}',
-            cfg.siteUrl ? `<link rel="canonical" href="${cfg.siteUrl}" />` : '',
-          )
+          .replaceAll('{{canonical}}', cfg.siteUrl ? `<link rel="canonical" href="${cfg.siteUrl}" />` : '')
           .replaceAll('{{repo_href}}', cfg.repoUrl ?? '#run-it')
           .replaceAll('{{repo_label}}', cfg.repoUrl ? 'View the code on GitHub' : 'Run it from source')
           .replaceAll(

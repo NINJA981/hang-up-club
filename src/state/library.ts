@@ -29,18 +29,26 @@ export function buildContent(library: Library, manifest: AudioManifest = EMPTY_M
 
 export type FetchLike = (url: string) => Promise<{ ok: boolean; status: number; json(): Promise<unknown> }>;
 
-/** Same-origin only (SPEC §10.2). A missing manifest is not fatal: lines fall back to Web Speech. */
-export async function loadContent(fetchJson: FetchLike): Promise<Content> {
-  const libRes = await fetchJson('/scenarios/library.json');
-  if (!libRes.ok) throw new Error(`Could not load the call library (${String(libRes.status)})`);
-  const library = LibrarySchema.parse(await libRes.json());
-  let manifest: AudioManifest = EMPTY_MANIFEST;
+/** A missing or damaged manifest is not fatal: every line then falls back to Web Speech. Never rejects. */
+async function loadManifest(fetchJson: FetchLike): Promise<AudioManifest> {
   try {
     const res = await fetchJson('/audio/audio-manifest.json');
-    if (res.ok) manifest = AudioManifestSchema.parse(await res.json());
+    return res.ok ? AudioManifestSchema.parse(await res.json()) : EMPTY_MANIFEST;
   } catch {
-    // Offline without a cached manifest, or a damaged one: every line then falls back to Web Speech.
-    manifest = EMPTY_MANIFEST;
+    // Offline without a cached manifest, or a damaged one.
+    return EMPTY_MANIFEST;
   }
-  return buildContent(library, manifest);
+}
+
+/**
+ * Same-origin only (SPEC §10.2). The two files are requested together: fetched one after the other
+ * the manifest added a whole round trip to the first paint of the Welcome screen (AC-X-4, LCP).
+ */
+export async function loadContent(fetchJson: FetchLike): Promise<Content> {
+  const libraryRequest = fetchJson('/scenarios/library.json');
+  const manifestRequest = loadManifest(fetchJson);
+  const libRes = await libraryRequest;
+  if (!libRes.ok) throw new Error(`Could not load the call library (${String(libRes.status)})`);
+  const library = LibrarySchema.parse(await libRes.json());
+  return buildContent(library, await manifestRequest);
 }
