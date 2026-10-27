@@ -1,0 +1,10 @@
+# Strings that check-names MUST flag (they name real institutions). One per line.
+Please call Wells Fargo about your account.
+This is the Internal Revenue Service.
+Your Amazon order has shipped.
+Chase fraud department here.
+A message from UPS about your parcel.
+Your Medicare card is expiring.
+Contact the Social Security Administration.
+Call Lowe's and ask for the manager.
+Open Zelle and send the payment.

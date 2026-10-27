@@ -1,0 +1,38 @@
+id: L06-library-hold
+kind: legit
+group: real
+category: legit.library
+summary: a real library call
+who: the real library
+missCost: you'd have missed the news that your book is in
+sources:
+  - { key: FTC-OA-2025, page: 22 }
+caller:
+  display: Fernhill Public Library
+  number: '(603) 555-0119'
+  voice: zira-calm
+  bed: home
+vars:
+  item: [large-print mystery, gardening book, cookbook]
+lines:
+  - id: hello
+    say: 'Hello, {address}.'
+    pauseAfterMs: 600
+  - id: intro
+    say: 'This is the front desk at Fernhill Public Library.'
+  - id: news
+    say: 'The {item} you put on hold has come in. We will keep it for you for a week.'
+  - id: nothing
+    say: "There's no charge and nothing to do on the phone. Just ask at the desk."
+  - id: goodbye
+    say: 'Enjoy the book. Goodbye for now.'
+    next: END
+callback:
+  label: Hang up and call the library's number
+  trustedSource: the library's own number
+  number: '(603) 555-0120'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: 'Thank you for calling Fernhill Public Library. Holds are kept at the front desk for seven days.'
+advice: The library only gave news and asked for nothing. A call with no request attached is usually safe.

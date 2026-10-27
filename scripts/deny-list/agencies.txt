@@ -1,0 +1,49 @@
+# US federal agencies and programmes. Impersonating these is the point of many scams, so no template may use them.
+Internal Revenue Service
+=IRS
+Social Security
+=SSA
+Medicare
+Medicaid
+Centers for Medicare
+Department of Justice
+Justice Department
+Department of the Treasury
+Treasury Department
+Federal Bureau of Investigation
+Drug Enforcement
+=DEA
+Homeland Security
+=DHS
+Immigration and Customs
+Customs and Border
+=CBP
+USCIS
+Veterans Affairs
+Veterans Administration
+Federal Reserve
+=FDIC
+=NCUA
+Consumer Financial Protection
+=CFPB
+Federal Trade Commission
+Federal Communications
+=FCC
+Marshals Service
+Secret Service
+Department of Education
+Department of Labor
+Health and Human Services
+=HHS
+Securities and Exchange
+=SEC
+Postal Inspection
+Postal Inspector
+Attorney General
+Federal Student Aid
+Medicare Advantage
+Interpol
+Europol
+Scotland Yard
+Canada Revenue
+HM Revenue

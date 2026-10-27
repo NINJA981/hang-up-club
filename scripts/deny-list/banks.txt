@@ -1,0 +1,95 @@
+# Real US banks, credit unions and payment firms (SPEC §4.5a). One term per line.
+# Lines starting with = match case-sensitively (for names that are also common words).
+JPMorgan
+JP Morgan
+=Chase
+Bank of America
+Wells Fargo
+Citibank
+Citigroup
+=Citi
+U.S. Bank
+US Bank
+PNC
+Truist
+Goldman Sachs
+Capital One
+TD Bank
+Charles Schwab
+Bank of New York
+BNY Mellon
+State Street
+American Express
+AmEx
+Ally Bank
+Citizens Bank
+Fifth Third
+KeyBank
+Regions Bank
+M&T Bank
+Huntington Bank
+Navy Federal
+USAA
+Discover Bank
+Discover Card
+Synchrony
+Santander
+BMO
+First Citizens
+Flagstar
+Zions
+Comerica
+Synovus
+Webster Bank
+Valley National
+East West Bank
+Western Alliance
+Wintrust
+Raymond James
+Morgan Stanley
+Merrill Lynch
+Merrill Edge
+SoFi
+Chime
+PayPal
+Venmo
+Zelle
+Cash App
+Western Union
+MoneyGram
+Fidelity Investments
+Vanguard
+PenFed
+Pentagon Federal
+Alliant Credit Union
+SchoolsFirst
+Golden 1
+BECU
+Suncoast Credit Union
+Mountain America
+Star One Credit
+Digital Federal Credit
+Bank of the West
+First Republic
+Silicon Valley Bank
+Signature Bank
+HSBC
+Barclays
+Credit Suisse
+Deutsche Bank
+Visa
+Mastercard
+Citizens Financial
+First Horizon
+Popular Bank
+Frost Bank
+Associated Bank
+BOK Financial
+Cadence Bank
+Old National
+Prosperity Bank
+UMB
+Hancock Whitney
+BankUnited
+Texas Capital
+First National Bank of America

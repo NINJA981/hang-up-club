@@ -1,0 +1,11 @@
+# Strings that check-names MUST allow (coined names and ordinary words that merely resemble deny-list terms).
+First Meridian Bank Fraud Dept
+Kestrel Ridge Credit Union
+Federal Tax Recovery Unit
+National Benefits Administration
+Tollan Valley Power & Light
+Parcelwise Delivery
+We will chase this up tomorrow.
+The gardening club is baking an apple pie.
+Please stay on the line, it is the upside of the plan.
+A fair target for next week.

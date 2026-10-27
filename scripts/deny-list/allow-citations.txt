@@ -1,0 +1,4 @@
+# Citations of the public reports behind the scenarios (AC-F3-5). Format: <repo-relative path>|<deny term>.
+# A listed term is ignored in that one file only. It may never be used as a caller or organisation.
+scenarios/SOURCES.md|Federal Trade Commission
+public/audio/CREDITS.md|Microsoft

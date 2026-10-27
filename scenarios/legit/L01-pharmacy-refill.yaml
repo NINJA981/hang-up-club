@@ -1,0 +1,38 @@
+id: L01-pharmacy-refill
+kind: legit
+group: real
+category: legit.pharmacy
+summary: a real pharmacy call
+who: the real pharmacy
+missCost: you'd have missed the news that your refill is ready
+sources:
+  - { key: FTC-OA-2025, page: 22 }
+caller:
+  display: Alder Lane Pharmacy
+  number: '(614) 555-0171'
+  voice: zira-calm
+  bed: pharmacy
+vars:
+  time: [six tonight, five thirty today, noon tomorrow]
+lines:
+  - id: hello
+    say: 'Hello, {address}.'
+    pauseAfterMs: 600
+  - id: intro
+    say: 'This is Priya at Alder Lane Pharmacy.'
+  - id: news
+    say: "Your prescription refill is ready to collect. We're open until {time}."
+  - id: nothing
+    say: "There's nothing you need to do on this call. Pick it up any time that suits you."
+  - id: goodbye
+    say: 'Thank you, and have a lovely day.'
+    next: END
+callback:
+  label: Hang up and call the pharmacy's number
+  trustedSource: the pharmacy's own number
+  number: '(614) 555-0172'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: 'Thank you for calling Alder Lane Pharmacy. Yes, your refill is ready. Our hours are nine to six on weekdays.'
+advice: This call gave information and asked for nothing. That is what a real call looks like.

@@ -1,0 +1,49 @@
+# Test fixture: a small scam call with one reply branch, authored for the loader and timeline tests.
+id: S90-mini-bank
+kind: scam
+group: bank
+category: business-impersonation.bank
+summary: a fake bank call
+askFor: the code
+sources:
+  - { key: TEST-SRC, page: 1 }
+caller:
+  display: '{org} Fraud Dept'
+  number: '(614) 555-0190'
+  voice: zira-calm
+  bed: none
+vars:
+  org: [Test Harbor Bank, Test Ridge Credit Union]
+lines:
+  - id: hello
+    say: 'Hello, {address}.'
+  - id: intro
+    say: 'This is the fraud team at {org}.'
+    next: warning
+    replies:
+      - { label: 'Who is this?', goto: who }
+      - { label: 'Go ahead', goto: warning }
+  - id: warning
+    say: 'Your account has been compromised.'
+    flag: true
+    cueAt: 0.5
+    tactics: [authority, urgency]
+  - id: ask
+    say: 'Read me the code we just texted you.'
+    ask: true
+    tactics: [code-request]
+  - id: coda
+    say: 'Okay, read it now. I will wait.'
+    next: END
+  - id: who
+    say: 'The fraud team. This cannot wait.'
+    next: warning
+callback:
+  label: Hang up and call the number on my card
+  trustedSource: the number on your card
+  number: '(614) 555-0191'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: 'Thank you for calling {org}. We did not call you.'
+advice: A real bank never asks you to read out a code. Hang up and call the number on your card.

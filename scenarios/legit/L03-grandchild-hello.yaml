@@ -1,0 +1,38 @@
+id: L03-grandchild-hello
+kind: legit
+group: real
+category: legit.family
+summary: a real call from a grandchild
+who: your grandchild Sam
+missCost: you'd have missed a call from family
+sources:
+  - { key: IC3-2025, page: 40 }
+caller:
+  display: Sam
+  number: '(646) 555-0143'
+  voice: mark-casual
+  bed: home
+vars:
+  weekend: [Saturday, Sunday, next weekend]
+lines:
+  - id: hello
+    say: "Hi, {address}! It's Sam."
+    pauseAfterMs: 800
+  - id: news
+    say: "I just wanted to say hello. I finished my exams today, and I'm so relieved."
+  - id: plan
+    say: "I'm hoping to come and see you {weekend}. We can have tea and play cards."
+  - id: nothing
+    say: "That's all. No emergency, I promise. I just missed talking to you."
+  - id: goodbye
+    say: 'Love you lots. Talk soon, bye for now.'
+    next: END
+callback:
+  label: Hang up and call them back myself
+  trustedSource: the number you already have
+  number: '(646) 555-0144'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: "Hi, you've reached Sam. I can't pick up right now, but leave a message and I'll call you back."
+advice: A grandchild who just says hello is no trouble at all. It was a call to enjoy, not a call to fear.

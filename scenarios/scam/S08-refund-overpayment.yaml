@@ -1,0 +1,46 @@
+id: S08-refund-overpayment
+kind: scam
+group: tech
+category: refund-overpayment
+summary: a fake refund call
+askFor: gift cards
+sources:
+  - { key: IC3-2025, page: 21 }
+  - { key: FTC-OA-2025, page: 24 }
+caller:
+  display: Larkspur Subscriptions Billing
+  number: '(720) 555-0139'
+  voice: zira-calm
+  bed: callcentre
+vars:
+  amount: ['$2,000', '$1,400', '$3,100']
+lines:
+  - id: hello
+    say: 'Good morning, {address}.'
+    pauseAfterMs: 500
+  - id: intro
+    say: 'This is the billing office at Larkspur Subscriptions, about your cancelled plan.'
+    tactics: [authority]
+  - id: warning
+    say: 'We refunded you {amount} by mistake. It went into your account this morning.'
+    flag: true
+    tactics: [urgency, authority]
+  - id: access
+    say: 'Let me show you on screen. Please let me connect to your computer so I can correct it.'
+    tactics: [remote-access]
+  - id: ask
+    say: 'The difference has to come back today. Please buy gift cards for it and read me the numbers.'
+    ask: true
+    tactics: [unusual-payment, urgency]
+  - id: coda
+    say: "Good. I'll stay with you until the cards are done."
+    next: END
+callback:
+  label: Hang up and call the number on my bill
+  trustedSource: the number on your bill
+  number: '(720) 555-0140'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: 'Thank you for calling Larkspur Subscriptions. No refund has been issued to you in error. We never take repayment by gift card.'
+advice: Refund mix-ups are never fixed with gift cards. Hang up and call the number on your own bill.

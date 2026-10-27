@@ -1,0 +1,351 @@
+/*
+ * DESIGN.md tokens → CSS variables → Tailwind v4 @theme inline.
+ *
+ * Source of truth: DESIGN.md frontmatter. `pnpm tokens:check` fails if a
+ * value here drifts from it. Role tokens only: Tailwind's default palette,
+ * radius, shadow and type scales are reset, so `bg-red-500`, `rounded-full`
+ * on a button, or `text-sm` do not exist.
+ */
+@import 'tailwindcss';
+
+/* Theme switch: system by default; [data-theme] on <html> overrides it. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* ── Notebook, light (default) ─────────────────────────────────────────── */
+:root {
+  color-scheme: light;
+  --bg: oklch(0.985 0.004 110);
+  --surface: oklch(1 0 0);
+  --surface-2: oklch(0.958 0.006 110);
+  --border: oklch(0.905 0.008 110);
+  --border-strong: oklch(0.6 0.012 110);
+  --text: oklch(0.24 0.012 120);
+  --text-muted: oklch(0.44 0.012 120);
+  --text-subtle: oklch(0.5 0.01 120);
+  --accent: oklch(0.48 0.1 140);
+  --accent-hover: oklch(0.43 0.095 140);
+  --on-accent: oklch(0.99 0.008 140);
+  --accent-soft: oklch(0.95 0.03 140);
+  --accent-text: oklch(0.42 0.09 140);
+  --danger: oklch(0.5 0.18 27);
+  --danger-soft: oklch(0.95 0.026 25);
+  --on-danger: oklch(0.99 0.005 27);
+  --warning: oklch(0.48 0.11 65);
+  --warning-soft: oklch(0.95 0.045 80);
+  --ring: oklch(0.48 0.1 140);
+
+  /* Elevation (DESIGN.md §Elevation, light) */
+  --shadow-e1: 0 0 0 1px var(--border), 0 1px 2px oklch(0.25 0.02 110 / 0.04);
+  --shadow-e2:
+    0 0 0 1px oklch(0.25 0.02 110 / 0.06), 0 1px 1px oklch(0.25 0.02 110 / 0.02),
+    0 2px 4px -1px oklch(0.25 0.02 110 / 0.06);
+  --shadow-e3:
+    0 0 0 1px oklch(0.25 0.02 110 / 0.06), 0 2px 4px -1px oklch(0.25 0.02 110 / 0.06),
+    0 8px 16px -4px oklch(0.25 0.02 110 / 0.1);
+  --shadow-e4:
+    0 0 0 1px oklch(0.25 0.02 110 / 0.06), 0 8px 16px -4px oklch(0.25 0.02 110 / 0.08),
+    0 24px 48px -12px oklch(0.25 0.02 110 / 0.2);
+  --scrim: oklch(0.12 0.01 110 / 0.45);
+
+  /* ── The Line: identical in both themes (DESIGN.md "Line Is Always Dark") */
+  --call-bg: oklch(0.17 0.008 120);
+  --call-surface: oklch(0.235 0.009 120);
+  --call-surface-2: oklch(0.3 0.012 120);
+  --call-border: oklch(0.52 0.01 120);
+  --call-text: oklch(0.96 0.005 120);
+  --call-muted: oklch(0.83 0.01 120);
+  --call-answer: oklch(0.78 0.085 138);
+  --on-call-answer: oklch(0.2 0.03 140);
+  --call-hangup: oklch(0.53 0.2 27);
+  --on-call-hangup: oklch(0.985 0.004 27);
+  --call-ring: oklch(0.86 0.07 138);
+
+  /* Motion (DESIGN.md Appendix A) */
+  --dur-0: 0ms;
+  --dur-1: 100ms;
+  --dur-2: 150ms;
+  --dur-3: 200ms;
+  --dur-4: 250ms;
+  --dur-5: 300ms;
+  --dur-sheet-in: 500ms;
+  --dur-sheet-out: 300ms;
+  --dur-ring: 1200ms;
+  --dur-timeline: 600ms;
+  --dur-cut-max: 2000ms;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-out-soft: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-fall: cubic-bezier(0.55, 0, 1, 0.45);
+  --ease-scene: cubic-bezier(0.65, 0.05, 0, 1);
+
+  /* Z-index (DESIGN.md §Elevation) */
+  --z-sticky: 10;
+  --z-overlay: 30;
+  --z-modal: 40;
+  --z-toast: 60;
+  --z-line: 80;
+  --z-shatter: 90;
+}
+
+/* ── Notebook, dark (re-derived, not inverted) ─────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --bg: oklch(0.19 0.006 120);
+    --surface: oklch(0.225 0.007 120);
+    --surface-2: oklch(0.265 0.008 120);
+    --border: oklch(0.31 0.008 120);
+    --border-strong: oklch(0.54 0.01 120);
+    --text: oklch(0.95 0.006 120);
+    --text-muted: oklch(0.82 0.01 120);
+    --text-subtle: oklch(0.73 0.01 120);
+    --accent: oklch(0.78 0.085 138);
+    --accent-hover: oklch(0.83 0.075 138);
+    --on-accent: oklch(0.2 0.03 140);
+    --accent-soft: oklch(0.29 0.045 140);
+    --accent-text: oklch(0.8 0.08 138);
+    --danger: oklch(0.77 0.13 25);
+    --danger-soft: oklch(0.28 0.06 25);
+    --on-danger: oklch(0.18 0.03 25);
+    --warning: oklch(0.82 0.13 80);
+    --warning-soft: oklch(0.29 0.05 75);
+    --ring: oklch(0.78 0.085 138);
+    --shadow-e1: 0 0 0 1px var(--border), inset 0 1px 0 oklch(1 0 0 / 0.05);
+    --shadow-e2: 0 0 0 1px var(--border), inset 0 1px 0 oklch(1 0 0 / 0.05);
+    --shadow-e3: 0 0 0 1px var(--border), inset 0 1px 0 oklch(1 0 0 / 0.05);
+    --shadow-e4: 0 0 0 1px oklch(1 0 0 / 0.06), 0 24px 48px -12px oklch(0 0 0 / 0.6);
+    --scrim: oklch(0.12 0.01 110 / 0.65);
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: oklch(0.19 0.006 120);
+  --surface: oklch(0.225 0.007 120);
+  --surface-2: oklch(0.265 0.008 120);
+  --border: oklch(0.31 0.008 120);
+  --border-strong: oklch(0.54 0.01 120);
+  --text: oklch(0.95 0.006 120);
+  --text-muted: oklch(0.82 0.01 120);
+  --text-subtle: oklch(0.73 0.01 120);
+  --accent: oklch(0.78 0.085 138);
+  --accent-hover: oklch(0.83 0.075 138);
+  --on-accent: oklch(0.2 0.03 140);
+  --accent-soft: oklch(0.29 0.045 140);
+  --accent-text: oklch(0.8 0.08 138);
+  --danger: oklch(0.77 0.13 25);
+  --danger-soft: oklch(0.28 0.06 25);
+  --on-danger: oklch(0.18 0.03 25);
+  --warning: oklch(0.82 0.13 80);
+  --warning-soft: oklch(0.29 0.05 75);
+  --ring: oklch(0.78 0.085 138);
+  --shadow-e1: 0 0 0 1px var(--border), inset 0 1px 0 oklch(1 0 0 / 0.05);
+  --shadow-e2: 0 0 0 1px var(--border), inset 0 1px 0 oklch(1 0 0 / 0.05);
+  --shadow-e3: 0 0 0 1px var(--border), inset 0 1px 0 oklch(1 0 0 / 0.05);
+  --shadow-e4: 0 0 0 1px oklch(1 0 0 / 0.06), 0 24px 48px -12px oklch(0 0 0 / 0.6);
+  --scrim: oklch(0.12 0.01 110 / 0.65);
+}
+
+/* ── Tailwind theme: role tokens only ──────────────────────────────────── */
+@theme inline {
+  --color-*: initial;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-text-subtle: var(--text-subtle);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-on-accent: var(--on-accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-text: var(--accent-text);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-on-danger: var(--on-danger);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-ring: var(--ring);
+  --color-scrim: var(--scrim);
+  --color-call-bg: var(--call-bg);
+  --color-call-surface: var(--call-surface);
+  --color-call-surface-2: var(--call-surface-2);
+  --color-call-border: var(--call-border);
+  --color-call-text: var(--call-text);
+  --color-call-muted: var(--call-muted);
+  --color-call-answer: var(--call-answer);
+  --color-on-call-answer: var(--on-call-answer);
+  --color-call-hangup: var(--call-hangup);
+  --color-on-call-hangup: var(--on-call-hangup);
+  --color-call-ring: var(--call-ring);
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --shadow-*: initial;
+  --shadow-e1: var(--shadow-e1);
+  --shadow-e2: var(--shadow-e2);
+  --shadow-e3: var(--shadow-e3);
+  --shadow-e4: var(--shadow-e4);
+
+  --ease-*: initial;
+  --ease-out: var(--ease-out);
+  --ease-out-soft: var(--ease-out-soft);
+  --ease-in-out: var(--ease-in-out);
+  --ease-sheet: var(--ease-sheet);
+  --ease-fall: var(--ease-fall);
+}
+
+@theme {
+  /* T7: Atkinson Hyperlegible Next + Mono (self-hosted via Fontsource) */
+  --font-*: initial;
+  --font-sans: 'Atkinson Hyperlegible Next Variable', 'Atkinson Fallback', system-ui, sans-serif;
+  --font-mono: 'Atkinson Hyperlegible Mono Variable', ui-monospace, monospace;
+
+  /* "Senior Comfortable" scale. Nothing below 18px exists (We never #3). */
+  --text-*: initial;
+  --text-landing-display: clamp(3.5rem, 2rem + 6vw, 7rem);
+  --text-landing-display--line-height: 0.94;
+  --text-landing-display--letter-spacing: -0.035em;
+  --text-landing-display--font-weight: 650;
+  --text-result-display: clamp(2.5rem, 1.9rem + 2.6vw, 3.5rem);
+  --text-result-display--line-height: 1.04;
+  --text-result-display--letter-spacing: -0.028em;
+  --text-result-display--font-weight: 600;
+  --text-caller: clamp(2.25rem, 1.75rem + 2vw, 2.75rem);
+  --text-caller--line-height: 1.1;
+  --text-caller--letter-spacing: -0.022em;
+  --text-caller--font-weight: 600;
+  --text-h1: 2.5rem;
+  --text-h1--line-height: 1.15;
+  --text-h1--letter-spacing: -0.022em;
+  --text-h1--font-weight: 600;
+  --text-headline: 2rem;
+  --text-headline--line-height: 1.19;
+  --text-headline--letter-spacing: -0.018em;
+  --text-headline--font-weight: 600;
+  --text-title: 1.625rem;
+  --text-title--line-height: 1.23;
+  --text-title--letter-spacing: -0.012em;
+  --text-title--font-weight: 600;
+  --text-lead: 1.5rem;
+  --text-lead--line-height: 1.42;
+  --text-lead--letter-spacing: -0.01em;
+  --text-lead--font-weight: 400;
+  --text-caption-live: 1.625rem;
+  --text-caption-live--line-height: 1.38;
+  --text-caption-live--letter-spacing: -0.01em;
+  --text-caption-live--font-weight: 500;
+  --text-body: 1.25rem;
+  --text-body--line-height: 1.5;
+  --text-body--letter-spacing: -0.005em;
+  --text-body--font-weight: 400;
+  --text-ui: 1.25rem;
+  --text-ui--line-height: 1.3;
+  --text-ui--letter-spacing: 0em;
+  --text-ui--font-weight: 600;
+  --text-meta: 1.125rem;
+  --text-meta--line-height: 1.45;
+  --text-meta--letter-spacing: 0.005em;
+  --text-meta--font-weight: 500;
+  --text-mono-timer: 1.75rem;
+  --text-mono-timer--line-height: 1.15;
+  --text-mono-timer--letter-spacing: 0.02em;
+  --text-mono-timer--font-weight: 500;
+  --text-mono-number: 1.375rem;
+  --text-mono-number--line-height: 1.3;
+  --text-mono-number--letter-spacing: 0.04em;
+  --text-mono-number--font-weight: 500;
+  --text-keycap: 1.125rem;
+  --text-keycap--line-height: 1;
+  --text-keycap--letter-spacing: 0.02em;
+  --text-keycap--font-weight: 600;
+
+  /* Soft radius personality: xs 6 · sm 10 · md 14 · lg 20 · full (circles only) */
+  --radius-*: initial;
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  /* 4px base; utilities like h-14 = 56px, h-16 = 64px, size-24 = 96px. */
+  --spacing: 0.25rem;
+
+  --breakpoint-*: initial;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 90rem;
+}
+
+/* ── Base ──────────────────────────────────────────────────────────────── */
+/* Metric-matched fallback (DESIGN.md §Typography → Loading). Overrides are a
+ * Stage 2 estimate; Stage 3 measures them against the woff2 for CLS 0. */
+@font-face {
+  font-family: 'Atkinson Fallback';
+  src: local('Arial');
+  size-adjust: 104%;
+  ascent-override: 92%;
+  descent-override: 24%;
+  line-gap-override: 0%;
+}
+
+@layer base {
+  html {
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  html[data-text-size='larger'] {
+    font-size: 120%;
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    letter-spacing: var(--text-body--letter-spacing);
+    font-synthesis: none;
+    font-optical-sizing: auto;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100dvh;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 3px solid var(--ring);
+    outline-offset: 3px;
+  }
+  [data-surface='call'] {
+    --ring: var(--call-answer);
+    background: var(--call-bg);
+    color: var(--call-text);
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
+  }
+}
+
+/* Bible §5.5 CSS reduced-motion fallback, verbatim. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-property: opacity, color, background-color, border-color !important;
+    transition-duration: 150ms !important;
+    scroll-behavior: auto !important;
+  }
+}

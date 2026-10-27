@@ -1,0 +1,186 @@
+{
+  "_comment": "Golden rows for the SPEC section 7.2 outcome table. Scam markers: tFlag 6000, tAsk 40000, tEnd 60000 (ms). Legit: tEnd 30000. Hand-written from the SPEC table, not generated from the implementation.",
+  "scamMarkers": { "tFlagMs": 6000, "tAskMs": 40000, "tEndMs": 60000 },
+  "legitMarkers": { "tEndMs": 30000 },
+  "rows": [
+    {
+      "name": "scam hang up at 0 ms is jumpy",
+      "kind": "scam",
+      "action": "hangup",
+      "tActionMs": 0,
+      "outcome": "jumpy",
+      "points": 60,
+      "moment": "shatter"
+    },
+    {
+      "name": "scam hang up one ms before the flag is jumpy",
+      "kind": "scam",
+      "action": "hangup",
+      "tActionMs": 5999,
+      "outcome": "jumpy",
+      "points": 60,
+      "moment": "shatter"
+    },
+    {
+      "name": "scam hang up exactly at the flag is sharp",
+      "kind": "scam",
+      "action": "hangup",
+      "tActionMs": 6000,
+      "outcome": "sharp",
+      "points": 100,
+      "moment": "cut"
+    },
+    {
+      "name": "scam hang up between flag and ask is sharp",
+      "kind": "scam",
+      "action": "hangup",
+      "tActionMs": 20000,
+      "outcome": "sharp",
+      "points": 100,
+      "moment": "cut"
+    },
+    {
+      "name": "scam hang up one ms before the ask is sharp",
+      "kind": "scam",
+      "action": "hangup",
+      "tActionMs": 39999,
+      "outcome": "sharp",
+      "points": 100,
+      "moment": "cut"
+    },
+    {
+      "name": "scam hang up exactly at the ask is late and pays 70",
+      "kind": "scam",
+      "action": "hangup",
+      "tActionMs": 40000,
+      "outcome": "late",
+      "points": 70,
+      "moment": "shatter"
+    },
+    {
+      "name": "scam hang up at ask + 10 s is still 70",
+      "kind": "scam",
+      "action": "hangup",
+      "tActionMs": 50000,
+      "outcome": "late",
+      "points": 70,
+      "moment": "shatter"
+    },
+    {
+      "name": "scam hang up at ask + 10 s + 1 ms drops to 50",
+      "kind": "scam",
+      "action": "hangup",
+      "tActionMs": 50001,
+      "outcome": "late",
+      "points": 50,
+      "moment": "shatter"
+    },
+    {
+      "name": "scam hang up one ms before the end is late at 50",
+      "kind": "scam",
+      "action": "hangup",
+      "tActionMs": 59999,
+      "outcome": "late",
+      "points": 50,
+      "moment": "shatter"
+    },
+    {
+      "name": "scam action at the end counts as caught",
+      "kind": "scam",
+      "action": "hangup",
+      "tActionMs": 60000,
+      "outcome": "caught",
+      "points": 0,
+      "moment": "fade"
+    },
+    {
+      "name": "scam with no action is caught",
+      "kind": "scam",
+      "action": "none",
+      "outcome": "caught",
+      "points": 0,
+      "moment": "fade"
+    },
+    {
+      "name": "scam call back before the flag is verified at 70",
+      "kind": "scam",
+      "action": "callback",
+      "tActionMs": 3000,
+      "outcome": "verified",
+      "points": 70,
+      "moment": "cut"
+    },
+    {
+      "name": "scam call back between flag and ask is 100",
+      "kind": "scam",
+      "action": "callback",
+      "tActionMs": 10000,
+      "outcome": "verified",
+      "points": 100,
+      "moment": "cut"
+    },
+    {
+      "name": "scam call back just after the ask is 70 + 10",
+      "kind": "scam",
+      "action": "callback",
+      "tActionMs": 45000,
+      "outcome": "verified",
+      "points": 80,
+      "moment": "cut"
+    },
+    {
+      "name": "scam call back late is 50 + 10",
+      "kind": "scam",
+      "action": "callback",
+      "tActionMs": 55000,
+      "outcome": "verified",
+      "points": 60,
+      "moment": "cut"
+    },
+    {
+      "name": "legit with no action is stayed",
+      "kind": "legit",
+      "action": "none",
+      "outcome": "stayed",
+      "points": 100,
+      "moment": "fade"
+    },
+    {
+      "name": "legit call back is verified at 90",
+      "kind": "legit",
+      "action": "callback",
+      "tActionMs": 12000,
+      "outcome": "verified",
+      "points": 90,
+      "moment": "fade"
+    },
+    {
+      "name": "legit call back when calling back is the lesson (L04) is 100",
+      "kind": "legit",
+      "action": "callback",
+      "tActionMs": 12000,
+      "callbackIsTheLesson": true,
+      "outcome": "verified",
+      "points": 100,
+      "moment": "fade"
+    },
+    {
+      "name": "legit hang up at 0 s is missed",
+      "kind": "legit",
+      "action": "hangup",
+      "tActionMs": 0,
+      "outcome": "missed",
+      "points": 20,
+      "moment": "fade"
+    },
+    {
+      "name": "legit hang up late is still missed",
+      "kind": "legit",
+      "action": "hangup",
+      "tActionMs": 29000,
+      "outcome": "missed",
+      "points": 20,
+      "moment": "fade"
+    }
+  ]
+}

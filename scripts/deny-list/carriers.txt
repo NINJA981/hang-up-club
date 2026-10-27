@@ -1,0 +1,31 @@
+# Carriers, couriers and ISPs.
+=UPS
+FedEx
+DHL
+=USPS
+United States Postal
+Postal Service
+Verizon
+AT&T
+T-Mobile
+Sprint
+Comcast
+Xfinity
+Spectrum
+Charter Communications
+Cox Communications
+Frontier Communications
+CenturyLink
+Lumen
+DirecTV
+Dish Network
+Cricket Wireless
+Boost Mobile
+Mint Mobile
+Straight Talk
+TracFone
+Consumer Cellular
+Royal Mail
+Canada Post
+OnTrac
+Amtrak

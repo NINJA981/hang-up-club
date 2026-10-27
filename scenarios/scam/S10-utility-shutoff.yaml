@@ -1,0 +1,42 @@
+id: S10-utility-shutoff
+kind: scam
+group: utility
+category: business-impersonation.utility
+summary: a fake power company call
+askFor: a prepaid card
+sources:
+  - { key: FTC-OA-2025, page: 24 }
+caller:
+  display: Tollan Valley Power & Light
+  number: '(937) 555-0112'
+  voice: david-firm
+  bed: callcentre
+vars:
+  amount: ['$318', '$472', '$609']
+lines:
+  - id: hello
+    say: '{address}, this is Tollan Valley Power and Light.'
+    pauseAfterMs: 500
+  - id: warning
+    say: 'Your account is {amount} overdue, and a crew is on its way to cut your power in thirty minutes.'
+    flag: true
+    tactics: [fear, urgency]
+  - id: pressure
+    say: 'Once the power is off, the reconnection fee is more than double.'
+    tactics: [urgency, fear]
+  - id: ask
+    say: 'You can stop the crew now. Pay with a prepaid card, and read me the number on the back.'
+    ask: true
+    tactics: [unusual-payment, urgency]
+  - id: coda
+    say: 'The crew is almost there. Read me the number now.'
+    next: END
+callback:
+  label: Hang up and call the number on my bill
+  trustedSource: the number on your bill
+  number: '(937) 555-0113'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: 'Thank you for calling Tollan Valley Power and Light. Your account is in good standing, and we never ask for payment by prepaid card.'
+advice: A power company gives notice in writing and never demands a prepaid card. Call the number on your bill.

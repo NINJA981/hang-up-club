@@ -1,0 +1,30 @@
+# Ambience beds (ADR §4.1 step 5). Synthesised from layered TTS murmur plus
+# line noise, so no third-party samples ship. `none` has no file.
+callcentre:
+  label: Distant call-centre murmur
+  speakers: [zira-calm, david-firm, mark-casual]
+  fillers:
+    - 'Thank you for holding. Let me pull that up for you.'
+    - 'Yes, I can see that on the screen. One moment.'
+    - "No, that's all right. I'll note it on the file."
+    - 'Can you spell that for me, please.'
+  noiseDb: -45
+pharmacy:
+  label: Quiet shop with a phone ringing far off
+  speakers: [zira-calm, david-firm]
+  fillers:
+    - 'That one will be ready in ten minutes.'
+    - 'Would you like a bag for that?'
+  noiseDb: -48
+home:
+  label: Quiet room with a clock
+  speakers: [zira-calm]
+  fillers:
+    - 'Just a moment, the kettle is on.'
+  noiseDb: -50
+street:
+  label: Wind and passing traffic
+  speakers: [mark-casual]
+  fillers:
+    - "Hold on, it's loud out here."
+  noiseDb: -40

@@ -1,0 +1,7 @@
+{
+  "_comment": "Synthetic manifest for unit tests: durations only, no audio files. Keys are clipKey(voice, text) for the S90 mini scenario; see tests/unit/manifest.test.ts.",
+  "version": "fixture",
+  "filterVersion": 2,
+  "clips": {},
+  "beds": {}
+}

@@ -1,0 +1,37 @@
+id: L05-dentist-reminder
+kind: legit
+group: real
+category: legit.dentist
+summary: a real dentist reminder
+who: the real dentist's reminder
+missCost: you'd have missed your appointment reminder
+sources:
+  - { key: FTC-OA-2025, page: 22 }
+caller:
+  display: Northgate Dental
+  number: '(971) 555-0126'
+  voice: ivr
+  bed: none
+vars:
+  day: [Tuesday, Wednesday, Friday]
+  time: [nine thirty, one o'clock, three fifteen]
+lines:
+  - id: hello
+    say: 'Hello, {address}. This is an automated reminder from Northgate Dental.'
+    pauseAfterMs: 500
+  - id: news
+    say: 'You have a cleaning booked for {day} at {time}.'
+  - id: option
+    say: 'If you would like to confirm, you may press one. You do not have to press anything.'
+  - id: goodbye
+    say: 'We look forward to seeing you. Goodbye.'
+    next: END
+callback:
+  label: Hang up and call the dentist's number
+  trustedSource: the number on your appointment card
+  number: '(971) 555-0127'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: 'Thank you for calling Northgate Dental. Your cleaning is booked, and nothing more is needed.'
+advice: An automated reminder may ask you to press a button, but it never asks for card numbers or private details.

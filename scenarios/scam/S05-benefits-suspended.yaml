@@ -1,0 +1,45 @@
+id: S05-benefits-suspended
+kind: scam
+group: government
+category: government-impersonation.benefits
+summary: a fake benefits office call
+askFor: your benefit number
+sources:
+  - { key: FTC-OA-2025, page: 24 }
+caller:
+  display: National Benefits Administration
+  number: '(410) 555-0152'
+  voice: zira-calm
+  bed: callcentre
+vars:
+  month: [this month, next month, this quarter]
+lines:
+  - id: hello
+    say: "Hello, {address}. I'm calling about your monthly benefit."
+    pauseAfterMs: 600
+  - id: intro
+    say: 'This is Ms. Carter at the National Benefits Administration.'
+    tactics: [authority]
+  - id: warning
+    say: 'Your benefits are suspended {month}, because of suspicious activity on your file.'
+    flag: true
+    tactics: [fear, authority]
+  - id: pressure
+    say: "I can clear it now, but only while we're on this call. Otherwise your payments stop."
+    tactics: [urgency, fear]
+  - id: ask
+    say: "Please confirm your full benefit number, so I can verify that it's really you."
+    ask: true
+    tactics: [personal-info]
+  - id: coda
+    say: "Go ahead and read it to me slowly. I'm writing it down."
+    next: END
+callback:
+  label: Hang up and call the number on my letter
+  trustedSource: the number on your benefits letter
+  number: '(410) 555-0153'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: 'Thank you for calling the benefits line. Your payments are on schedule. We never ask for your full number by phone.'
+advice: A benefits office won't threaten to stop payments. Hang up and call the number on your own letters.

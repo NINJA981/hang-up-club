@@ -1,0 +1,44 @@
+id: S12-romance-customs
+kind: scam
+group: romance
+category: romance
+summary: a fake online friend call
+askFor: money for customs
+sources:
+  - { key: FTC-OA-2025, page: 23 }
+  - { key: IC3-2025, page: 46 }
+caller:
+  display: Daniel
+  number: '(917) 555-0108'
+  voice: mark-casual
+  bed: street
+vars:
+  place: [Lisbon, Dubai, Singapore, Houston]
+  fee: ['$1,200', '$1,850', '$2,400']
+lines:
+  - id: hello
+    say: "Hi, it's Daniel. I'm so happy you picked up."
+    pauseAfterMs: 700
+  - id: story
+    say: "I'm stuck in {place} after the job finished. My bags are held at the airport."
+    tactics: [urgency]
+  - id: warning
+    say: "I can't tell anyone but you. You're the only person I trust."
+    flag: true
+    tactics: [secrecy, isolation]
+  - id: ask
+    say: "They won't release my bags until I pay a customs fee of {fee}. Could you wire it to me today?"
+    ask: true
+    tactics: [unusual-payment, urgency]
+  - id: coda
+    say: "I'll pay you back the moment I land. Please, I'm counting on you."
+    next: END
+callback:
+  label: Hang up and call them back myself
+  trustedSource: a number you already trust
+  number: '(917) 555-0109'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: 'The number you have dialed is not in service.'
+advice: Someone you only know online who needs money is a scam, however kind. Never wire money to them.

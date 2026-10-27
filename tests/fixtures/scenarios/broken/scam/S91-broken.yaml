@@ -1,0 +1,36 @@
+# Test fixture: every defect below is deliberate. The loader test asserts file:line messages for them.
+id: S91-broken
+kind: scam
+group: bank
+category: business-impersonation.bank
+summary: a broken call
+sources:
+  - { key: NOT-A-SOURCE, page: 1 }
+caller:
+  display: Broken Bank
+  number: '(614) 555-0100'
+  voice: zira-calm
+  bed: none
+vars:
+  unused: [a, b]
+lines:
+  - id: hello
+    say: 'Hello {address}, this is {org}.'
+  - id: first-ask
+    say: 'Read me the code.'
+    ask: true
+    tactics: [code-request]
+    next: nowhere
+  - id: second-ask
+    say: 'Read me the number.'
+    ask: true
+    tactics: [personal-info]
+callback:
+  label: Hang up and call back
+  trustedSource: the number on your card
+  number: '(614) 555-0199'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: 'Thank you for calling.'
+advice: This call has several deliberate problems for the loader tests to find.

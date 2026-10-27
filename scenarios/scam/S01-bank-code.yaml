@@ -1,0 +1,54 @@
+id: S01-bank-code
+kind: scam
+group: bank
+category: business-impersonation.bank
+summary: a fake bank call
+askFor: the code
+sources:
+  - { key: FTC-OA-2025, page: 24 }
+  - { key: FTC-OA-2025, page: 26 }
+  - { key: IC3-2025, page: 45 }
+caller:
+  display: '{org} Fraud Dept'
+  number: '(614) 555-0148'
+  voice: zira-calm
+  bed: callcentre
+vars:
+  org: [First Meridian Bank, Kestrel Ridge Credit Union, Bellwick National Bank]
+lines:
+  - id: hello
+    say: 'Hello, is this {address}?'
+    pauseAfterMs: 700
+  - id: intro
+    say: 'This is Dana from the fraud department at {org}. Thank you for picking up.'
+    next: warning
+    replies:
+      - { label: 'Who is this?', goto: verify }
+      - { label: 'Go ahead', goto: warning }
+  - id: warning
+    say: 'Your account has been compromised, and we need to act quickly.'
+    flag: true
+    cueAt: 0.4
+    tactics: [authority, urgency]
+  - id: pressure
+    say: "Someone is trying to move your savings right now. Please stay on the line, and don't hang up, or the account locks."
+    tactics: [fear, isolation]
+  - id: ask
+    say: "I'll need the code we just texted you. Please read it to me now."
+    ask: true
+    tactics: [code-request, urgency]
+  - id: coda
+    say: "Okay, read it to me now. I'll wait."
+    next: END
+  - id: verify
+    say: "I understand. This is a fraud alert on your account, and it can't wait."
+    next: warning
+callback:
+  label: Hang up and call the number on my card
+  trustedSource: the number on your card
+  number: '(614) 555-0120'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: 'Thank you for calling {org}. We did not call you today. We never ask for a text code over the phone.'
+advice: A real bank never asks you to read out a code. Hang up and call the number on the back of your card.

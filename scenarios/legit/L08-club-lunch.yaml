@@ -1,0 +1,36 @@
+id: L08-club-lunch
+kind: legit
+group: real
+category: legit.friend
+summary: a real call from a club friend
+who: Marion from the Thursday club
+missCost: you'd have missed your lunch plans
+sources:
+  - { key: IC3-2025, page: 40 }
+caller:
+  display: Marion (Thursday Club)
+  number: '(207) 555-0165'
+  voice: zira-calm
+  bed: home
+vars:
+  place: [the garden cafe, the community hall, the corner tearoom]
+lines:
+  - id: hello
+    say: "Hello, {address}! It's Marion from the Thursday club."
+    pauseAfterMs: 700
+  - id: news
+    say: "I'm just calling to check that we're still having lunch on Thursday at {place}."
+  - id: plan
+    say: "I'll save you a seat by the window. Twelve o'clock, as usual."
+  - id: goodbye
+    say: 'Wonderful, see you then. Bye now.'
+    next: END
+callback:
+  label: Hang up and call them back myself
+  trustedSource: the number you already have
+  number: '(207) 555-0166'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: "Hello, this is Marion. I can't come to the phone. Leave me a message, and I'll ring you back."
+advice: A friend from your club making lunch plans is a social call. Nothing was asked of you.

@@ -1,0 +1,43 @@
+id: L02-clinic-reschedule
+kind: legit
+group: real
+category: legit.clinic
+summary: a real clinic call
+who: the real clinic
+missCost: you'd have missed the chance to move your appointment
+sources:
+  - { key: FTC-OA-2025, page: 22 }
+caller:
+  display: Riverbend Family Clinic
+  number: '(503) 555-0138'
+  voice: zira-calm
+  bed: pharmacy
+vars:
+  time: [ten in the morning, two in the afternoon, eleven thirty]
+lines:
+  - id: hello
+    say: 'Good morning, {address}.'
+    pauseAfterMs: 600
+  - id: intro
+    say: 'This is Riverbend Family Clinic. The doctor has to move your appointment this week.'
+  - id: offer
+    say: 'Would Thursday at {time} work for you?'
+    next: later
+    replies:
+      - { label: 'Yes, Thursday works', goto: confirm }
+      - { label: "I'll call the clinic", goto: later }
+  - id: confirm
+    say: "Lovely. We'll see you Thursday, then. Nothing else is needed."
+    next: END
+  - id: later
+    say: 'No problem at all. You can call us any time on the number on your appointment card. Take care.'
+    next: END
+callback:
+  label: Hang up and call the clinic's number
+  trustedSource: the number on your appointment card
+  number: '(503) 555-0139'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: 'Thank you for calling Riverbend Family Clinic. Yes, we are moving a few appointments this week. A receptionist will be with you shortly.'
+advice: A real clinic offers choices and never asks for private numbers. You can always call back to check.

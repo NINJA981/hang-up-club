@@ -1,0 +1,52 @@
+id: S03-grandchild-bail
+kind: scam
+group: family
+category: family-impersonation.grandchild
+summary: a fake grandchild call
+askFor: gift cards
+sources:
+  - { key: FTC-OA-2025, page: 27 }
+  - { key: IC3-2025, page: 40 }
+caller:
+  display: Unknown Number
+  number: '(212) 555-0177'
+  voice: mark-casual
+  bed: street
+vars:
+  amount: ['$2,500', '$3,800', '$4,500']
+lines:
+  - id: hello
+    say: "{address}? It's me. Please don't hang up."
+    pauseAfterMs: 800
+  - id: trouble
+    say: "I'm in trouble. I was in a car accident, and the police arrested me."
+    tactics: [fear, urgency]
+  - id: secret
+    say: "Please don't tell Mom or Dad. I'm so embarrassed."
+    flag: true
+    tactics: [secrecy, fear]
+  - id: lawyer
+    say: "I'm putting on my lawyer. His name is Mark Ellison."
+    voice: david-firm
+    speaker: Attorney Ellison
+    tactics: [authority]
+  - id: ask
+    say: 'Bail is {amount}, and it must be paid today. Buy gift cards and read me the numbers, or a courier can collect cash from your door.'
+    voice: david-firm
+    speaker: Attorney Ellison
+    ask: true
+    tactics: [unusual-payment, urgency]
+  - id: coda
+    say: "I'm ready when you are. Read me the numbers now."
+    voice: david-firm
+    speaker: Attorney Ellison
+    next: END
+callback:
+  label: Hang up and call them back myself
+  trustedSource: the number you already have
+  number: '(212) 555-0140'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: 'The person you are trying to reach is not available. Please try again later.'
+advice: If a family member is in trouble, hang up and call them on the number you already have. Never pay with gift cards.

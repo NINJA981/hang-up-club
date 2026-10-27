@@ -1,0 +1,45 @@
+id: S02-bank-safe-account
+kind: scam
+group: bank
+category: business-impersonation.bank
+summary: a fake bank security call
+askFor: cash for the kiosk
+sources:
+  - { key: FTC-OA-2025, page: 24 }
+caller:
+  display: '{org} Security Team'
+  number: '(502) 555-0163'
+  voice: david-firm
+  bed: callcentre
+vars:
+  org: [First Meridian Bank, Kestrel Ridge Credit Union, Bellwick National Bank]
+  amount: ['$4,800', '$6,200', '$9,500']
+lines:
+  - id: hello
+    say: 'Good afternoon, {address}.'
+    pauseAfterMs: 600
+  - id: intro
+    say: 'This is Mr. Pruitt with the security team at {org}.'
+  - id: warning
+    say: 'Your savings are at risk right now. Criminals have your online login.'
+    flag: true
+    tactics: [authority, fear]
+  - id: secret
+    say: "Please don't tell anyone at the branch. One of our tellers may be involved."
+    tactics: [secrecy]
+  - id: ask
+    say: "To keep your money safe, withdraw {amount} in cash and deposit it at the kiosk I'll direct you to."
+    ask: true
+    tactics: [unusual-payment, urgency]
+  - id: coda
+    say: "Take your time getting dressed. I'll stay on the line while you go."
+    next: END
+callback:
+  label: Hang up and call the number on my card
+  trustedSource: the number on your card
+  number: '(502) 555-0121'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: 'Thank you for calling {org}. We have no security case on your account. We never ask you to move money to keep it safe.'
+advice: No bank asks you to withdraw cash and put it in a machine. Hang up and call the number on your card.

@@ -1,0 +1,1607 @@
+{
+  "version": "16a4a446fac29f",
+  "addressTerms": [
+    "Grandma",
+    "Grandpa",
+    "Nana",
+    "Gran",
+    "Granny",
+    "Grandad",
+    "Papa",
+    "Paati",
+    "Thatha",
+    "Nani",
+    "Abuela",
+    "Abuelo",
+    "Oma",
+    "Opa",
+    "Lola"
+  ],
+  "templates": [
+    {
+      "id": "L01-pharmacy-refill",
+      "kind": "legit",
+      "group": "real",
+      "category": "legit.pharmacy",
+      "summary": "a real pharmacy call",
+      "who": "the real pharmacy",
+      "missCost": "you'd have missed the news that your refill is ready",
+      "caller": {
+        "display": "Alder Lane Pharmacy",
+        "number": "(614) 555-0171",
+        "voice": "zira-calm",
+        "bed": "pharmacy"
+      },
+      "vars": {
+        "time": [
+          "six tonight",
+          "five thirty today",
+          "noon tomorrow"
+        ]
+      },
+      "lines": [
+        {
+          "id": "hello",
+          "say": "Hello, {address}.",
+          "pauseAfterMs": 600
+        },
+        {
+          "id": "intro",
+          "say": "This is Priya at Alder Lane Pharmacy."
+        },
+        {
+          "id": "news",
+          "say": "Your prescription refill is ready to collect. We're open until {time}."
+        },
+        {
+          "id": "nothing",
+          "say": "There's nothing you need to do on this call. Pick it up any time that suits you."
+        },
+        {
+          "id": "goodbye",
+          "say": "Thank you, and have a lovely day.",
+          "next": "END"
+        }
+      ],
+      "callback": {
+        "label": "Hang up and call the pharmacy's number",
+        "trustedSource": "the pharmacy's own number",
+        "number": "(614) 555-0172",
+        "voice": "ivr",
+        "ivr": [
+          {
+            "id": "ivr1",
+            "say": "Thank you for calling Alder Lane Pharmacy. Yes, your refill is ready. Our hours are nine to six on weekdays."
+          }
+        ]
+      },
+      "advice": "This call gave information and asked for nothing. That is what a real call looks like.",
+      "sources": [
+        {
+          "key": "FTC-OA-2025",
+          "page": 22
+        }
+      ]
+    },
+    {
+      "id": "L02-clinic-reschedule",
+      "kind": "legit",
+      "group": "real",
+      "category": "legit.clinic",
+      "summary": "a real clinic call",
+      "who": "the real clinic",
+      "missCost": "you'd have missed the chance to move your appointment",
+      "caller": {
+        "display": "Riverbend Family Clinic",
+        "number": "(503) 555-0138",
+        "voice": "zira-calm",
+        "bed": "pharmacy"
+      },
+      "vars": {
+        "time": [
+          "ten in the morning",
+          "two in the afternoon",
+          "eleven thirty"
+        ]
+      },
+      "lines": [
+        {
+          "id": "hello",
+          "say": "Good morning, {address}.",
+          "pauseAfterMs": 600
+        },
+        {
+          "id": "intro",
+          "say": "This is Riverbend Family Clinic. The doctor has to move your appointment this week."
+        },
+        {
+          "id": "offer",
+          "say": "Would Thursday at {time} work for you?",
+          "replies": [
+            {
+              "label": "Yes, Thursday works",
+              "goto": "confirm"
+            },
+            {
+              "label": "I'll call the clinic",
+              "goto": "later"
+            }
+          ],
+          "next": "later"
+        },
+        {
+          "id": "confirm",
+          "say": "Lovely. We'll see you Thursday, then. Nothing else is needed.",
+          "next": "END"
+        },
+        {
+          "id": "later",
+          "say": "No problem at all. You can call us any time on the number on your appointment card. Take care.",
+          "next": "END"
+        }
+      ],
+      "callback": {
+        "label": "Hang up and call the clinic's number",
+        "trustedSource": "the number on your appointment card",
+        "number": "(503) 555-0139",
+        "voice": "ivr",
+        "ivr": [
+          {
+            "id": "ivr1",
+            "say": "Thank you for calling Riverbend Family Clinic. Yes, we are moving a few appointments this week. A receptionist will be with you shortly."
+          }
+        ]
+      },
+      "advice": "A real clinic offers choices and never asks for private numbers. You can always call back to check.",
+      "sources": [
+        {
+          "key": "FTC-OA-2025",
+          "page": 22
+        }
+      ]
+    },
+    {
+      "id": "L03-grandchild-hello",
+      "kind": "legit",
+      "group": "real",
+      "category": "legit.family",
+      "summary": "a real call from a grandchild",
+      "who": "your grandchild Sam",
+      "missCost": "you'd have missed a call from family",
+      "caller": {
+        "display": "Sam",
+        "number": "(646) 555-0143",
+        "voice": "mark-casual",
+        "bed": "home"
+      },
+      "vars": {
+        "weekend": [
+          "Saturday",
+          "Sunday",
+          "next weekend"
+        ]
+      },
+      "lines": [
+        {
+          "id": "hello",
+          "say": "Hi, {address}! It's Sam.",
+          "pauseAfterMs": 800
+        },
+        {
+          "id": "news",
+          "say": "I just wanted to say hello. I finished my exams today, and I'm so relieved."
+        },
+        {
+          "id": "plan",
+          "say": "I'm hoping to come and see you {weekend}. We can have tea and play cards."
+        },
+        {
+          "id": "nothing",
+          "say": "That's all. No emergency, I promise. I just missed talking to you."
+        },
+        {
+          "id": "goodbye",
+          "say": "Love you lots. Talk soon, bye for now.",
+          "next": "END"
+        }
+      ],
+      "callback": {
+        "label": "Hang up and call them back myself",
+        "trustedSource": "the number you already have",
+        "number": "(646) 555-0144",
+        "voice": "ivr",
+        "ivr": [
+          {
+            "id": "ivr1",
+            "say": "Hi, you've reached Sam. I can't pick up right now, but leave a message and I'll call you back."
+          }
+        ]
+      },
+      "advice": "A grandchild who just says hello is no trouble at all. It was a call to enjoy, not a call to fear.",
+      "sources": [
+        {
+          "key": "IC3-2025",
+          "page": 40
+        }
+      ]
+    },
+    {
+      "id": "L04-bank-fraud-alert",
+      "kind": "legit",
+      "group": "real",
+      "category": "legit.bank",
+      "summary": "a real bank alert call",
+      "who": "the real bank",
+      "missCost": "you'd have missed a real fraud alert",
+      "caller": {
+        "display": "{org} Fraud Dept",
+        "number": "(614) 555-0148",
+        "voice": "zira-calm",
+        "bed": "callcentre"
+      },
+      "vars": {
+        "org": [
+          "First Meridian Bank",
+          "Kestrel Ridge Credit Union",
+          "Bellwick National Bank"
+        ],
+        "amount": [
+          "$212",
+          "$68.40",
+          "$145"
+        ]
+      },
+      "lines": [
+        {
+          "id": "hello",
+          "say": "Hello, is this {address}?",
+          "pauseAfterMs": 700
+        },
+        {
+          "id": "intro",
+          "say": "This is the fraud team at {org}. We noticed a card payment of {amount} at a hardware store, and we've paused the card as a precaution."
+        },
+        {
+          "id": "nothing",
+          "say": "You don't need to do anything on this call. We will never ask you for your PIN or a code."
+        },
+        {
+          "id": "advice",
+          "say": "If you want to check that this call is real, please hang up and call the number on the back of your card."
+        },
+        {
+          "id": "goodbye",
+          "say": "Thank you, and have a good afternoon.",
+          "next": "END"
+        }
+      ],
+      "callback": {
+        "label": "Hang up and call the number on my card",
+        "trustedSource": "the number on your card",
+        "number": "(614) 555-0120",
+        "voice": "ivr",
+        "ivr": [
+          {
+            "id": "ivr1",
+            "say": "Thank you for calling {org}. Yes, we did place a precautionary hold on your card today. Nothing else is needed from you."
+          }
+        ]
+      },
+      "advice": "The real fraud team asked for nothing and told you to call the number on your card. That is the safe habit.",
+      "sources": [
+        {
+          "key": "FTC-OA-2025",
+          "page": 24
+        }
+      ]
+    },
+    {
+      "id": "L05-dentist-reminder",
+      "kind": "legit",
+      "group": "real",
+      "category": "legit.dentist",
+      "summary": "a real dentist reminder",
+      "who": "the real dentist's reminder",
+      "missCost": "you'd have missed your appointment reminder",
+      "caller": {
+        "display": "Northgate Dental",
+        "number": "(971) 555-0126",
+        "voice": "ivr",
+        "bed": "none"
+      },
+      "vars": {
+        "day": [
+          "Tuesday",
+          "Wednesday",
+          "Friday"
+        ],
+        "time": [
+          "nine thirty",
+          "one o'clock",
+          "three fifteen"
+        ]
+      },
+      "lines": [
+        {
+          "id": "hello",
+          "say": "Hello, {address}. This is an automated reminder from Northgate Dental.",
+          "pauseAfterMs": 500
+        },
+        {
+          "id": "news",
+          "say": "You have a cleaning booked for {day} at {time}."
+        },
+        {
+          "id": "option",
+          "say": "If you would like to confirm, you may press one. You do not have to press anything."
+        },
+        {
+          "id": "goodbye",
+          "say": "We look forward to seeing you. Goodbye.",
+          "next": "END"
+        }
+      ],
+      "callback": {
+        "label": "Hang up and call the dentist's number",
+        "trustedSource": "the number on your appointment card",
+        "number": "(971) 555-0127",
+        "voice": "ivr",
+        "ivr": [
+          {
+            "id": "ivr1",
+            "say": "Thank you for calling Northgate Dental. Your cleaning is booked, and nothing more is needed."
+          }
+        ]
+      },
+      "advice": "An automated reminder may ask you to press a button, but it never asks for card numbers or private details.",
+      "sources": [
+        {
+          "key": "FTC-OA-2025",
+          "page": 22
+        }
+      ]
+    },
+    {
+      "id": "L06-library-hold",
+      "kind": "legit",
+      "group": "real",
+      "category": "legit.library",
+      "summary": "a real library call",
+      "who": "the real library",
+      "missCost": "you'd have missed the news that your book is in",
+      "caller": {
+        "display": "Fernhill Public Library",
+        "number": "(603) 555-0119",
+        "voice": "zira-calm",
+        "bed": "home"
+      },
+      "vars": {
+        "item": [
+          "large-print mystery",
+          "gardening book",
+          "cookbook"
+        ]
+      },
+      "lines": [
+        {
+          "id": "hello",
+          "say": "Hello, {address}.",
+          "pauseAfterMs": 600
+        },
+        {
+          "id": "intro",
+          "say": "This is the front desk at Fernhill Public Library."
+        },
+        {
+          "id": "news",
+          "say": "The {item} you put on hold has come in. We will keep it for you for a week."
+        },
+        {
+          "id": "nothing",
+          "say": "There's no charge and nothing to do on the phone. Just ask at the desk."
+        },
+        {
+          "id": "goodbye",
+          "say": "Enjoy the book. Goodbye for now.",
+          "next": "END"
+        }
+      ],
+      "callback": {
+        "label": "Hang up and call the library's number",
+        "trustedSource": "the library's own number",
+        "number": "(603) 555-0120",
+        "voice": "ivr",
+        "ivr": [
+          {
+            "id": "ivr1",
+            "say": "Thank you for calling Fernhill Public Library. Holds are kept at the front desk for seven days."
+          }
+        ]
+      },
+      "advice": "The library only gave news and asked for nothing. A call with no request attached is usually safe.",
+      "sources": [
+        {
+          "key": "FTC-OA-2025",
+          "page": 22
+        }
+      ]
+    },
+    {
+      "id": "L07-utility-maintenance",
+      "kind": "legit",
+      "group": "real",
+      "category": "legit.utility",
+      "summary": "a real power company notice",
+      "who": "the real power company",
+      "missCost": "you'd have missed the notice about planned maintenance",
+      "caller": {
+        "display": "Tollan Valley Power & Light",
+        "number": "(937) 555-0112",
+        "voice": "david-firm",
+        "bed": "callcentre"
+      },
+      "vars": {
+        "day": [
+          "Tuesday",
+          "Thursday",
+          "Saturday"
+        ],
+        "hours": [
+          "between nine and eleven",
+          "between one and three",
+          "early in the morning"
+        ]
+      },
+      "lines": [
+        {
+          "id": "hello",
+          "say": "Hello, {address}.",
+          "pauseAfterMs": 500
+        },
+        {
+          "id": "intro",
+          "say": "This is a notice from Tollan Valley Power and Light."
+        },
+        {
+          "id": "news",
+          "say": "We're doing planned maintenance on your street on {day}, {hours}. Your power may flicker for a few minutes."
+        },
+        {
+          "id": "nothing",
+          "say": "There's nothing to pay and nothing to do. For details, visit us or call the number on your bill."
+        },
+        {
+          "id": "goodbye",
+          "say": "Thank you for your patience. Goodbye.",
+          "next": "END"
+        }
+      ],
+      "callback": {
+        "label": "Hang up and call the number on my bill",
+        "trustedSource": "the number on your bill",
+        "number": "(937) 555-0113",
+        "voice": "ivr",
+        "ivr": [
+          {
+            "id": "ivr1",
+            "say": "Thank you for calling Tollan Valley Power and Light. Yes, planned maintenance is scheduled in your area this week."
+          }
+        ]
+      },
+      "advice": "Same company name as the scam, but no payment and no threat. The difference is the ask, not the name.",
+      "sources": [
+        {
+          "key": "FTC-OA-2025",
+          "page": 24
+        }
+      ]
+    },
+    {
+      "id": "L08-club-lunch",
+      "kind": "legit",
+      "group": "real",
+      "category": "legit.friend",
+      "summary": "a real call from a club friend",
+      "who": "Marion from the Thursday club",
+      "missCost": "you'd have missed your lunch plans",
+      "caller": {
+        "display": "Marion (Thursday Club)",
+        "number": "(207) 555-0165",
+        "voice": "zira-calm",
+        "bed": "home"
+      },
+      "vars": {
+        "place": [
+          "the garden cafe",
+          "the community hall",
+          "the corner tearoom"
+        ]
+      },
+      "lines": [
+        {
+          "id": "hello",
+          "say": "Hello, {address}! It's Marion from the Thursday club.",
+          "pauseAfterMs": 700
+        },
+        {
+          "id": "news",
+          "say": "I'm just calling to check that we're still having lunch on Thursday at {place}."
+        },
+        {
+          "id": "plan",
+          "say": "I'll save you a seat by the window. Twelve o'clock, as usual."
+        },
+        {
+          "id": "goodbye",
+          "say": "Wonderful, see you then. Bye now.",
+          "next": "END"
+        }
+      ],
+      "callback": {
+        "label": "Hang up and call them back myself",
+        "trustedSource": "the number you already have",
+        "number": "(207) 555-0166",
+        "voice": "ivr",
+        "ivr": [
+          {
+            "id": "ivr1",
+            "say": "Hello, this is Marion. I can't come to the phone. Leave me a message, and I'll ring you back."
+          }
+        ]
+      },
+      "advice": "A friend from your club making lunch plans is a social call. Nothing was asked of you.",
+      "sources": [
+        {
+          "key": "IC3-2025",
+          "page": 40
+        }
+      ]
+    },
+    {
+      "id": "S01-bank-code",
+      "kind": "scam",
+      "group": "bank",
+      "category": "business-impersonation.bank",
+      "summary": "a fake bank call",
+      "askFor": "the code",
+      "caller": {
+        "display": "{org} Fraud Dept",
+        "number": "(614) 555-0148",
+        "voice": "zira-calm",
+        "bed": "callcentre"
+      },
+      "vars": {
+        "org": [
+          "First Meridian Bank",
+          "Kestrel Ridge Credit Union",
+          "Bellwick National Bank"
+        ]
+      },
+      "lines": [
+        {
+          "id": "hello",
+          "say": "Hello, is this {address}?",
+          "pauseAfterMs": 700
+        },
+        {
+          "id": "intro",
+          "say": "This is Dana from the fraud department at {org}. Thank you for picking up.",
+          "replies": [
+            {
+              "label": "Who is this?",
+              "goto": "verify"
+            },
+            {
+              "label": "Go ahead",
+              "goto": "warning"
+            }
+          ],
+          "next": "warning"
+        },
+        {
+          "id": "warning",
+          "say": "Your account has been compromised, and we need to act quickly.",
+          "tactics": [
+            "authority",
+            "urgency"
+          ],
+          "flag": true,
+          "cueAt": 0.4
+        },
+        {
+          "id": "pressure",
+          "say": "Someone is trying to move your savings right now. Please stay on the line, and don't hang up, or the account locks.",
+          "tactics": [
+            "fear",
+            "isolation"
+          ]
+        },
+        {
+          "id": "ask",
+          "say": "I'll need the code we just texted you. Please read it to me now.",
+          "tactics": [
+            "code-request",
+            "urgency"
+          ],
+          "ask": true
+        },
+        {
+          "id": "coda",
+          "say": "Okay, read it to me now. I'll wait.",
+          "next": "END"
+        },
+        {
+          "id": "verify",
+          "say": "I understand. This is a fraud alert on your account, and it can't wait.",
+          "next": "warning"
+        }
+      ],
+      "callback": {
+        "label": "Hang up and call the number on my card",
+        "trustedSource": "the number on your card",
+        "number": "(614) 555-0120",
+        "voice": "ivr",
+        "ivr": [
+          {
+            "id": "ivr1",
+            "say": "Thank you for calling {org}. We did not call you today. We never ask for a text code over the phone."
+          }
+        ]
+      },
+      "advice": "A real bank never asks you to read out a code. Hang up and call the number on the back of your card.",
+      "sources": [
+        {
+          "key": "FTC-OA-2025",
+          "page": 24
+        },
+        {
+          "key": "FTC-OA-2025",
+          "page": 26
+        },
+        {
+          "key": "IC3-2025",
+          "page": 45
+        }
+      ]
+    },
+    {
+      "id": "S02-bank-safe-account",
+      "kind": "scam",
+      "group": "bank",
+      "category": "business-impersonation.bank",
+      "summary": "a fake bank security call",
+      "askFor": "cash for the kiosk",
+      "caller": {
+        "display": "{org} Security Team",
+        "number": "(502) 555-0163",
+        "voice": "david-firm",
+        "bed": "callcentre"
+      },
+      "vars": {
+        "org": [
+          "First Meridian Bank",
+          "Kestrel Ridge Credit Union",
+          "Bellwick National Bank"
+        ],
+        "amount": [
+          "$4,800",
+          "$6,200",
+          "$9,500"
+        ]
+      },
+      "lines": [
+        {
+          "id": "hello",
+          "say": "Good afternoon, {address}.",
+          "pauseAfterMs": 600
+        },
+        {
+          "id": "intro",
+          "say": "This is Mr. Pruitt with the security team at {org}."
+        },
+        {
+          "id": "warning",
+          "say": "Your savings are at risk right now. Criminals have your online login.",
+          "tactics": [
+            "authority",
+            "fear"
+          ],
+          "flag": true
+        },
+        {
+          "id": "secret",
+          "say": "Please don't tell anyone at the branch. One of our tellers may be involved.",
+          "tactics": [
+            "secrecy"
+          ]
+        },
+        {
+          "id": "ask",
+          "say": "To keep your money safe, withdraw {amount} in cash and deposit it at the kiosk I'll direct you to.",
+          "tactics": [
+            "unusual-payment",
+            "urgency"
+          ],
+          "ask": true
+        },
+        {
+          "id": "coda",
+          "say": "Take your time getting dressed. I'll stay on the line while you go.",
+          "next": "END"
+        }
+      ],
+      "callback": {
+        "label": "Hang up and call the number on my card",
+        "trustedSource": "the number on your card",
+        "number": "(502) 555-0121",
+        "voice": "ivr",
+        "ivr": [
+          {
+            "id": "ivr1",
+            "say": "Thank you for calling {org}. We have no security case on your account. We never ask you to move money to keep it safe."
+          }
+        ]
+      },
+      "advice": "No bank asks you to withdraw cash and put it in a machine. Hang up and call the number on your card.",
+      "sources": [
+        {
+          "key": "FTC-OA-2025",
+          "page": 24
+        }
+      ]
+    },
+    {
+      "id": "S03-grandchild-bail",
+      "kind": "scam",
+      "group": "family",
+      "category": "family-impersonation.grandchild",
+      "summary": "a fake grandchild call",
+      "askFor": "gift cards",
+      "caller": {
+        "display": "Unknown Number",
+        "number": "(212) 555-0177",
+        "voice": "mark-casual",
+        "bed": "street"
+      },
+      "vars": {
+        "amount": [
+          "$2,500",
+          "$3,800",
+          "$4,500"
+        ]
+      },
+      "lines": [
+        {
+          "id": "hello",
+          "say": "{address}? It's me. Please don't hang up.",
+          "pauseAfterMs": 800
+        },
+        {
+          "id": "trouble",
+          "say": "I'm in trouble. I was in a car accident, and the police arrested me.",
+          "tactics": [
+            "fear",
+            "urgency"
+          ]
+        },
+        {
+          "id": "secret",
+          "say": "Please don't tell Mom or Dad. I'm so embarrassed.",
+          "tactics": [
+            "secrecy",
+            "fear"
+          ],
+          "flag": true
+        },
+        {
+          "id": "lawyer",
+          "say": "I'm putting on my lawyer. His name is Mark Ellison.",
+          "speaker": "Attorney Ellison",
+          "voice": "david-firm",
+          "tactics": [
+            "authority"
+          ]
+        },
+        {
+          "id": "ask",
+          "say": "Bail is {amount}, and it must be paid today. Buy gift cards and read me the numbers, or a courier can collect cash from your door.",
+          "speaker": "Attorney Ellison",
+          "voice": "david-firm",
+          "tactics": [
+            "unusual-payment",
+            "urgency"
+          ],
+          "ask": true
+        },
+        {
+          "id": "coda",
+          "say": "I'm ready when you are. Read me the numbers now.",
+          "speaker": "Attorney Ellison",
+          "voice": "david-firm",
+          "next": "END"
+        }
+      ],
+      "callback": {
+        "label": "Hang up and call them back myself",
+        "trustedSource": "the number you already have",
+        "number": "(212) 555-0140",
+        "voice": "ivr",
+        "ivr": [
+          {
+            "id": "ivr1",
+            "say": "The person you are trying to reach is not available. Please try again later."
+          }
+        ]
+      },
+      "advice": "If a family member is in trouble, hang up and call them on the number you already have. Never pay with gift cards.",
+      "sources": [
+        {
+          "key": "FTC-OA-2025",
+          "page": 27
+        },
+        {
+          "key": "IC3-2025",
+          "page": 40
+        }
+      ]
+    },
+    {
+      "id": "S04-tax-warrant",
+      "kind": "scam",
+      "group": "government",
+      "category": "government-impersonation.tax",
+      "summary": "a fake tax office call",
+      "askFor": "gift cards",
+      "caller": {
+        "display": "Federal Tax Recovery Unit",
+        "number": "(202) 555-0134",
+        "voice": "david-firm",
+        "bed": "callcentre"
+      },
+      "vars": {
+        "amount": [
+          "$3,214",
+          "$4,870",
+          "$6,102"
+        ]
+      },
+      "lines": [
+        {
+          "id": "hello",
+          "say": "This is a final notice for {address}.",
+          "pauseAfterMs": 500
+        },
+        {
+          "id": "intro",
+          "say": "You are speaking with Officer Grant, badge four four seven one, at the Federal Tax Recovery Unit.",
+          "tactics": [
+            "authority"
+          ]
+        },
+        {
+          "id": "warning",
+          "say": "A warrant has been issued for your arrest over {amount} in unpaid taxes.",
+          "tactics": [
+            "fear",
+            "authority"
+          ],
+          "flag": true
+        },
+        {
+          "id": "pressure",
+          "say": "Officers will arrive within the hour unless this is settled today.",
+          "tactics": [
+            "urgency",
+            "fear"
+          ]
+        },
+        {
+          "id": "ask",
+          "say": "You can clear it right now. Buy gift cards from a store near you and read me the numbers.",
+          "tactics": [
+            "unusual-payment"
+          ],
+          "ask": true
+        },
+        {
+          "id": "coda",
+          "say": "Go to the store now, and keep me on the line while you pay.",
+          "next": "END"
+        }
+      ],
+      "callback": {
+        "label": "Hang up and call the number on my letter",
+        "trustedSource": "the number on your tax letter",
+        "number": "(202) 555-0135",
+        "voice": "ivr",
+        "ivr": [
+          {
+            "id": "ivr1",
+            "say": "Thank you for calling the tax helpline. No arrest warrant has been issued, and we never take payment by gift card."
+          }
+        ]
+      },
+      "advice": "Tax offices don't threaten arrest or take gift cards. Hang up and call the number on an official letter.",
+      "sources": [
+        {
+          "key": "FTC-OA-2025",
+          "page": 26
+        },
+        {
+          "key": "IC3-2025",
+          "page": 47
+        }
+      ]
+    },
+    {
+      "id": "S05-benefits-suspended",
+      "kind": "scam",
+      "group": "government",
+      "category": "government-impersonation.benefits",
+      "summary": "a fake benefits office call",
+      "askFor": "your benefit number",
+      "caller": {
+        "display": "National Benefits Administration",
+        "number": "(410) 555-0152",
+        "voice": "zira-calm",
+        "bed": "callcentre"
+      },
+      "vars": {
+        "month": [
+          "this month",
+          "next month",
+          "this quarter"
+        ]
+      },
+      "lines": [
+        {
+          "id": "hello",
+          "say": "Hello, {address}. I'm calling about your monthly benefit.",
+          "pauseAfterMs": 600
+        },
+        {
+          "id": "intro",
+          "say": "This is Ms. Carter at the National Benefits Administration.",
+          "tactics": [
+            "authority"
+          ]
+        },
+        {
+          "id": "warning",
+          "say": "Your benefits are suspended {month}, because of suspicious activity on your file.",
+          "tactics": [
+            "fear",
+            "authority"
+          ],
+          "flag": true
+        },
+        {
+          "id": "pressure",
+          "say": "I can clear it now, but only while we're on this call. Otherwise your payments stop.",
+          "tactics": [
+            "urgency",
+            "fear"
+          ]
+        },
+        {
+          "id": "ask",
+          "say": "Please confirm your full benefit number, so I can verify that it's really you.",
+          "tactics": [
+            "personal-info"
+          ],
+          "ask": true
+        },
+        {
+          "id": "coda",
+          "say": "Go ahead and read it to me slowly. I'm writing it down.",
+          "next": "END"
+        }
+      ],
+      "callback": {
+        "label": "Hang up and call the number on my letter",
+        "trustedSource": "the number on your benefits letter",
+        "number": "(410) 555-0153",
+        "voice": "ivr",
+        "ivr": [
+          {
+            "id": "ivr1",
+            "say": "Thank you for calling the benefits line. Your payments are on schedule. We never ask for your full number by phone."
+          }
+        ]
+      },
+      "advice": "A benefits office won't threaten to stop payments. Hang up and call the number on your own letters.",
+      "sources": [
+        {
+          "key": "FTC-OA-2025",
+          "page": 24
+        }
+      ]
+    },
+    {
+      "id": "S06-health-card",
+      "kind": "scam",
+      "group": "government",
+      "category": "government-impersonation.health-card",
+      "summary": "a fake health card call",
+      "askFor": "your card number",
+      "caller": {
+        "display": "Senior Health Coverage Office",
+        "number": "(305) 555-0121",
+        "voice": "zira-calm",
+        "bed": "callcentre"
+      },
+      "vars": {
+        "day": [
+          "Friday",
+          "Monday",
+          "the end of the week"
+        ]
+      },
+      "lines": [
+        {
+          "id": "hello",
+          "say": "Hello, {address}. Do you have a minute?",
+          "pauseAfterMs": 700
+        },
+        {
+          "id": "intro",
+          "say": "I'm calling from the Senior Health Coverage Office about your new health card.",
+          "tactics": [
+            "authority"
+          ]
+        },
+        {
+          "id": "warning",
+          "say": "Your old card expires {day}, and without the new one your coverage will stop.",
+          "tactics": [
+            "urgency",
+            "authority"
+          ],
+          "flag": true
+        },
+        {
+          "id": "ask",
+          "say": "To send the new card, I just need you to read me the number on your current one.",
+          "tactics": [
+            "personal-info"
+          ],
+          "ask": true
+        },
+        {
+          "id": "coda",
+          "say": "Whenever you're ready. I have the form open.",
+          "next": "END"
+        }
+      ],
+      "callback": {
+        "label": "Hang up and call the number on my card",
+        "trustedSource": "the number on your card",
+        "number": "(305) 555-0122",
+        "voice": "ivr",
+        "ivr": [
+          {
+            "id": "ivr1",
+            "say": "Thank you for calling member services. Your coverage is active, and no new card is being sent. We never ask for your number by phone."
+          }
+        ]
+      },
+      "advice": "Nobody needs your card number to send you a new card. Hang up and call the number on the back of your card.",
+      "sources": [
+        {
+          "key": "FTC-OA-2025",
+          "page": "22 fn 69"
+        }
+      ]
+    },
+    {
+      "id": "S07-tech-support",
+      "kind": "scam",
+      "group": "tech",
+      "category": "tech-support",
+      "summary": "a fake computer help call",
+      "askFor": "access to your computer",
+      "caller": {
+        "display": "Brightwire Computer Help Desk",
+        "number": "(408) 555-0166",
+        "voice": "mark-casual",
+        "bed": "callcentre"
+      },
+      "vars": {
+        "device": [
+          "your computer",
+          "your laptop",
+          "your tablet"
+        ]
+      },
+      "lines": [
+        {
+          "id": "hello",
+          "say": "Hello, {address}. This is Brightwire.",
+          "pauseAfterMs": 500
+        },
+        {
+          "id": "intro",
+          "say": "I'm a technician at the Brightwire Computer Help Desk.",
+          "tactics": [
+            "authority"
+          ]
+        },
+        {
+          "id": "warning",
+          "say": "We detected a virus on {device}. It's sending your private data to criminals.",
+          "tactics": [
+            "fear",
+            "authority"
+          ],
+          "flag": true
+        },
+        {
+          "id": "pressure",
+          "say": "Every minute you wait, more of your files are stolen.",
+          "tactics": [
+            "urgency",
+            "fear"
+          ]
+        },
+        {
+          "id": "ask",
+          "say": "Please open your web browser and install the support app I'm about to name, so I can see your screen and fix it.",
+          "tactics": [
+            "remote-access"
+          ],
+          "ask": true
+        },
+        {
+          "id": "coda",
+          "say": "Take your time. I'll wait while it downloads.",
+          "next": "END"
+        }
+      ],
+      "callback": {
+        "label": "Hang up and call them back myself",
+        "trustedSource": "a number you look up yourself",
+        "number": "(408) 555-0167",
+        "voice": "ivr",
+        "ivr": [
+          {
+            "id": "ivr1",
+            "say": "Thank you for calling the Brightwire help desk. We do not make unrequested calls about viruses. Please never give anyone access to your computer."
+          }
+        ]
+      },
+      "advice": "A real company won't call about a virus. Never let a caller into your computer; hang up.",
+      "sources": [
+        {
+          "key": "FTC-OA-2025",
+          "page": 18
+        },
+        {
+          "key": "FTC-OA-2025",
+          "page": 23
+        },
+        {
+          "key": "IC3-2025",
+          "page": 46
+        }
+      ]
+    },
+    {
+      "id": "S08-refund-overpayment",
+      "kind": "scam",
+      "group": "tech",
+      "category": "refund-overpayment",
+      "summary": "a fake refund call",
+      "askFor": "gift cards",
+      "caller": {
+        "display": "Larkspur Subscriptions Billing",
+        "number": "(720) 555-0139",
+        "voice": "zira-calm",
+        "bed": "callcentre"
+      },
+      "vars": {
+        "amount": [
+          "$2,000",
+          "$1,400",
+          "$3,100"
+        ]
+      },
+      "lines": [
+        {
+          "id": "hello",
+          "say": "Good morning, {address}.",
+          "pauseAfterMs": 500
+        },
+        {
+          "id": "intro",
+          "say": "This is the billing office at Larkspur Subscriptions, about your cancelled plan.",
+          "tactics": [
+            "authority"
+          ]
+        },
+        {
+          "id": "warning",
+          "say": "We refunded you {amount} by mistake. It went into your account this morning.",
+          "tactics": [
+            "urgency",
+            "authority"
+          ],
+          "flag": true
+        },
+        {
+          "id": "access",
+          "say": "Let me show you on screen. Please let me connect to your computer so I can correct it.",
+          "tactics": [
+            "remote-access"
+          ]
+        },
+        {
+          "id": "ask",
+          "say": "The difference has to come back today. Please buy gift cards for it and read me the numbers.",
+          "tactics": [
+            "unusual-payment",
+            "urgency"
+          ],
+          "ask": true
+        },
+        {
+          "id": "coda",
+          "say": "Good. I'll stay with you until the cards are done.",
+          "next": "END"
+        }
+      ],
+      "callback": {
+        "label": "Hang up and call the number on my bill",
+        "trustedSource": "the number on your bill",
+        "number": "(720) 555-0140",
+        "voice": "ivr",
+        "ivr": [
+          {
+            "id": "ivr1",
+            "say": "Thank you for calling Larkspur Subscriptions. No refund has been issued to you in error. We never take repayment by gift card."
+          }
+        ]
+      },
+      "advice": "Refund mix-ups are never fixed with gift cards. Hang up and call the number on your own bill.",
+      "sources": [
+        {
+          "key": "IC3-2025",
+          "page": 21
+        },
+        {
+          "key": "FTC-OA-2025",
+          "page": 24
+        }
+      ]
+    },
+    {
+      "id": "S09-package-fee",
+      "kind": "scam",
+      "group": "delivery",
+      "category": "business-impersonation.delivery",
+      "summary": "a fake delivery call",
+      "askFor": "your card number",
+      "caller": {
+        "display": "Parcelwise Delivery",
+        "number": "(312) 555-0185",
+        "voice": "mark-casual",
+        "bed": "callcentre"
+      },
+      "vars": {
+        "day": [
+          "today",
+          "tomorrow",
+          "Thursday"
+        ]
+      },
+      "lines": [
+        {
+          "id": "hello",
+          "say": "Hello, {address}. Parcelwise Delivery here.",
+          "pauseAfterMs": 500
+        },
+        {
+          "id": "warning",
+          "say": "Your parcel is being held at our depot because the address label was damaged.",
+          "tactics": [
+            "authority",
+            "urgency"
+          ],
+          "flag": true
+        },
+        {
+          "id": "pressure",
+          "say": "We can deliver it {day}, but only if this is settled in the next few minutes.",
+          "tactics": [
+            "urgency"
+          ]
+        },
+        {
+          "id": "ask",
+          "say": "There is a small redelivery fee of one dollar ninety-nine. May I take your card number, please?",
+          "tactics": [
+            "personal-info"
+          ],
+          "ask": true
+        },
+        {
+          "id": "coda",
+          "say": "No problem. Read me the sixteen digits whenever you like.",
+          "next": "END"
+        }
+      ],
+      "callback": {
+        "label": "Hang up and call the number on my parcel slip",
+        "trustedSource": "the number on your parcel slip",
+        "number": "(312) 555-0186",
+        "voice": "ivr",
+        "ivr": [
+          {
+            "id": "ivr1",
+            "say": "Thank you for calling Parcelwise Delivery. We have no held parcel for you, and we never take card numbers on unsolicited calls."
+          }
+        ]
+      },
+      "advice": "Delivery firms don't phone for fees. Hang up, and track your parcel with the number on your slip.",
+      "sources": [
+        {
+          "key": "FTC-OA-2025",
+          "page": 26
+        }
+      ]
+    },
+    {
+      "id": "S10-utility-shutoff",
+      "kind": "scam",
+      "group": "utility",
+      "category": "business-impersonation.utility",
+      "summary": "a fake power company call",
+      "askFor": "a prepaid card",
+      "caller": {
+        "display": "Tollan Valley Power & Light",
+        "number": "(937) 555-0112",
+        "voice": "david-firm",
+        "bed": "callcentre"
+      },
+      "vars": {
+        "amount": [
+          "$318",
+          "$472",
+          "$609"
+        ]
+      },
+      "lines": [
+        {
+          "id": "hello",
+          "say": "{address}, this is Tollan Valley Power and Light.",
+          "pauseAfterMs": 500
+        },
+        {
+          "id": "warning",
+          "say": "Your account is {amount} overdue, and a crew is on its way to cut your power in thirty minutes.",
+          "tactics": [
+            "fear",
+            "urgency"
+          ],
+          "flag": true
+        },
+        {
+          "id": "pressure",
+          "say": "Once the power is off, the reconnection fee is more than double.",
+          "tactics": [
+            "urgency",
+            "fear"
+          ]
+        },
+        {
+          "id": "ask",
+          "say": "You can stop the crew now. Pay with a prepaid card, and read me the number on the back.",
+          "tactics": [
+            "unusual-payment",
+            "urgency"
+          ],
+          "ask": true
+        },
+        {
+          "id": "coda",
+          "say": "The crew is almost there. Read me the number now.",
+          "next": "END"
+        }
+      ],
+      "callback": {
+        "label": "Hang up and call the number on my bill",
+        "trustedSource": "the number on your bill",
+        "number": "(937) 555-0113",
+        "voice": "ivr",
+        "ivr": [
+          {
+            "id": "ivr1",
+            "say": "Thank you for calling Tollan Valley Power and Light. Your account is in good standing, and we never ask for payment by prepaid card."
+          }
+        ]
+      },
+      "advice": "A power company gives notice in writing and never demands a prepaid card. Call the number on your bill.",
+      "sources": [
+        {
+          "key": "FTC-OA-2025",
+          "page": 24
+        }
+      ]
+    },
+    {
+      "id": "S11-prize-fee",
+      "kind": "scam",
+      "group": "prize",
+      "category": "prize-sweepstakes",
+      "summary": "a fake prize call",
+      "askFor": "the release fee",
+      "caller": {
+        "display": "Grand Harvest Sweepstakes Clearing",
+        "number": "(702) 555-0194",
+        "voice": "mark-casual",
+        "bed": "callcentre"
+      },
+      "vars": {
+        "prize": [
+          "$850,000",
+          "$640,000",
+          "$1.2 million"
+        ],
+        "fee": [
+          "$480",
+          "$725",
+          "$960"
+        ]
+      },
+      "lines": [
+        {
+          "id": "hello",
+          "say": "Congratulations, {address}!",
+          "pauseAfterMs": 400
+        },
+        {
+          "id": "warning",
+          "say": "You've won {prize} in the Grand Harvest Sweepstakes. You were picked from a list of lucky winners.",
+          "tactics": [
+            "too-good"
+          ],
+          "flag": true
+        },
+        {
+          "id": "secret",
+          "say": "Please keep this quiet until the cheque arrives, or the prize may be given to someone else.",
+          "tactics": [
+            "secrecy",
+            "urgency"
+          ]
+        },
+        {
+          "id": "ask",
+          "say": "Before we release it, you need to pay a {fee} release fee. We accept a wire or gift cards.",
+          "tactics": [
+            "unusual-payment"
+          ],
+          "ask": true
+        },
+        {
+          "id": "coda",
+          "say": "Wonderful. Tell me how you'd like to pay.",
+          "next": "END"
+        }
+      ],
+      "callback": {
+        "label": "Hang up and call them back myself",
+        "trustedSource": "a number you look up yourself",
+        "number": "(702) 555-0195",
+        "voice": "ivr",
+        "ivr": [
+          {
+            "id": "ivr1",
+            "say": "Thank you for calling Grand Harvest Sweepstakes. You are not on our winners list. A real prize never asks you to pay a fee first."
+          }
+        ]
+      },
+      "advice": "A real prize never costs money to collect. If you must pay to win, it is a scam. Hang up.",
+      "sources": [
+        {
+          "key": "FTC-OA-2025",
+          "page": 23
+        },
+        {
+          "key": "FTC-OA-2025",
+          "page": 26
+        },
+        {
+          "key": "IC3-2025",
+          "page": 46
+        }
+      ]
+    },
+    {
+      "id": "S12-romance-customs",
+      "kind": "scam",
+      "group": "romance",
+      "category": "romance",
+      "summary": "a fake online friend call",
+      "askFor": "money for customs",
+      "caller": {
+        "display": "Daniel",
+        "number": "(917) 555-0108",
+        "voice": "mark-casual",
+        "bed": "street"
+      },
+      "vars": {
+        "place": [
+          "Lisbon",
+          "Dubai",
+          "Singapore",
+          "Houston"
+        ],
+        "fee": [
+          "$1,200",
+          "$1,850",
+          "$2,400"
+        ]
+      },
+      "lines": [
+        {
+          "id": "hello",
+          "say": "Hi, it's Daniel. I'm so happy you picked up.",
+          "pauseAfterMs": 700
+        },
+        {
+          "id": "story",
+          "say": "I'm stuck in {place} after the job finished. My bags are held at the airport.",
+          "tactics": [
+            "urgency"
+          ]
+        },
+        {
+          "id": "warning",
+          "say": "I can't tell anyone but you. You're the only person I trust.",
+          "tactics": [
+            "secrecy",
+            "isolation"
+          ],
+          "flag": true
+        },
+        {
+          "id": "ask",
+          "say": "They won't release my bags until I pay a customs fee of {fee}. Could you wire it to me today?",
+          "tactics": [
+            "unusual-payment",
+            "urgency"
+          ],
+          "ask": true
+        },
+        {
+          "id": "coda",
+          "say": "I'll pay you back the moment I land. Please, I'm counting on you.",
+          "next": "END"
+        }
+      ],
+      "callback": {
+        "label": "Hang up and call them back myself",
+        "trustedSource": "a number you already trust",
+        "number": "(917) 555-0109",
+        "voice": "ivr",
+        "ivr": [
+          {
+            "id": "ivr1",
+            "say": "The number you have dialed is not in service."
+          }
+        ]
+      },
+      "advice": "Someone you only know online who needs money is a scam, however kind. Never wire money to them.",
+      "sources": [
+        {
+          "key": "FTC-OA-2025",
+          "page": 23
+        },
+        {
+          "key": "IC3-2025",
+          "page": 46
+        }
+      ]
+    }
+  ]
+}

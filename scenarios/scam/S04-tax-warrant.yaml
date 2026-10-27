@@ -1,0 +1,46 @@
+id: S04-tax-warrant
+kind: scam
+group: government
+category: government-impersonation.tax
+summary: a fake tax office call
+askFor: gift cards
+sources:
+  - { key: FTC-OA-2025, page: 26 }
+  - { key: IC3-2025, page: 47 }
+caller:
+  display: Federal Tax Recovery Unit
+  number: '(202) 555-0134'
+  voice: david-firm
+  bed: callcentre
+vars:
+  amount: ['$3,214', '$4,870', '$6,102']
+lines:
+  - id: hello
+    say: 'This is a final notice for {address}.'
+    pauseAfterMs: 500
+  - id: intro
+    say: 'You are speaking with Officer Grant, badge four four seven one, at the Federal Tax Recovery Unit.'
+    tactics: [authority]
+  - id: warning
+    say: 'A warrant has been issued for your arrest over {amount} in unpaid taxes.'
+    flag: true
+    tactics: [fear, authority]
+  - id: pressure
+    say: 'Officers will arrive within the hour unless this is settled today.'
+    tactics: [urgency, fear]
+  - id: ask
+    say: 'You can clear it right now. Buy gift cards from a store near you and read me the numbers.'
+    ask: true
+    tactics: [unusual-payment]
+  - id: coda
+    say: 'Go to the store now, and keep me on the line while you pay.'
+    next: END
+callback:
+  label: Hang up and call the number on my letter
+  trustedSource: the number on your tax letter
+  number: '(202) 555-0135'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: 'Thank you for calling the tax helpline. No arrest warrant has been issued, and we never take payment by gift card.'
+advice: Tax offices don't threaten arrest or take gift cards. Hang up and call the number on an official letter.

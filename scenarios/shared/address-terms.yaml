@@ -1,0 +1,18 @@
+# The 15 pre-rendered address terms (SPEC §5.2). Callers use these to address
+# the player; the coach picks one in Coach Setup. Adding a term means a new
+# clip per line that uses {address}, so the list is deliberately short.
+- Grandma
+- Grandpa
+- Nana
+- Gran
+- Granny
+- Grandad
+- Papa
+- Paati
+- Thatha
+- Nani
+- Abuela
+- Abuelo
+- Oma
+- Opa
+- Lola

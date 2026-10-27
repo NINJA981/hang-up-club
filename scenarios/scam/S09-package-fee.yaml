@@ -1,0 +1,42 @@
+id: S09-package-fee
+kind: scam
+group: delivery
+category: business-impersonation.delivery
+summary: a fake delivery call
+askFor: your card number
+sources:
+  - { key: FTC-OA-2025, page: 26 }
+caller:
+  display: Parcelwise Delivery
+  number: '(312) 555-0185'
+  voice: mark-casual
+  bed: callcentre
+vars:
+  day: [today, tomorrow, Thursday]
+lines:
+  - id: hello
+    say: 'Hello, {address}. Parcelwise Delivery here.'
+    pauseAfterMs: 500
+  - id: warning
+    say: 'Your parcel is being held at our depot because the address label was damaged.'
+    flag: true
+    tactics: [authority, urgency]
+  - id: pressure
+    say: 'We can deliver it {day}, but only if this is settled in the next few minutes.'
+    tactics: [urgency]
+  - id: ask
+    say: 'There is a small redelivery fee of one dollar ninety-nine. May I take your card number, please?'
+    ask: true
+    tactics: [personal-info]
+  - id: coda
+    say: 'No problem. Read me the sixteen digits whenever you like.'
+    next: END
+callback:
+  label: Hang up and call the number on my parcel slip
+  trustedSource: the number on your parcel slip
+  number: '(312) 555-0186'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: 'Thank you for calling Parcelwise Delivery. We have no held parcel for you, and we never take card numbers on unsolicited calls.'
+advice: Delivery firms don't phone for fees. Hang up, and track your parcel with the number on your slip.

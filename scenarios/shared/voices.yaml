@@ -1,0 +1,28 @@
+# Voice ids used by scenarios. Each voice maps to one engine voice per
+# adapter, so a voice never changes timbre mid-call (ADR §4.1 step 3).
+# Windows SAPI is the zero-install path; Piper and Kitten are used when present.
+zira-calm:
+  label: Calm woman (agent, pharmacist, receptionist)
+  sapi: Microsoft Zira Desktop
+  sapiRate: 0
+  piper: { model: en_US-libritts_r-medium, speaker: 12 }
+  kitten: expr-voice-2-f
+david-firm:
+  label: Firm man (officer, security, utility)
+  sapi: Microsoft David Desktop
+  sapiRate: 0
+  piper: { model: en_US-libritts_r-medium, speaker: 31 }
+  kitten: expr-voice-3-m
+mark-casual:
+  label: Younger, casual man (grandchild, technician, friend)
+  sapi: Microsoft David Desktop
+  sapiRate: 1
+  pitch: 1.09
+  piper: { model: en_US-libritts_r-medium, speaker: 58 }
+  kitten: expr-voice-4-m
+ivr:
+  label: Slow, even recorded voice (automated lines, call-back menus)
+  sapi: Microsoft Zira Desktop
+  sapiRate: -2
+  piper: { model: en_US-libritts_r-medium, speaker: 12 }
+  kitten: expr-voice-2-f

@@ -16,3 +16,6 @@ Thumbs.db
 .impeccable/config.local.json
 # TTS render scratch (rendered clips in public/audio are committed; raw WAVs are not)
 .tts-cache/
+# Tooling caches
+node_modules/.tmp/
+*.tsbuildinfo

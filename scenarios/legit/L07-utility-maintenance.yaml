@@ -1,0 +1,39 @@
+id: L07-utility-maintenance
+kind: legit
+group: real
+category: legit.utility
+summary: a real power company notice
+who: the real power company
+missCost: you'd have missed the notice about planned maintenance
+sources:
+  - { key: FTC-OA-2025, page: 24 }
+caller:
+  display: Tollan Valley Power & Light
+  number: '(937) 555-0112'
+  voice: david-firm
+  bed: callcentre
+vars:
+  day: [Tuesday, Thursday, Saturday]
+  hours: [between nine and eleven, between one and three, early in the morning]
+lines:
+  - id: hello
+    say: 'Hello, {address}.'
+    pauseAfterMs: 500
+  - id: intro
+    say: 'This is a notice from Tollan Valley Power and Light.'
+  - id: news
+    say: "We're doing planned maintenance on your street on {day}, {hours}. Your power may flicker for a few minutes."
+  - id: nothing
+    say: "There's nothing to pay and nothing to do. For details, visit us or call the number on your bill."
+  - id: goodbye
+    say: 'Thank you for your patience. Goodbye.'
+    next: END
+callback:
+  label: Hang up and call the number on my bill
+  trustedSource: the number on your bill
+  number: '(937) 555-0113'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: 'Thank you for calling Tollan Valley Power and Light. Yes, planned maintenance is scheduled in your area this week.'
+advice: Same company name as the scam, but no payment and no threat. The difference is the ask, not the name.

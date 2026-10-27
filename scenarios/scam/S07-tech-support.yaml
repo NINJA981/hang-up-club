@@ -1,0 +1,47 @@
+id: S07-tech-support
+kind: scam
+group: tech
+category: tech-support
+summary: a fake computer help call
+askFor: access to your computer
+sources:
+  - { key: FTC-OA-2025, page: 18 }
+  - { key: FTC-OA-2025, page: 23 }
+  - { key: IC3-2025, page: 46 }
+caller:
+  display: Brightwire Computer Help Desk
+  number: '(408) 555-0166'
+  voice: mark-casual
+  bed: callcentre
+vars:
+  device: [your computer, your laptop, your tablet]
+lines:
+  - id: hello
+    say: 'Hello, {address}. This is Brightwire.'
+    pauseAfterMs: 500
+  - id: intro
+    say: "I'm a technician at the Brightwire Computer Help Desk."
+    tactics: [authority]
+  - id: warning
+    say: "We detected a virus on {device}. It's sending your private data to criminals."
+    flag: true
+    tactics: [fear, authority]
+  - id: pressure
+    say: 'Every minute you wait, more of your files are stolen.'
+    tactics: [urgency, fear]
+  - id: ask
+    say: "Please open your web browser and install the support app I'm about to name, so I can see your screen and fix it."
+    ask: true
+    tactics: [remote-access]
+  - id: coda
+    say: "Take your time. I'll wait while it downloads."
+    next: END
+callback:
+  label: Hang up and call them back myself
+  trustedSource: a number you look up yourself
+  number: '(408) 555-0167'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: 'Thank you for calling the Brightwire help desk. We do not make unrequested calls about viruses. Please never give anyone access to your computer.'
+advice: A real company won't call about a virus. Never let a caller into your computer; hang up.

@@ -1,0 +1,29 @@
+# Test fixture: schema-level defects (a real-looking phone number, an unknown field).
+id: L91-bad-phone
+kind: legit
+group: real
+category: legit.library
+summary: a call with a bad number
+who: the library
+sources:
+  - { key: TEST-SRC, page: 1 }
+caller:
+  display: Test Library
+  number: '(614) 555-0248'
+  voice: zira-calm
+  bed: none
+surprise: unknown field
+lines:
+  - id: hello
+    say: 'Hello.'
+  - id: bye
+    say: 'Goodbye.'
+callback:
+  label: Hang up and call the library
+  trustedSource: the library's number
+  number: '(614) 555-0199'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: 'Thank you for calling.'
+advice: This file has a phone number outside the fictional block and an unknown field.

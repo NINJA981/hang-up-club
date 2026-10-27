@@ -1,0 +1,45 @@
+id: S11-prize-fee
+kind: scam
+group: prize
+category: prize-sweepstakes
+summary: a fake prize call
+askFor: the release fee
+sources:
+  - { key: FTC-OA-2025, page: 23 }
+  - { key: FTC-OA-2025, page: 26 }
+  - { key: IC3-2025, page: 46 }
+caller:
+  display: Grand Harvest Sweepstakes Clearing
+  number: '(702) 555-0194'
+  voice: mark-casual
+  bed: callcentre
+vars:
+  prize: ['$850,000', '$640,000', '$1.2 million']
+  fee: ['$480', '$725', '$960']
+lines:
+  - id: hello
+    say: 'Congratulations, {address}!'
+    pauseAfterMs: 400
+  - id: warning
+    say: "You've won {prize} in the Grand Harvest Sweepstakes. You were picked from a list of lucky winners."
+    flag: true
+    tactics: [too-good]
+  - id: secret
+    say: 'Please keep this quiet until the cheque arrives, or the prize may be given to someone else.'
+    tactics: [secrecy, urgency]
+  - id: ask
+    say: 'Before we release it, you need to pay a {fee} release fee. We accept a wire or gift cards.'
+    ask: true
+    tactics: [unusual-payment]
+  - id: coda
+    say: "Wonderful. Tell me how you'd like to pay."
+    next: END
+callback:
+  label: Hang up and call them back myself
+  trustedSource: a number you look up yourself
+  number: '(702) 555-0195'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: 'Thank you for calling Grand Harvest Sweepstakes. You are not on our winners list. A real prize never asks you to pay a fee first.'
+advice: A real prize never costs money to collect. If you must pay to win, it is a scam. Hang up.

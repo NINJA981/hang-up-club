@@ -1,0 +1,86 @@
+# Well-known consumer brands, retailers and pharmacies.
+Amazon
+=Apple
+Walmart
+Costco
+Walgreens
+CVS
+Rite Aid
+Kroger
+Home Depot
+Lowe's
+Best Buy
+eBay
+Geek Squad
+Norton
+McAfee
+LifeLock
+AARP
+Publishers Clearing House
+Mega Millions
+Powerball
+Netflix
+Spotify
+Hulu
+Disney
+Uber
+Lyft
+Airbnb
+Etsy
+Instacart
+DoorDash
+Coca-Cola
+Pepsi
+Nike
+Starbucks
+McDonald's
+Safeway
+Albertsons
+Publix
+Aldi
+Trader Joe
+Whole Foods
+Sam's Club
+Kohl's
+Macy's
+Nordstrom
+Sears
+GoDaddy
+Ticketmaster
+Expedia
+Booking.com
+Tesla
+Toyota
+Ford Motor
+Humana
+Aetna
+Cigna
+UnitedHealthcare
+Blue Cross
+Kaiser
+Anthem
+Optum
+Pfizer
+GoodRx
+Medicare Supplement
+Allstate
+State Farm
+Geico
+Progressive Insurance
+Liberty Mutual
+Prudential
+MetLife
+Duke Energy
+Con Edison
+Consolidated Edison
+PG&E
+Pacific Gas
+Southern California Edison
+Florida Power
+NextEra
+Exelon
+ComEd
+Dominion Energy
+Xcel Energy
+Entergy
+National Grid

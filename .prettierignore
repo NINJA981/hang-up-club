@@ -1,0 +1,13 @@
+node_modules/
+dist/
+dev-dist/
+coverage/
+playwright-report/
+test-results/
+pnpm-lock.yaml
+public/scenarios/
+public/audio/
+tests/fixtures/links/
+# Hand-formatted prose and design records
+*.md
+.impeccable/

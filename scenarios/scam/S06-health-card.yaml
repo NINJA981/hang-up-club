@@ -1,0 +1,42 @@
+id: S06-health-card
+kind: scam
+group: government
+category: government-impersonation.health-card
+summary: a fake health card call
+askFor: your card number
+sources:
+  - { key: FTC-OA-2025, page: '22 fn 69' }
+caller:
+  display: Senior Health Coverage Office
+  number: '(305) 555-0121'
+  voice: zira-calm
+  bed: callcentre
+vars:
+  day: [Friday, Monday, the end of the week]
+lines:
+  - id: hello
+    say: 'Hello, {address}. Do you have a minute?'
+    pauseAfterMs: 700
+  - id: intro
+    say: "I'm calling from the Senior Health Coverage Office about your new health card."
+    tactics: [authority]
+  - id: warning
+    say: 'Your old card expires {day}, and without the new one your coverage will stop.'
+    flag: true
+    tactics: [urgency, authority]
+  - id: ask
+    say: 'To send the new card, I just need you to read me the number on your current one.'
+    ask: true
+    tactics: [personal-info]
+  - id: coda
+    say: "Whenever you're ready. I have the form open."
+    next: END
+callback:
+  label: Hang up and call the number on my card
+  trustedSource: the number on your card
+  number: '(305) 555-0122'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: 'Thank you for calling member services. Your coverage is active, and no new card is being sent. We never ask for your number by phone.'
+advice: Nobody needs your card number to send you a new card. Hang up and call the number on the back of your card.

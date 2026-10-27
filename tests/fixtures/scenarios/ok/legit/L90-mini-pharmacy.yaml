@@ -1,0 +1,33 @@
+# Test fixture: a small legitimate call, authored for the loader tests.
+id: L90-mini-pharmacy
+kind: legit
+group: real
+category: legit.pharmacy
+summary: a real pharmacy call
+who: the real pharmacy
+missCost: you'd have missed the news that your refill is ready
+sources:
+  - { key: TEST-SRC, page: 1 }
+caller:
+  display: Test Lane Pharmacy
+  number: '(614) 555-0192'
+  voice: zira-calm
+  bed: none
+vars:
+  time: [morning, afternoon]
+lines:
+  - id: hello
+    say: 'Hello, {address}.'
+  - id: news
+    say: 'Your refill is ready to collect this {time}.'
+  - id: goodbye
+    say: 'Thank you, goodbye.'
+callback:
+  label: Hang up and call the pharmacy's number
+  trustedSource: the pharmacy's own number
+  number: '(614) 555-0193'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: 'Thank you for calling Test Lane Pharmacy.'
+advice: This call gave information and asked for nothing. That is what a real call looks like.

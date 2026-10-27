@@ -1,0 +1,39 @@
+id: L04-bank-fraud-alert
+kind: legit
+group: real
+category: legit.bank
+summary: a real bank alert call
+who: the real bank
+missCost: you'd have missed a real fraud alert
+sources:
+  - { key: FTC-OA-2025, page: 24 }
+caller:
+  display: '{org} Fraud Dept'
+  number: '(614) 555-0148'
+  voice: zira-calm
+  bed: callcentre
+vars:
+  org: [First Meridian Bank, Kestrel Ridge Credit Union, Bellwick National Bank]
+  amount: ['$212', '$68.40', '$145']
+lines:
+  - id: hello
+    say: 'Hello, is this {address}?'
+    pauseAfterMs: 700
+  - id: intro
+    say: "This is the fraud team at {org}. We noticed a card payment of {amount} at a hardware store, and we've paused the card as a precaution."
+  - id: nothing
+    say: "You don't need to do anything on this call. We will never ask you for your PIN or a code."
+  - id: advice
+    say: 'If you want to check that this call is real, please hang up and call the number on the back of your card.'
+  - id: goodbye
+    say: 'Thank you, and have a good afternoon.'
+    next: END
+callback:
+  label: Hang up and call the number on my card
+  trustedSource: the number on your card
+  number: '(614) 555-0120'
+  voice: ivr
+  ivr:
+    - id: ivr1
+      say: 'Thank you for calling {org}. Yes, we did place a precautionary hold on your card today. Nothing else is needed from you.'
+advice: The real fraud team asked for nothing and told you to call the number on your card. That is the safe habit.
