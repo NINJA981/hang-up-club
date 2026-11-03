@@ -179,14 +179,14 @@ describe('scoring an ended call', () => {
     expect(summarise(branch, scam).markers.tFlagMs).toBe(6700);
     expect(summarise(branch, scam).result.outcome).toBe('jumpy');
   });
-  it('a call back before the ask is verified; on the real bank alert it scores 100 even for a legit call', () => {
+  it('a call back before the ask is verified; on a real call it is cautious, except the real bank alert (100)', () => {
     const cb = asEnded(live({ type: 'CALL_BACK', tMs: 8000 }));
     expect(summarise(cb, scam).result).toMatchObject({ outcome: 'verified', points: 100 });
     const legit = resolveVariant(MINI_LEGIT, MINI_TERMS, 0);
     const legitCtx: SessionContext = { lines: legit.lines, durationOf: () => 1000 };
     const legitLive = [{ type: 'RING' }, { type: 'ANSWER' }, { type: 'CALL_BACK', tMs: 1500 }] as CallEvent[];
     const ended = asEnded(legitLive.reduce((s, e) => callReducer(s, e, legitCtx), initialCallState));
-    expect(summarise(ended, legit).result.points).toBe(90);
+    expect(summarise(ended, legit).result).toMatchObject({ outcome: 'cautious', points: 60 });
     expect(summarise(ended, legit, { callbackIsTheLesson: true }).result.points).toBe(100);
   });
   it('a hang-up on a legitimate call is missed', () => {

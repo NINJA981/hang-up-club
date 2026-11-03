@@ -86,7 +86,7 @@ export class CallAudioEngine implements Pick<CallPort, 'answer' | 'reschedule' |
 
   /** iOS Safari reports "interrupted" (phone call, Siri, lock screen); other browsers "suspended". */
   private needsResume(): boolean {
-    const state = this.ctx.state as AudioContextState | 'interrupted';
+    const state: string = this.ctx.state;
     return state === 'suspended' || state === 'interrupted';
   }
 
@@ -110,7 +110,8 @@ export class CallAudioEngine implements Pick<CallPort, 'answer' | 'reschedule' |
    * allows a resume inside a user gesture.
    */
   private watchInterruptions(): void {
-    if (this.watching || typeof window === 'undefined' || typeof this.ctx.addEventListener !== 'function') return;
+    if (this.watching || typeof window === 'undefined' || typeof this.ctx.addEventListener !== 'function')
+      return;
     this.watching = true;
     const resumeOnGesture = (): void => {
       if (this.needsResume()) void this.ctx.resume().catch(() => undefined);

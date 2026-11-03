@@ -95,7 +95,7 @@ describe('audio manifest', () => {
   it('lists the lines with no clip, and the URLs a call needs', () => {
     expect(missingClips(manifest, scam.lines)).toEqual([]);
     expect(missingClips(manifestFor(scam.lines, ['intro', 'coda']), scam.lines)).toEqual([1, 4]);
-    expect(urlsForLines(manifest, scam.lines, 'aac')).toEqual(
+    expect(urlsForLines(manifest, scam.lines, 'aac').map((u) => u.split('?')[0])).toEqual(
       ['hello', 'intro', 'warning', 'ask', 'coda', 'who'].map((id) => `/audio/${id}.m4a`),
     );
     expect(urlsForLines(EMPTY_MANIFEST, scam.lines, 'opus')).toEqual([]);
@@ -181,8 +181,9 @@ describe('the call audio engine (AC-F2-2, ADR 3.2)', () => {
       manifest: manifestFor(scam.lines, opts.skip ?? []),
       format: 'opus',
       fetchBytes: (url) => {
-        fetched.push(url);
-        return Promise.resolve(bytesOf(url.replace('/audio/', '').replace('.webm', '')));
+        const path = url.split('?')[0] ?? url; // drop the ?v= render sha
+        fetched.push(path);
+        return Promise.resolve(bytesOf(path.replace('/audio/', '').replace('.webm', '')));
       },
       speech: opts.speech,
       timers,

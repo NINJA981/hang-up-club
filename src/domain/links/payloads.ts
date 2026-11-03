@@ -15,7 +15,7 @@ import { isLocalDate } from '../time/dates';
  * other scripts, emoji ZWJ sequences) and the emoji tag characters (subdivision flags). Every other
  * format character, such as bidi overrides and zero-width spaces, stays rejected.
  */
-const NAME_CHARS = /^(?:[^\p{Cc}\p{Cf}]|[\u200C\u200D\u{E0020}-\u{E007F}])+$/u;
+const NAME_CHARS = /^(?:[^\p{Cc}\p{Cf}]|\u200C|\u200D|[\u{E0020}-\u{E007F}])+$/u;
 
 /** NFC form of a typed name, so the same name typed on two keyboards compares equal. */
 export function normaliseName(name: string): string {

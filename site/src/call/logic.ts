@@ -137,7 +137,11 @@ export interface Scored {
 export function score(action: Action, tMs: number, m: Markers): Scored {
   if (action === 'none' || tMs >= m.tEndMs) return { outcome: 'caught', moment: 'fade' };
   const timing = tMs < m.tFlagMs ? 'before-flag' : tMs < m.tAskMs ? 'before-ask' : 'after-ask';
-  if (action === 'callback') return { outcome: 'verified', moment: 'cut' };
+  // A call back before any warning sign is as blind as an early hang-up (SPEC 7.2).
+  if (action === 'callback')
+    return timing === 'before-flag'
+      ? { outcome: 'jumpy', moment: 'shatter' }
+      : { outcome: 'verified', moment: 'cut' };
   if (timing === 'before-flag') return { outcome: 'jumpy', moment: 'shatter' };
   if (timing === 'before-ask') return { outcome: 'sharp', moment: 'cut' };
   return { outcome: 'late', moment: 'shatter' };
