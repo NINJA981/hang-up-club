@@ -1,5 +1,5 @@
 {
-  "version": "0358ce4726f1f0",
+  "version": "0d0a4b19c6d653",
   "filterVersion": 2,
   "clips": {
     "david-firm-000de6c93c5d46": {
@@ -335,14 +335,6 @@
       "aac": "david-firm-0ed04aa10aa771.m4a",
       "durationMs": 3752,
       "sha": "16134d78714ddf10927063b1ec23f10fc4684d3dd43ffa6f1c98ed5cb2084937",
-      "engine": "sapi",
-      "voice": "david-firm"
-    },
-    "david-firm-0ed31667c8ce41": {
-      "opus": "david-firm-0ed31667c8ce41.webm",
-      "aac": "david-firm-0ed31667c8ce41.m4a",
-      "durationMs": 4646,
-      "sha": "2918c5576dd3d2500d930542c6e05a3a48aae1fcdfa8f979ab02a320d04b399e",
       "engine": "sapi",
       "voice": "david-firm"
     },
@@ -706,6 +698,14 @@
       "engine": "sapi",
       "voice": "david-firm"
     },
+    "david-firm-1cb454f750eab5": {
+      "opus": "david-firm-1cb454f750eab5.webm",
+      "aac": "david-firm-1cb454f750eab5.m4a",
+      "durationMs": 4661,
+      "sha": "e2e90f577d839ec39dce56031d87df5c58d651fa533c4658a110c6ea33836ec7",
+      "engine": "sapi",
+      "voice": "david-firm"
+    },
     "david-firm-1cc4df1c4f8419": {
       "opus": "david-firm-1cc4df1c4f8419.webm",
       "aac": "david-firm-1cc4df1c4f8419.m4a",
@@ -914,27 +914,11 @@
       "engine": "sapi",
       "voice": "ivr"
     },
-    "ivr-09c79bb2340cee": {
-      "opus": "ivr-09c79bb2340cee.webm",
-      "aac": "ivr-09c79bb2340cee.m4a",
-      "durationMs": 12365,
-      "sha": "31ce00489ce08b6295baedc9a73b5d6f3161ffcfca1889fda4e7edbcb34c34f7",
-      "engine": "sapi",
-      "voice": "ivr"
-    },
     "ivr-09fdaf433f8849": {
       "opus": "ivr-09fdaf433f8849.webm",
       "aac": "ivr-09fdaf433f8849.m4a",
       "durationMs": 6841,
       "sha": "7554d80da3727af324c91e9faf1d6a6885303adbf10f28a81ea4062c5055ce76",
-      "engine": "sapi",
-      "voice": "ivr"
-    },
-    "ivr-0a4892cbaefd34": {
-      "opus": "ivr-0a4892cbaefd34.webm",
-      "aac": "ivr-0a4892cbaefd34.m4a",
-      "durationMs": 10546,
-      "sha": "5da9f387cb4677bc2fc49bf12717a8d9d14be160c275a501ab801519be8b964f",
       "engine": "sapi",
       "voice": "ivr"
     },
@@ -1002,19 +986,19 @@
       "engine": "sapi",
       "voice": "ivr"
     },
+    "ivr-0f45717bcf6fce": {
+      "opus": "ivr-0f45717bcf6fce.webm",
+      "aac": "ivr-0f45717bcf6fce.m4a",
+      "durationMs": 11840,
+      "sha": "d311e5ce92092c004f9a807eca063c7b3c85ab296dbdc6649d3ccd98d9f4d4d1",
+      "engine": "sapi",
+      "voice": "ivr"
+    },
     "ivr-0f89c64276df21": {
       "opus": "ivr-0f89c64276df21.webm",
       "aac": "ivr-0f89c64276df21.m4a",
       "durationMs": 4527,
       "sha": "d9b9b6d884ea3fa88ac85a9dc3b4c1930211a274a3344c839e3615cc2f939352",
-      "engine": "sapi",
-      "voice": "ivr"
-    },
-    "ivr-0f8c3286e5d285": {
-      "opus": "ivr-0f8c3286e5d285.webm",
-      "aac": "ivr-0f8c3286e5d285.m4a",
-      "durationMs": 11830,
-      "sha": "c9ac83e4fc56a3fc8848254d0412ab300e6e1700ec1cf3f7a5529776608f91a4",
       "engine": "sapi",
       "voice": "ivr"
     },
@@ -1066,6 +1050,14 @@
       "engine": "sapi",
       "voice": "ivr"
     },
+    "ivr-159c0e99012d0f": {
+      "opus": "ivr-159c0e99012d0f.webm",
+      "aac": "ivr-159c0e99012d0f.m4a",
+      "durationMs": 10556,
+      "sha": "0f4a6d06f69e830f105e0985547b4d8cd7b292fc0e7763a020606021d21821c8",
+      "engine": "sapi",
+      "voice": "ivr"
+    },
     "ivr-15af377a80f3d2": {
       "opus": "ivr-15af377a80f3d2.webm",
       "aac": "ivr-15af377a80f3d2.m4a",
@@ -1079,6 +1071,14 @@
       "aac": "ivr-15bf11c7d502d2.m4a",
       "durationMs": 10141,
       "sha": "4a541af9fec7bb32281ba6336c658c09e9aae5a576729fb3c18041611b295c82",
+      "engine": "sapi",
+      "voice": "ivr"
+    },
+    "ivr-15bf48ed92df0e": {
+      "opus": "ivr-15bf48ed92df0e.webm",
+      "aac": "ivr-15bf48ed92df0e.m4a",
+      "durationMs": 12375,
+      "sha": "7f11e953ae7faa707e7504436ea3d352ee85cf18a63aa5af4381231b6d0e80ea",
       "engine": "sapi",
       "voice": "ivr"
     },
@@ -2130,6 +2130,14 @@
       "engine": "sapi",
       "voice": "zira-calm"
     },
+    "zira-calm-00994c915f2484": {
+      "opus": "zira-calm-00994c915f2484.webm",
+      "aac": "zira-calm-00994c915f2484.m4a",
+      "durationMs": 6426,
+      "sha": "b67a3518ece9a23dea108d5c0e0c1068ce1df3619a2203565afc7c0c4c2a18f5",
+      "engine": "sapi",
+      "voice": "zira-calm"
+    },
     "zira-calm-00a26935433cae": {
       "opus": "zira-calm-00a26935433cae.webm",
       "aac": "zira-calm-00a26935433cae.m4a",
@@ -2159,6 +2167,14 @@
       "aac": "zira-calm-0111dc3ba7c21e.m4a",
       "durationMs": 2512,
       "sha": "87d59127ab7dbc49981e1a7c4fe4309bbf084216354ebbedf7651fa921d369ad",
+      "engine": "sapi",
+      "voice": "zira-calm"
+    },
+    "zira-calm-01154a9e4dcb41": {
+      "opus": "zira-calm-01154a9e4dcb41.webm",
+      "aac": "zira-calm-01154a9e4dcb41.m4a",
+      "durationMs": 10975,
+      "sha": "b0514641d0c19868015b60d89a3a6620c050af0318661157d87b28fe2a1ee38e",
       "engine": "sapi",
       "voice": "zira-calm"
     },
@@ -2386,6 +2402,14 @@
       "engine": "sapi",
       "voice": "zira-calm"
     },
+    "zira-calm-06ad6e7817bacb": {
+      "opus": "zira-calm-06ad6e7817bacb.webm",
+      "aac": "zira-calm-06ad6e7817bacb.m4a",
+      "durationMs": 10880,
+      "sha": "bad7a17e3b4e6eb3f35fa71b7634dfd3eea8029f5b4337b0e97f76a1a88024ce",
+      "engine": "sapi",
+      "voice": "zira-calm"
+    },
     "zira-calm-06c7f46c4d6391": {
       "opus": "zira-calm-06c7f46c4d6391.webm",
       "aac": "zira-calm-06c7f46c4d6391.m4a",
@@ -2487,14 +2511,6 @@
       "aac": "zira-calm-090ff12accb11d.m4a",
       "durationMs": 4811,
       "sha": "3c61fcf6bb8b8a4f75d3baa1cf454c9012d61762ab355627e5d6581f91c3c86e",
-      "engine": "sapi",
-      "voice": "zira-calm"
-    },
-    "zira-calm-09449894c33790": {
-      "opus": "zira-calm-09449894c33790.webm",
-      "aac": "zira-calm-09449894c33790.m4a",
-      "durationMs": 10865,
-      "sha": "b49e8b709505c9e748ae4f7d8114a9a4bd5388fc9d2a6a3956fad5b57eb3aa13",
       "engine": "sapi",
       "voice": "zira-calm"
     },
@@ -2642,14 +2658,6 @@
       "engine": "sapi",
       "voice": "zira-calm"
     },
-    "zira-calm-0d87077debfaf0": {
-      "opus": "zira-calm-0d87077debfaf0.webm",
-      "aac": "zira-calm-0d87077debfaf0.m4a",
-      "durationMs": 10605,
-      "sha": "be5d35a39c863f7c2f8c108636baa778e7f448776535edaf759b4d55a68697e9",
-      "engine": "sapi",
-      "voice": "zira-calm"
-    },
     "zira-calm-0dba979d49a078": {
       "opus": "zira-calm-0dba979d49a078.webm",
       "aac": "zira-calm-0dba979d49a078.m4a",
@@ -2711,14 +2719,6 @@
       "aac": "zira-calm-0edb5472db1f51.m4a",
       "durationMs": 2457,
       "sha": "546e776e57489b0f4cc208b491b489218ccfe7019b59d5d005c46d68b1a043c6",
-      "engine": "sapi",
-      "voice": "zira-calm"
-    },
-    "zira-calm-0f2984bd74c4f5": {
-      "opus": "zira-calm-0f2984bd74c4f5.webm",
-      "aac": "zira-calm-0f2984bd74c4f5.m4a",
-      "durationMs": 10960,
-      "sha": "88b51a02ffc38d573663fafcae2c01e90c5bf12acc57815da6e30e42565bdf1a",
       "engine": "sapi",
       "voice": "zira-calm"
     },
@@ -2839,14 +2839,6 @@
       "aac": "zira-calm-110e089ebe0e96.m4a",
       "durationMs": 5077,
       "sha": "1a8108e5a612a855e7ec30ebe8e63f40a34efccdc8d0a6e7b59cd38b974f613d",
-      "engine": "sapi",
-      "voice": "zira-calm"
-    },
-    "zira-calm-119d54d4c8439f": {
-      "opus": "zira-calm-119d54d4c8439f.webm",
-      "aac": "zira-calm-119d54d4c8439f.m4a",
-      "durationMs": 6416,
-      "sha": "f1bf62631cb37f84082a582184df800b3cef39732cb1b552219e3cfd2bf85e63",
       "engine": "sapi",
       "voice": "zira-calm"
     },
@@ -3191,6 +3183,14 @@
       "aac": "zira-calm-1c49c350f6f0d5.m4a",
       "durationMs": 2357,
       "sha": "22bfc15d62f940a2fd102fb87ac5610541c7fb528e252e22bdfcfedf011649bd",
+      "engine": "sapi",
+      "voice": "zira-calm"
+    },
+    "zira-calm-1c983097c358bf": {
+      "opus": "zira-calm-1c983097c358bf.webm",
+      "aac": "zira-calm-1c983097c358bf.m4a",
+      "durationMs": 10620,
+      "sha": "dd797fe70154cb96c9ebf02d1f097f7dd662f40c23d5dc3fe7c3466d2455075f",
       "engine": "sapi",
       "voice": "zira-calm"
     },
