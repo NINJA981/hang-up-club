@@ -233,6 +233,13 @@ export function ResultScreen() {
         <OutcomeTag outcome={summary.result.outcome} />
       </header>
 
+      {app.saveFailed === true ? (
+        <p role="status" className="text-body text-text" data-testid="save-failed">
+          This phone could not save today&apos;s call, so your streak may not count it. Free up some
+          space, then take a practice call to check.
+        </p>
+      ) : null}
+
       <section className="flex flex-col gap-3" aria-live="polite">
         <motion.h1
           className="text-result-display text-text"

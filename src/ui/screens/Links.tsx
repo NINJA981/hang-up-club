@@ -48,10 +48,37 @@ function Loading({ children }: { children: string }) {
   );
 }
 
+/**
+ * One save button's life: busy while the write runs, a plain message if it fails, and the button
+ * comes back so the player can try again (never a spinner that never ends).
+ */
+function useSave() {
+  const [busy, setBusy] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const run = (write: () => Promise<unknown>, done: () => void): void => {
+    setBusy(true);
+    setFailed(false);
+    write().then(done, () => {
+      setBusy(false);
+      setFailed(true);
+    });
+  };
+  return { busy, failed, run };
+}
+
+function SaveFailed() {
+  return (
+    <p role="alert" className="max-w-prose text-body text-text">
+      This phone could not save it. Free up some space, then try again.
+    </p>
+  );
+}
+
 function JoinLink({ link }: { link: LinkRoute & { type: 'join' } }) {
   const { actions } = useApp();
+  const app = useAppSnapshot();
   const res = useDecoded(link);
-  const [busy, setBusy] = useState(false);
+  const { busy, failed, run } = useSave();
   if (res.status === 'loading') return <Loading>Opening the setup…</Loading>;
   if (res.status === 'bad') {
     return (
@@ -84,18 +111,30 @@ function JoinLink({ link }: { link: LinkRoute & { type: 'join' } }) {
           One practice call a day, about a minute. Some calls are real, so you&rsquo;ll learn to tell the
           difference.
         </p>
+        {app.profile ? (
+          <Card className="p-6" data-testid="join-replaces">
+            <p className="text-body text-text" dir="auto">
+              This replaces your current setup
+              {app.profile.coachName !== undefined ? `, which ${app.profile.coachName} made` : ''}. Your
+              calls, streak and cheers stay.
+            </p>
+          </Card>
+        ) : null}
+        {failed ? <SaveFailed /> : null}
       </div>
       <Button
         variant="primary"
         loading={busy}
         onClick={() => {
-          setBusy(true);
-          void actions.applyJoin(j).then(() => {
-            navigate('/welcome', { replace: true });
-          });
+          run(
+            () => actions.applyJoin(j),
+            () => {
+              navigate('/welcome', { replace: true });
+            },
+          );
         }}
       >
-        Start
+        {app.profile ? 'Replace my setup' : 'Start'}
       </Button>
     </Page>
   );
@@ -105,7 +144,7 @@ function CheerLink({ link }: { link: LinkRoute & { type: 'cheer' } }) {
   const { actions } = useApp();
   const app = useAppSnapshot();
   const res = useDecoded(link);
-  const [busy, setBusy] = useState(false);
+  const { busy, failed, run } = useSave();
   const [unplayable, setUnplayable] = useState(false);
   if (res.status === 'loading') return <Loading>Opening the cheer…</Loading>;
   if (res.status === 'bad') return <LinkErrorScreen />;
@@ -139,16 +178,19 @@ function CheerLink({ link }: { link: LinkRoute & { type: 'cheer' } }) {
             This phone can&rsquo;t play the voice. You&rsquo;ll see {c.from}&rsquo;s words instead.
           </p>
         )}
+        {failed ? <SaveFailed /> : null}
       </div>
       <Button
         variant="primary"
         loading={busy}
         onClick={() => {
-          setBusy(true);
-          void actions.acceptCheer(c).then(() => {
-            showToast('Cheer saved');
-            navigate(app.profile ? '/today' : '/welcome', { replace: true });
-          });
+          run(
+            () => actions.acceptCheer(c),
+            () => {
+              showToast('Cheer saved');
+              navigate(app.profile ? '/today' : '/welcome', { replace: true });
+            },
+          );
         }}
       >
         Keep this cheer
@@ -161,7 +203,7 @@ function FamilyLink({ link }: { link: LinkRoute & { type: 'family' } }) {
   const { actions } = useApp();
   const app = useAppSnapshot();
   const res = useDecoded(link);
-  const [busy, setBusy] = useState(false);
+  const { busy, failed, run } = useSave();
   if (res.status === 'loading') return <Loading>Opening the call…</Loading>;
   if (res.status === 'bad') return <LinkErrorScreen />;
   const f: FamilyLinkV1 = res.value;
@@ -181,16 +223,19 @@ function FamilyLink({ link }: { link: LinkRoute & { type: 'family' } }) {
           It will come up as a call in the next week. It can&rsquo;t reach anyone: the app can&rsquo;t place
           calls or move money.
         </p>
+        {failed ? <SaveFailed /> : null}
       </div>
       <Button
         variant="primary"
         loading={busy}
         onClick={() => {
-          setBusy(true);
-          void actions.acceptFamilyCall(f).then(() => {
-            showToast('Call added');
-            navigate(app.profile ? '/today' : '/welcome', { replace: true });
-          });
+          run(
+            () => actions.acceptFamilyCall(f),
+            () => {
+              showToast('Call added');
+              navigate(app.profile ? '/today' : '/welcome', { replace: true });
+            },
+          );
         }}
       >
         Add to my calls
@@ -231,7 +276,7 @@ export function ResultCardView({ card }: { card: ResultCardV1 }) {
 function ResultLink({ link }: { link: LinkRoute & { type: 'result' } }) {
   const { actions } = useApp();
   const res = useDecoded(link);
-  const [busy, setBusy] = useState(false);
+  const { busy, failed, run } = useSave();
   if (res.status === 'loading') return <Loading>Opening the result…</Loading>;
   if (res.status === 'bad') return <LinkErrorScreen result />;
   const card = res.value;
@@ -240,16 +285,22 @@ function ResultLink({ link }: { link: LinkRoute & { type: 'result' } }) {
       <div className="flex flex-col gap-6">
         <h1 className="text-h1 text-text">A result from {card.name}</h1>
         <ResultCardView card={card} />
+        <p className="max-w-prose text-body text-text-muted">
+          Anyone can make a result link, so this card shows what the link says, not proof.
+        </p>
+        {failed ? <SaveFailed /> : null}
       </div>
       <Button
         variant="primary"
         loading={busy}
         onClick={() => {
-          setBusy(true);
-          void actions.saveResultCard(card).then(() => {
-            showToast('Saved to your Coach inbox');
-            navigate('/inbox', { replace: true });
-          });
+          run(
+            () => actions.saveResultCard(card),
+            () => {
+              showToast('Saved to your Coach inbox');
+              navigate('/inbox', { replace: true });
+            },
+          );
         }}
       >
         Save to my Coach inbox

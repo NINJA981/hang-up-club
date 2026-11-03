@@ -109,6 +109,22 @@ export class Repo {
     await this.db.add('attempts', AttemptSchema.parse(attempt));
   }
 
+  /**
+   * One call's result: the attempt and, for a scored call, the new tactic boxes, in one
+   * transaction, so a failed write can never keep one without the other.
+   */
+  async saveCall(attempt: Attempt, boxes?: readonly TacticBox[]): Promise<void> {
+    const row = AttemptSchema.parse(attempt);
+    const boxRows = boxes?.map((b) => TacticBoxSchema.parse(b));
+    const tx = this.db.transaction(['attempts', 'tactics'], 'readwrite');
+    const writes: Promise<unknown>[] = [tx.objectStore('attempts').add(row)];
+    if (boxRows) {
+      const tactics = tx.objectStore('tactics');
+      writes.push(tactics.clear(), ...boxRows.map((b) => tactics.put(b)));
+    }
+    await Promise.all([...writes, tx.done]);
+  }
+
   /** Oldest first. */
   async listAttempts(): Promise<Attempt[]> {
     const rows = await this.readAll('attempts', AttemptSchema);

@@ -135,7 +135,9 @@ export function plannedKinds(profileId: string, rate: number, until: LocalDate):
 }
 
 export function plannedKind(profileId: string, rate: number, date: LocalDate): Kind {
-  const kinds = plannedKinds(profileId, rate, date);
+  // A phone whose clock is set before the anchor still gets a call: it plays the anchor day's kind.
+  const day = date < SEQUENCE_ANCHOR ? SEQUENCE_ANCHOR : date;
+  const kinds = plannedKinds(profileId, rate, day);
   const k = kinds[kinds.length - 1];
   if (!k) throw new Error('empty sequence');
   return k;

@@ -1,6 +1,6 @@
 import { createContext, use, useEffect, useState, type ReactNode } from 'react';
 import { realClock } from '../domain/time/clock';
-import { deleteHucDb, openHucDb } from '../storage/db';
+import { deleteHucDb, openHucDb, requestPersistentStorage } from '../storage/db';
 import { Repo } from '../storage/repo';
 import { AppController, type AppState } from '../state/app';
 import { loadContent, type Content } from '../state/library';
@@ -19,7 +19,7 @@ import { dbNameFor, readParams, type AppParams } from './params';
 export interface AppContextValue {
   state: {
     /** Loading, ready or failed to start. */
-    boot: 'loading' | 'ready' | 'error';
+    boot: 'loading' | 'ready' | 'error' | 'blocked';
     content: Content | undefined;
   };
   actions: Pick<
@@ -88,13 +88,19 @@ const EMPTY_STORE = createStore<AppState>({
 });
 
 interface Boot {
-  boot: 'loading' | 'ready' | 'error';
+  boot: 'loading' | 'ready' | 'error' | 'blocked';
   content?: Content;
   controller?: AppController;
   runner?: CallRunner;
 }
 
 const DEFAULT_PARAMS: AppParams = { test: false, seed: undefined, demo: undefined };
+
+/** Once the player is set up, ask the browser to keep the streak and history (best effort). */
+function keepData<T>(value: T): T {
+  void requestPersistentStorage();
+  return value;
+}
 
 export function AppProvider({ children, params }: { children: ReactNode; params?: AppParams }) {
   const [boot, setBoot] = useState<Boot>({ boot: 'loading' });
@@ -109,7 +115,13 @@ export function AppProvider({ children, params }: { children: ReactNode; params?
       const dbName = dbNameFor(resolvedParams);
       // Demo mode starts from an empty throw-away database, so the real one is never touched.
       if (resolvedParams.demo) await deleteHucDb(dbName);
-      const [content, db] = await Promise.all([loadContent((url) => fetch(url)), openHucDb(dbName)]);
+      const onBlocked = (): void => {
+        if (!run.cancelled) setBoot({ boot: 'blocked' });
+      };
+      const [content, db] = await Promise.all([
+        loadContent((url) => fetch(url)),
+        openHucDb(dbName, { onBlocked }),
+      ]);
       const controller = new AppController({
         repo: new Repo(db),
         clock: realClock(),
@@ -131,8 +143,8 @@ export function AppProvider({ children, params }: { children: ReactNode; params?
   const value: AppContextValue = {
     state: { boot: boot.boot, content: boot.content },
     actions: {
-      setupProfile: (i) => need(controller).setupProfile(i),
-      applyJoin: (l) => need(controller).applyJoin(l),
+      setupProfile: (i) => need(controller).setupProfile(i).then(keepData),
+      applyJoin: (l) => need(controller).applyJoin(l).then(keepData),
       updateSettings: (p) => need(controller).updateSettings(p),
       recordCall: (i) => need(controller).recordCall(i),
       acceptCheer: (l) => need(controller).acceptCheer(l),

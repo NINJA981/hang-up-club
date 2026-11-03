@@ -201,6 +201,21 @@ describe('tactic boxes', () => {
     ).rejects.toThrow();
     expect(await repo.getTacticBoxes()).toHaveLength(1);
   });
+  it('saveCall writes the attempt and replaces the boxes together', async () => {
+    await repo.putTacticBoxes([{ tactic: 'fear', box: 3, lastSeen: '2026-10-19' }]);
+    await repo.saveCall(attempt(), [{ tactic: 'urgency', box: 1, lastSeen: '2026-10-20' }]);
+    expect(await repo.listAttempts()).toHaveLength(1);
+    expect(await repo.getTacticBoxes()).toEqual([{ tactic: 'urgency', box: 1, lastSeen: '2026-10-20' }]);
+    await repo.saveCall(attempt({ localDate: '2026-10-21', scored: false }));
+    expect(await repo.listAttempts()).toHaveLength(2);
+    expect(await repo.getTacticBoxes()).toHaveLength(1); // a practice call leaves the boxes alone
+  });
+  it('saveCall writes nothing when part of it is invalid', async () => {
+    await expect(
+      repo.saveCall(attempt(), [{ tactic: 'urgency', box: 9 as never, lastSeen: '2026-10-20' }]),
+    ).rejects.toThrow();
+    expect(await repo.listAttempts()).toHaveLength(0);
+  });
 });
 
 describe('cheers', () => {

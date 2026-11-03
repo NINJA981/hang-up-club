@@ -78,6 +78,9 @@ describe('planned kind sequence (AC-F7-2)', () => {
     expect(later.slice(0, earlier.length)).toEqual(earlier);
     expect(plannedKind('p', 0.4, '2026-06-01')).toBe(a.at(-1));
   });
+  it('a phone clock set before the anchor still gets a call instead of a crash', () => {
+    expect(plannedKind('p', 0.4, '2019-03-04')).toBe(plannedKind('p', 0.4, '2024-01-01'));
+  });
   it('differs between profiles', () => {
     expect(plannedKinds('alice', 0.4, '2026-03-01')).not.toEqual(plannedKinds('bob', 0.4, '2026-03-01'));
   });

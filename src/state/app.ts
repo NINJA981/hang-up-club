@@ -32,6 +32,8 @@ export interface AppState {
   inbox: ReceivedResult[];
   /** The civil date "today" for the player. Refreshed when the app returns to the foreground. */
   today: LocalDate;
+  /** The last call could not be written to this device, even after a retry. */
+  saveFailed?: boolean;
 }
 
 export interface SetupInput {
@@ -209,9 +211,19 @@ export class AppController {
       );
     }
     this.store.set((s) => ({ ...s, today, attempts: [...s.attempts, attempt], tacticBoxes: boxes }));
+    const write = (): Promise<void> => this.deps.repo.saveCall(attempt, scored ? boxes : undefined);
     const saved = (async (): Promise<void> => {
-      await this.deps.repo.addAttempt(attempt);
-      if (scored) await this.deps.repo.putTacticBoxes(boxes);
+      try {
+        await write();
+      } catch {
+        // One retry: a transient failure (another tab upgrading, a busy disk) usually clears.
+        try {
+          await write();
+        } catch (err) {
+          this.store.set((s) => ({ ...s, saveFailed: true }));
+          throw err;
+        }
+      }
     })();
     return { attempt, summary, saved };
   }
@@ -220,8 +232,12 @@ export class AppController {
 
   /** Store a cheer from a cheer link. The same coach's newer cheer replaces nothing: the player keeps them all. */
   async acceptCheer(link: CheerLinkV1): Promise<Cheer> {
+    // The id comes from the content, so opening the same link twice keeps one cheer.
+    const id = `c-${contentHash(`${link.from}|${link.b64}`)}`;
+    const existing = this.state.cheers.find((c) => c.id === id);
+    if (existing) return existing;
     const cheer: Cheer = {
-      id: this.deps.newId(),
+      id,
       from: link.from,
       mime: link.mime,
       audio: base64ToBlob(link.b64, link.mime),
@@ -306,5 +322,18 @@ export class AppController {
 
 /** Identity of a result card: the same player, day, call and outcome is one inbox entry. */
 export function resultCardId(card: ResultCardV1): string {
-  return [card.name, card.date, card.title, card.outcome, String(card.tAction ?? '')].join('|').slice(0, 64);
+  // Hashed, not truncated: a long name and title must not push the outcome out of the key.
+  return `r-${contentHash([card.name, card.date, card.title, card.outcome, String(card.tAction ?? '')].join('|'))}`;
+}
+
+/** 64-bit FNV-1a as two 32-bit halves, hex: a stable id for content, not a security hash. */
+export function contentHash(text: string): string {
+  let a = 0x811c9dc5;
+  let b = 0x01000193 ^ text.length;
+  for (let i = 0; i < text.length; i++) {
+    const c = text.charCodeAt(i);
+    a = Math.imul(a ^ c, 0x01000193) >>> 0;
+    b = Math.imul(b ^ c ^ (a >>> 7), 0x01000193) >>> 0;
+  }
+  return a.toString(16).padStart(8, '0') + b.toString(16).padStart(8, '0');
 }

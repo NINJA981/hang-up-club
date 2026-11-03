@@ -63,13 +63,17 @@ function Splash() {
   );
 }
 
-function BootError() {
+function BootError({ blocked = false }: { blocked?: boolean }) {
   return (
     <Page withTabBar={false} className="min-h-dvh justify-center">
       <Wordmark />
-      <h1 className="text-h1 text-text">The calls could not be loaded</h1>
+      <h1 className="text-h1 text-text">
+        {blocked ? 'Hang Up Club is open somewhere else' : 'The calls could not be loaded'}
+      </h1>
       <p role="alert" className="max-w-prose text-body text-text-muted">
-        Check your connection and try again. Nothing on this phone has been changed.
+        {blocked
+          ? 'Close the other Hang Up Club tab or window so this one can update, then try again. Nothing on this phone has been changed.'
+          : 'Check your connection and try again. Nothing on this phone has been changed.'}
       </p>
       <Button
         variant="primary"
@@ -187,6 +191,7 @@ function Routes() {
 
   if (state.boot === 'loading') return <Splash />;
   if (state.boot === 'error') return <BootError />;
+  if (state.boot === 'blocked') return <BootError blocked />;
 
   const effective: Route = needsWelcome ? { name: 'welcome' } : route;
   const showTop = hasProfile && TOP_ROUTES.includes(effective.name);

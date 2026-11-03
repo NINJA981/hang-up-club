@@ -204,26 +204,38 @@ describe('recording calls', () => {
     expect(await repo.listAttempts()).toEqual([attempt]);
     expect(await repo.getTacticBoxes()).toHaveLength(app.state.tacticBoxes.length);
   });
-  it('a failed save rejects `saved` but does not take the result away', async () => {
+  it('a failed save is retried once, then flags saveFailed and rejects, but keeps the result', async () => {
     const scenario = s01();
-    const spy = vi.spyOn(repo, 'addAttempt').mockRejectedValueOnce(new Error('disk full'));
+    const spy = vi.spyOn(repo, 'saveCall').mockRejectedValue(new Error('disk full'));
     const { attempt, saved } = app.scoreCall({
       ended: playCall(scenario, { type: 'HANG_UP', tMs: justAfterFlag(scenario) }),
       scenario,
       scored: true,
     });
     await expect(saved).rejects.toThrow('disk full');
+    expect(spy).toHaveBeenCalledTimes(2);
+    expect(app.state.saveFailed).toBe(true);
     expect(todaysScoredAttempt(app.state)).toEqual(attempt);
+    spy.mockRestore();
+  });
+  it('a save that fails once is retried and lands', async () => {
+    const scenario = s01();
+    const spy = vi.spyOn(repo, 'saveCall').mockRejectedValueOnce(new Error('busy'));
+    const { attempt, saved } = app.scoreCall({ ended: letItRing(scenario), scenario, scored: true });
+    await saved;
+    expect(spy).toHaveBeenCalledTimes(2);
+    expect(app.state.saveFailed).toBeUndefined();
+    expect(await repo.listAttempts()).toEqual([attempt]);
     spy.mockRestore();
   });
   it('recordCall still resolves only after the write', async () => {
     const scenario = s01();
     const order: string[] = [];
-    const real = repo.addAttempt.bind(repo);
-    vi.spyOn(repo, 'addAttempt').mockImplementation(async (a) => {
+    const real = repo.saveCall.bind(repo);
+    vi.spyOn(repo, 'saveCall').mockImplementation(async (a, b) => {
       await Promise.resolve();
       order.push('written');
-      return real(a);
+      return real(a, b);
     });
     await app.recordCall({ ended: letItRing(scenario), scenario, scored: true });
     order.push('resolved');
@@ -394,6 +406,17 @@ describe('receiving links', () => {
     expect(resultCardId({ ...card, title: 'x'.repeat(48), name: 'y'.repeat(30) }).length).toBeLessThanOrEqual(
       64,
     );
+    // Long name and title: the outcome and the second still tell two cards apart.
+    const long = { ...card, title: 'x'.repeat(48), name: 'y'.repeat(30) };
+    expect(resultCardId(long)).not.toBe(resultCardId({ ...long, outcome: 'late' }));
+    expect(resultCardId(long)).not.toBe(resultCardId({ ...long, tAction: 7000 }));
+  });
+  it('keeps one cheer however many times the same link is opened', async () => {
+    const a = await app.acceptCheer(cheerLink);
+    const b = await app.acceptCheer(cheerLink);
+    expect(b.id).toBe(a.id);
+    expect(app.state.cheers).toHaveLength(1);
+    expect(await repo.listCheers()).toHaveLength(1);
   });
 });
 

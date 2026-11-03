@@ -27,12 +27,39 @@ export interface HucDB extends DBSchema {
 
 export type HucDatabase = IDBPDatabase<HucDB>;
 
-export function openHucDb(name = DB_NAME): Promise<HucDatabase> {
-  return openDB<HucDB>(name, DB_VERSION, {
+export interface OpenHooks {
+  /** Another tab or window still holds an older version open, so the upgrade waits for it. */
+  onBlocked?: () => void;
+}
+
+export async function openHucDb(name = DB_NAME, hooks: OpenHooks = {}): Promise<HucDatabase> {
+  const db = await openDB<HucDB>(name, DB_VERSION, {
     upgrade(db, oldVersion, newVersion, tx) {
       runMigrations(db, oldVersion, newVersion, tx);
     },
+    blocked() {
+      hooks.onBlocked?.();
+    },
+    blocking() {
+      // A newer version of the app wants to upgrade: let it, instead of hanging both tabs.
+      db.close();
+    },
   });
+  return db;
+}
+
+/**
+ * Ask the browser not to evict this origin's data (streak, history, offline audio). Best effort:
+ * browsers may say no, and it is never asked for before the player has set up.
+ */
+export async function requestPersistentStorage(): Promise<boolean> {
+  try {
+    if (typeof navigator === 'undefined' || !navigator.storage?.persist) return false;
+    if (await navigator.storage.persisted()) return true;
+    return await navigator.storage.persist();
+  } catch {
+    return false;
+  }
 }
 
 export function deleteHucDb(name = DB_NAME): Promise<void> {
