@@ -263,6 +263,13 @@ export function SettingsScreen() {
         </div>
       </Group>
 
+      <Group title="What this app is">
+        <p className="max-w-prose py-4 text-body text-text-muted" data-testid="training-note">
+          This is practice, not protection. It can&rsquo;t screen, block or spot your real calls. If a real
+          call worries you, hang up and call a number you already trust, like the one on your card or a bill.
+        </p>
+      </Group>
+
       <Group title="Privacy">
         <div className="flex flex-col gap-4 py-4">
           <p className="max-w-prose text-body text-text-muted">

@@ -52,7 +52,8 @@ export function WelcomeScreen() {
             </h1>
             <p className="max-w-prose text-lead text-text-muted">
               Some calls are real, so you&rsquo;ll learn to tell the difference. Every caller is made up, and
-              nothing leaves this phone unless you send it.
+              nothing leaves this phone unless you send it. It&rsquo;s practice: it can&rsquo;t block real
+              calls.
             </p>
           </div>
           <div className="flex flex-col gap-3">
