@@ -350,7 +350,7 @@ The system is built for older eyes and hands first:
 
 The tone is adult and warm. The player is a capable person practising a skill, so there are no mascots, badges, points-as-decoration, cartoon illustrations or exclamation-mark confetti copy. The only celebration is a real family member's voice.
 
-**Blend notes (bible §10.2, archetype A2 "Calm consumer daily-use"):**
+**Blend notes:**
 
 - **From oura** we took:
   - the idea of a warm resting "paper" as the default surface
@@ -358,7 +358,7 @@ The tone is adult and warm. The player is a capable person practising a skill, s
   - earth tones only in data (the moss tints of the streak calendar), never on buttons
   - long vertical silences between groups
 
-  We rejected Oura's cream canvas (bible ban #15), its thin serif display (T7 is our assigned pairing), its pill CTAs and its photography-led layouts. Our version differs: the paper is **cool stone at C 0.004, hue 110**, not cream, and the only "image" is the product's own call screen.
+  We rejected Oura's cream canvas, its thin serif display (T7 is our chosen pairing), its pill CTAs and its photography-led layouts. Our version differs: the paper is **cool stone at C 0.004, hue 110**, not cream, and the only "image" is the product's own call screen.
 - **From apple** we took:
   - **the colour change is the divider**: notebook (light) and Line (dark) are two worlds, with no borders needed between them
   - `scale(.95)` as the press state on the call circles
@@ -387,9 +387,9 @@ No brand names, colours, fonts or logos from these references appear anywhere in
 
 The palette is the studio's D1 FIELDNOTE (moss on stone), darkened slightly so that older readers get AAA on all main text. The Line adds an always-dark set of call tokens.
 
-**Deviations from bible D1 (written reasons, per the prime directive):**
+**Deviations from the base palette D1 (written reasons):**
 
-| Token | Bible D1 | Ours | Reason |
+| Token | Base D1 | Ours | Reason |
 |---|---|---|---|
 | `text-muted` | L 0.47 | **L 0.44** | Muted text reaches 7.4:1 (AAA) instead of 6.5:1, for older eyes |
 | `text-subtle` | L 0.55 | **L 0.50** | 5.7:1 instead of 4.6:1 |
@@ -397,10 +397,10 @@ The palette is the studio's D1 FIELDNOTE (moss on stone), darkened slightly so t
 | `border-strong` | L 0.62 | **L 0.60** | 3.8:1 for input borders |
 | `text-muted-dark` | L 0.80 | **L 0.82** | APCA Lc 70 for secondary text in dark |
 | `text-subtle-dark` | L 0.69 | **L 0.73** | 7.7:1, so dark meta text is not dim |
-| `success` | hue 150 | **= accent** | The accent is green, so "right call" uses the accent plus a check icon (bible §4.1 step 4 rule) |
+| `success` | hue 150 | **= accent** | The accent is green, so "right call" uses the accent plus a check icon |
 | Call tokens | n/a | new | The Line needs AAA in both themes |
 
-The nearest-brand ΔE_OK check (culori, bible §4.4) gives: light accent → Oura gold **0.179**; dark accent → Supabase **0.083**; Hang Up red → Cursor **0.129**. All are ≥ 0.06.
+The nearest-brand ΔE_OK check gives: light accent → Oura gold **0.179**; dark accent → Supabase **0.083**; Hang Up red → Cursor **0.129**. All are ≥ 0.06.
 
 ### Primary
 - **Moss** (`accent`, `#3d6b32` light / `#9dc590` dark): every positive action. "Take today's call", the Answer circle, the "right call" check, the streak's done days, the focus ring. At most one filled moss button per view.
@@ -461,11 +461,11 @@ The nearest-brand ΔE_OK check (culori, bible §4.4) gives: light accent → Our
 
 **Character:** sober, clear and unambiguous. The pairing was designed for readers with low vision: I, l and 1, and O and 0, never collide. That is exactly the job of a scam drill, where a phone number or a "6-digit code" must be read correctly. The face is friendly without being cute.
 
-**Scale: "Senior Comfortable".** This deviates from bible §3.2 Comfortable: every step is raised so that the body is 20px. The reason is our audience (SPEC §4.4).
+**Scale: "Senior Comfortable".** This deviates from the standard "Comfortable" scale: every step is raised so that the body is 20px. The reason is our audience (SPEC §4.4).
 
 | Token | Size / line height | Tracking | Weight | Use |
 |---|---|---|---|---|
-| `landing-display` | `clamp(3.5rem, 2rem + 6vw, 7rem)` (56→112px; the frontmatter holds the max) / 0.94 | −0.035em | 650 | Landing hero only (3D_INSPIRATION §3.3) |
+| `landing-display` | `clamp(3.5rem, 2rem + 6vw, 7rem)` (56→112px; the frontmatter holds the max) / 0.94 | −0.035em | 650 | Landing hero only |
 | `result-display` | `clamp(2.5rem, 1.9rem + 2.6vw, 3.5rem)` (40→56px) / 1.04 | −0.028em | 600 | "Hung up at 0:06." |
 | `caller` | `clamp(2.25rem, 1.75rem + 2vw, 2.75rem)` (36→44px) / 1.1 | −0.022em | 600 | Caller name on the Line |
 | `h1` | 40 / 46 | −0.022em | 600 | Screen titles (rare) |
@@ -521,7 +521,7 @@ The nearest-brand ΔE_OK check (culori, bible §4.4) gives: light accent → Our
 | Bottom tab bar | 72px + `env(safe-area-inset-bottom)`, 3 items |
 | Landing section spacing | 80px mobile / 128px desktop |
 
-**Responsive (bible §8.1).**
+**Responsive.**
 
 | | 375 | 768 | 1440 |
 |---|---|---|---|
@@ -562,7 +562,7 @@ The **Line** has no shadows at all. Depth comes from tonal steps: `call-bg`, the
 
 ## Shapes
 
-- **Personality: Soft** (bible §5.2): xs 6 · sm 10 · md 14 · lg 20 · full.
+- **Personality: Soft**: xs 6 · sm 10 · md 14 · lg 20 · full.
 - **Roles:**
   - stamps, keycaps and the timeline track: `xs`
   - streak days and nested tiles inside cards: `sm`
@@ -585,7 +585,7 @@ All components use only role tokens. Raw palette utilities and hex values are ba
 - **States:**
   - **Hover** (pointer:fine only): background one step, 100ms.
   - **Pressed:** `scale(.97)`, `accent-hover`, 100ms `--ease-out`.
-  - **Focus-visible:** `outline: 3px solid var(--ring); outline-offset: 3px`. This is 3px (above bible's 2px) for low vision.
+  - **Focus-visible:** `outline: 3px solid var(--ring); outline-offset: 3px`. This is 3px (above the usual 2px) for low vision.
   - **Disabled:** never used for submit. Validation is inline.
   - **Loading:** keep the label, prepend a 20px spinner, lock the width, and set `aria-busy`.
 - **Keyboard hints** (desktop, pointer:fine only): a keycap at the right edge of the button (e.g. "H" on Hang up).
@@ -656,7 +656,7 @@ All components use only role tokens. Raw palette utilities and hex values are ba
 
 Single-key shortcuts are active only when no input is focused.
 
-**No command palette** (a deliberate deviation from bible §6.8). Older users don't discover hidden palettes, and the app has fewer than 15 actions, all visible. Every action is reachable by Tab plus the keys above.
+**No command palette**. Older users don't discover hidden palettes, and the app has fewer than 15 actions, all visible. Every action is reachable by Tab plus the keys above.
 
 ### Screen specs and states
 
@@ -669,9 +669,9 @@ Copy is final draft. Sentence case. No apologies, no "Oops". Every caller is fic
 | **Today** | Before the first call: daily card "Your first practice call is ready" + "Every caller is made up. Nobody can reach you through this app." | "Getting today's call ready…" with an inline determinate bar (x / y clips) if audio isn't cached | Offline and not cached: "Today's call needs to download once. Connect to Wi-Fi, then it works offline." + "Try again" / "Use the built-in voice instead" | After the call: outcome line + "Done for today. See you tomorrow." + streak strip (7 days) + quiet "Practice another call (not scored)" |
 | **Incoming** (Line) | n/a | n/a (audio is preloaded before the ring is allowed) | Audio context blocked: "Tap Answer to start the sound." | Answer → In call |
 | **In call** (Line) | n/a | If a clip stalls > 300ms: the caption shows the text and the line plays via the built-in voice | Read-along mode banner: "Read-along call: your phone has no built-in voice." | Ends on Hang up / Call back / caller ends |
-| **Result** | n/a | n/a (computed locally, instant) | n/a | Outcome variants: `sharp` "Hung up at 0:06." / "The scammer needed 0:40." · `late` "Hung up 4 s after they asked for the code." · `jumpy` "You hung up before they gave anything away." / "Safe. Next time, listen for the first warning sign." · `caught` "They got to the ask, and you were still on the line." / "Here's what gave it away." · `stayed` "That was the real pharmacy." / "Staying on was right. They didn't ask for anything." · `verified` "You called the number on your card." / "That beats every bank scam." · `missed` "That one was real." / "They didn't ask you for anything. Hanging up isn't dangerous, but you'd have missed your refill." Buttons: "See what gave it away" (secondary), "Send to family" (primary), "Done" (quiet). |
+| **Result** | n/a | n/a (computed locally, instant) | n/a | Outcome variants: `sharp` "Hung up at 0:06." / "The scammer needed 0:40." · `late` "Hung up 4 s after they asked for the code." · `jumpy` "You hung up before they gave anything away." / "Safe. Next time, listen for the first warning sign." · `caught` "They got to the ask, and you were still on the line." / "Here's what gave it away." · `stayed` "That was the real pharmacy." / "Staying on was right. They didn't ask for anything." · `verified` "You called the number on your card." / "That beats this scam every time." · `cautious` (a call back on a real call) "You called the number on your card." / "Calling back is always safe. This one was real and asked for nothing, so you could have stayed on." · `missed` "That one was real." / "They didn't ask you for anything. Hanging up isn't dangerous, but you'd have missed your refill." Buttons: "See what gave it away" (secondary), "Send to family" (primary), "Done" (quiet). |
 | **Replay** | n/a | n/a | A clip fails to play: an inline note on that row: "This line can't play right now." The transcript stays. | Transcript rows: time (mono) · speaker · line · stamps · "Play this line". Ends with the advice sentence and "Why this matters" (source citation in a sheet). |
-| **Call back** | n/a | A short dial animation (3 dots, 900ms; static under reduced motion) | n/a | A card graphic with the "First Meridian Bank" name in `title` and "Customer service (614) 555-0100" in mono. The IVR plays with captions: "We have no record of calling you today. Never share a code with anyone who calls you." |
+| **Call back** | n/a | A short dial animation (3 dots, 900ms; static under reduced motion) | n/a | A card graphic with the bank name (for example "First Wrenfield Bank") in `title` and the trusted number, for S01 "(614) 555-0120", in mono. The IVR plays with captions, for S01: "Thank you for calling First Wrenfield Bank. We did not call you today. We never ask for a text code over the phone." |
 | **My calls** (history) | "Your calls will show up here after today's call." + "Take today's call" | Skeleton rows (3, matching row height 72px), shown after 200ms | DB read failure: "Your call history couldn't be read. Your settings are safe." + "Try again" | A month calendar (56px days: done ✓, rest ◌, missed –, today ring) + list rows: date · fictional caller · outcome icon + word |
 | **Settings** | n/a | n/a | Reminder download blocked: "Your browser didn't save the reminder. Try again, or add a daily 9:00 alarm yourself." | Groups: Calls (captions, sound, vibrate, larger text) · Reminder (time + "Add to my calendar") · Look (System/Light/Dark) · Family (cheers received, family calls received, "Set up for someone else") · Privacy ("Everything stays on this phone." + "Delete everything on this device", destructive, confirm sheet) |
 | **Coach setup** | Step 1 of 4: "What do they call you?" (address term picker: 15 options + "Something else") · Step 2: "What should we call you?" · Step 3: "Record a cheer (up to 2.5 s)" · Step 4: "Which calls should they practise?" (categories, all on by default; "Real calls: about 4 in 10" read-only) | Recording: a 2.5s moss countdown ring, a solid `text`-colour dot and the word "Recording" (deliberately not red; see the Red Means Them Rule) | Mic denied: "Your browser blocked the microphone. You can still send setup without a cheer, or allow the microphone in your browser settings." | "Setup link ready" + QR (256px, quiet zone 16px) + "Share link" (primary) + "Copy" (secondary, inline ✓ morph). The cheer link is a second share step. |
@@ -682,7 +682,7 @@ Copy is final draft. Sentence case. No apologies, no "Oops". Every caller is fic
 
 **Overlays.** There is no extension popup; this is a PWA. Overlays are bottom sheets (share, delete confirm, source citation, install guide) and toasts. Install hint: inline on Today after the 2nd session or after the first `sharp`. iOS gets an illustrated "Share → Add to Home Screen" sheet. It can be dismissed forever.
 
-### Signature component: The Cut (bible M15 + M5, bespoke)
+### Signature component: The Cut
 
 **Event:** a scam call ends by the player's Hang Up or Call back with outcome `sharp` or `verified`. That happens at most once a day for scored calls; practice calls get the same moment.
 
@@ -736,7 +736,7 @@ Copy is final draft. Sentence case. No apologies, no "Oops". Every caller is fic
 - **Don't** use shadows on the Line, or on resting notebook cards.
 - **Don't** animate daily navigation. Tab switches are instant; only state changes get ≤ 200ms fades.
 - **Don't** use any real bank, agency, company or person name, logo or number, anywhere: UI, scripts, tests, landing page or README.
-- **Don't** use a purple or blue gradient, glassmorphism, emoji as icons, tracked-out eyebrows, or "→" on buttons (bible §2).
+- **Don't** use a purple or blue gradient, glassmorphism, emoji as icons, tracked-out eyebrows, or "→" on buttons.
 
 ---
 
@@ -776,23 +776,23 @@ export const SPRING = {
 
 - The app is wrapped in `<MotionConfig reducedMotion="user" transition={SPRING.ui}>`.
 - Animate only `transform` and `opacity`. Never `transition: all`.
-- Ring vibration is a documented deviation from bible §6.10 ("never use patterns"): the `[800, 400, 800]` ring cadence exists because the scope requires a realistic ring. It is on by default only on Android, can be turned off in Settings, and stops at answer.
-- **Sound** is a documented deviation from bible §6.10 ("off by default"). Sound is the product. First run includes a sound check, and sound can be turned off, which switches to a captions-only call.
-- The CSS reduced-motion fallback from bible §5.5 is included verbatim in `tokens.css`.
+- Ring vibration is a documented deviation from the house rule "never use vibration patterns": the `[800, 400, 800]` ring cadence exists because the scope requires a realistic ring. It is on by default only on Android, can be turned off in Settings, and stops at answer.
+- **Sound** is a documented deviation from the house rule "sound off by default". Sound is the product. First run includes a sound check, and sound can be turned off, which switches to a captions-only call.
+- The standard CSS reduced-motion fallback is included in `tokens.css`.
 
-## Appendix B: Landing page immersive plan (bible §11)
+## Appendix B: Landing page immersive plan
 
-**Decision: CSS/SVG + pre-rendered DOM capture. No live WebGL.** This is a reasoned choice under 3D_INSPIRATION §5.2's decision rule. Live WebGL requires a T-pattern that says something the flat version cannot (3P2).
+**Decision: CSS/SVG + pre-rendered DOM capture. No live WebGL.** Live WebGL requires a T-pattern that says something the flat version cannot (3P2).
 
-The sentence this page must say is *"a real-feeling call you can cut off, and some calls are real."* The most truthful object for that sentence is **the product's own call screen** (bible P5 "show the real thing", Linear's 0-canvas precedent). A 3D handset or glyph would be a metaphor for something we can show literally.
+The sentence this page must say is *"a real-feeling call you can cut off, and some calls are real."* The most truthful object for that sentence is **the product's own call screen**. A 3D handset or glyph would be a metaphor for something we can show literally.
 
 Our audience (adult children on phones in a LinkedIn feed, and their parents on older devices) also favours a tier-0-first page.
 
-| Element | Technique (3D_INSPIRATION §2) | Spec |
+| Element | Technique | Spec |
 |---|---|---|
 | Hero object | Real DOM call screen in a handset frame (T21 CSS variant, one element) | The actual `ui/call` components in `?demo` mode, inside a 390 × 844 frame. At ≥ 1024px the frame has a resting `perspective: 1400px; rotateY(-10deg) rotateX(4deg)` that settles to 0 on hover/focus (600ms `--ease-scene`). No tilt on touch. Muted by default with captions. A visible "Play with sound" toggle lazy-loads ≤ 150KB of S01 Opus clips. |
 | Backdrop | T16 contour lines, static SVG | Generated offline with d3-contour from a seeded noise field: "field notes" topography in `accent` at 6% opacity (light) / 8% (dark), ≤ 30KB, `aria-hidden`. The handset cord motif emerges from one contour line. |
-| Beat 2 loop | T18 pre-rendered video | The signature moment captured from the real DOM with `scripts/capture-demo.mjs` (deterministic `?demo=signature&seed=7` + fake clock), encoded per 3D_INSPIRATION §6.3. MP4 ≤ 600KB + WebM AV1, `muted playsinline loop preload="none"`, played via IntersectionObserver at 25%, with an AVIF poster ≤ 80KB. |
+| Beat 2 loop | T18 pre-rendered video | The signature moment captured from the real DOM with `scripts/capture-demo.mjs` (deterministic `?demo=signature&seed=7` + fake clock). MP4 ≤ 600KB + WebM AV1, `muted playsinline loop preload="none"`, played via IntersectionObserver at 25%, with an AVIF poster ≤ 80KB. |
 | Proof loops (beat 3) | T18 | Three ≤ 6s loops: a decoy call where staying on is right, the red-flag replay, and coach setup → cheer. Each has one line of copy. |
 | The how (beat 4) | SVG diagram | Device ↔ link fragment ↔ device, with "no server" drawn as an absence (a dashed empty box labelled "No server. Nothing to hack, nothing to sell."). |
 | Grain | none | A flat stone canvas is part of the identity. |
@@ -804,25 +804,25 @@ Our audience (adult children on phones in a LinkedIn feed, and their parents on 
 - Poster/LCP: the **H1** is the LCP element. The hero frame has a fixed `aspect-ratio`, so CLS = 0.
 - No loader, no cursor effects, no audio by default, native scroll (no Lenis).
 
-**Tiers.** There is only one tier, which is equivalent to bible tier 0 everywhere.
+**Tiers.** There is only one tier, the flat no-WebGL path.
 
 - Under `prefers-reduced-motion`, videos don't autoplay: the poster shows with a "Play" button, and the hero tilt is disabled.
 - Under `Save-Data`, videos don't load until tapped.
 
 **GitHub stars badge.** It is **not** embedded, because shields.io is a third-party request. A plain "View the code on GitHub" link is used instead. No star counts or fake stats appear.
 
-## Appendix C: Pre-flight checklist (bible Appendix B + §11.10)
+## Appendix C: Pre-flight checklist
 
 - [x] **Archetype and blend notes**, with what was rejected: A2 Calm consumer daily-use; oura + apple + superhuman. See Overview → Blend notes.
 - [x] **Direction:** D1 FIELDNOTE, with documented adjustments (`text-muted`/`text-subtle`/`accent`/`border-strong` darkened; dark muted/subtle lightened; call tokens added). Re-checked against §4.4: nearest ΔE_OK 0.083 (dark accent vs Supabase) ≥ 0.06.
-- [x] **Pairing:** T7 Atkinson Hyperlegible Next + Mono. Scale: "Senior Comfortable" (bible Comfortable raised to a 20px body, with the reason documented). Features: `tnum` on mono numerals, `font-synthesis: none`, balance/pretty wrapping.
+- [x] **Pairing:** T7 Atkinson Hyperlegible Next + Mono. Scale: "Senior Comfortable". Features: `tnum` on mono numerals, `font-synthesis: none`, balance/pretty wrapping.
 - [x] **Radius personality, CTA grammar, theme default:** Soft (6/10/14/20). Soft rectangle, no pills. Light-first notebook with an always-dark Line. This is distinct from the other studio projects (D2/D3/D4/D5 directions; T1/T4/T6/T8 pairings).
 - [x] **Three "we never" constraints:** (1) we never use a pill; (2) we never use red except for Hang Up and the ASK marker; (3) we never set reading text below 20px or a target below 56px.
-- [x] **Signature moment and its event:** "The Cut" (bible M15 milestone + M5 rolling digits, bespoke shatter) on `sharp` or `verified` scam outcomes. Frame table above.
+- [x] **Signature moment and its event:** "The Cut" on `sharp` or `verified` scam outcomes. Frame table above.
 - [x] **Shortcut map and cmdk list:** keyboard table under Components. **No cmdk**, with a written deviation (fewer than 15 actions, all visible, a senior audience).
 - [x] **Empty, loading, error and success copy** for every primary screen: the screen-states table above.
 - [x] **Target platforms and their §8 constraints:** PWA (§8.2). Manifest `short_name: "Hang Up"` (7 chars); `display: standalone`; `display_override: ["window-controls-overlay","standalone"]`; `theme_color` = `bg` (light) and `bg-dark` via a `media="(prefers-color-scheme: dark)"` meta; maskable and monochrome icons; install hint never on the first visit; safe areas; offline banner; first-route JS ≤ 170KB gz. Platform matrix in SPEC §11.
 - [x] **The sentence the 3D says, and the T-patterns used:** "a real-feeling call you can cut off, and some calls are real". This is said by the real DOM call screen, not WebGL. T16 (static SVG), T18 (pre-rendered DOM capture) and T21-CSS (single frame tilt). Two or fewer T-patterns carry meaning.
-- [x] **Poster, loop GIF/MP4 and OG card from the capture kit:** planned via `scripts/capture-demo.mjs` (DOM wrapper screenshots per 3D_INSPIRATION §6.2) in Stage 3b / Ship. *Not yet rendered: no code exists in Stage 1.*
+- [x] **Poster, loop GIF/MP4 and OG card from the capture kit:** planned via `scripts/capture-demo.mjs` in Stage 3b / Ship. *Not yet rendered: no code exists in Stage 1.*
 - [x] **`size-limit` entries:** landing initial ≤ 120KB gz; 3D chunk n/a (0KB); app first route ≤ 170KB gz. Specified in ADR-0001 §5; *wired in Stage 2*.
-- [x] **Tier 0 / reduced-motion / no-WebGL screenshots:** the page has only a tier-0 path, so every QA screenshot is that path. Reduced-motion captures are required in QA (bible §9.1). *Captured in Stage 3/QA.*
+- [x] **Tier 0 / reduced-motion / no-WebGL screenshots:** the page has only a tier-0 path, so every QA screenshot is that path. Reduced-motion captures are required in QA. *Captured in Stage 3/QA.*

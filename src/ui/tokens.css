@@ -337,7 +337,7 @@
   }
 }
 
-/* Bible §5.5 CSS reduced-motion fallback, verbatim. */
+/* Standard CSS reduced-motion fallback. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

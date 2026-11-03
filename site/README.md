@@ -33,7 +33,7 @@ Hero (the real call screen runs a muted, captioned loop; "Try the call" makes it
 
 ## 3D decision
 
-No WebGL. DESIGN.md Appendix B decided this on purpose: the sentence the page says is "a real-feeling call you can cut off, and some calls are real", and the real DOM call screen says it literally. So the bible 11.3 3D budget is 0 KB and the page is bible tier 0 everywhere (there is nothing to fall back from). `scripts/check-budget.mjs` fails the build if a WebGL or three.js reference or a second JS chunk appears. Reduced motion, no JS and dark scheme all have their own verified paths.
+No WebGL. DESIGN.md Appendix B decided this on purpose: the sentence the page says is "a real-feeling call you can cut off, and some calls are real", and the real DOM call screen says it literally. So the 3D budget is 0 KB and the page has a single flat path (there is nothing to fall back from). `scripts/check-budget.mjs` fails the build if a WebGL or three.js reference or a second JS chunk appears. Reduced motion, no JS and dark scheme all have their own verified paths.
 
 Deviation from Appendix B: the beat-2 and beat-3 "pre-rendered loops" are live HTML/CSS reproductions of the real UI (timeline, replay, coach setup) drawn from the app's data, not MP4/AVIF captures. `docs/screenshots/` was empty, and `scripts/capture-demo.mjs` needs the product UI, which was still being built. Swap them for captures when the UI ships if a recorded loop is wanted.
 

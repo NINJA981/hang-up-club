@@ -12,7 +12,7 @@ caller:
   voice: david-firm
   bed: callcentre
 vars:
-  org: [First Meridian Bank, Kestrel Ridge Credit Union, Bellwick National Bank]
+  org: [First Wrenfield Bank, Kestrel Ridge Credit Union, Bellwick National Bank]
   amount: ['$4,800', '$6,200', '$9,500']
 lines:
   - id: hello

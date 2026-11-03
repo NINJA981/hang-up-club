@@ -42,7 +42,7 @@ test.describe('first run and the daily call', () => {
     await onboard(page);
     await startCall(page);
     const line = page.getByTestId('the-line');
-    await expect(line.getByRole('heading', { level: 1 })).toHaveText('First Meridian Bank Fraud Dept');
+    await expect(line.getByRole('heading', { level: 1 })).toHaveText('First Wrenfield Bank Fraud Dept');
     await expect(line).toContainText('(614) 555-0148');
     await expect(line).toContainText('Practice call');
     const answer = await page.getByRole('button', { name: 'Answer' }).boundingBox();

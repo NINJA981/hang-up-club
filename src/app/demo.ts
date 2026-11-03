@@ -27,9 +27,9 @@ export async function seedDemo(controller: AppController): Promise<void> {
 
 /** The S01 variant the demo uses, picked by its caller name. */
 export const DEMO_TEMPLATE_ID = 'S01-bank-code';
-export const DEMO_CALLER = 'First Meridian Bank Fraud Dept';
+export const DEMO_CALLER = 'First Wrenfield Bank Fraud Dept';
 
-/** The S01 variant for the demo: First Meridian Bank, addressed as Paati. */
+/** The S01 variant for the demo: First Wrenfield Bank, addressed as Paati. */
 export function demoScenario(content: Content): ResolvedScenario | undefined {
   const template = content.byId.get(DEMO_TEMPLATE_ID);
   if (!template) return undefined;
@@ -37,7 +37,7 @@ export function demoScenario(content: Content): ResolvedScenario | undefined {
   const names = Object.keys(domains).sort();
   const indices = names.map((n) => {
     const list = domains[n] ?? [];
-    const want = n === 'address' ? 'Paati' : 'First Meridian Bank';
+    const want = n === 'address' ? 'Paati' : 'First Wrenfield Bank';
     return Math.max(0, list.indexOf(want));
   });
   return resolveVariant(template, content.library.addressTerms, variantFromIndices(domains, indices));

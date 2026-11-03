@@ -244,7 +244,7 @@ kbd {
   transform: none;
 }
 
-/* Reduced motion: DESIGN.md / bible §5.5 fallback. Opacity-only, near-instant. */
+/* Reduced motion: DESIGN.md fallback. Opacity-only, near-instant. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

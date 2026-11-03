@@ -4,7 +4,7 @@
  *
  *   ?test=1               silent audio, real timing (no sound, no decoding)
  *   ?seed=7               replaces the profile id in the daily scheduler
- *   ?demo=signature       S01 "First Meridian Bank Fraud Dept" with a demo cheer,
+ *   ?demo=signature       S01 "First Wrenfield Bank Fraud Dept" with a demo cheer,
  *                         kept in a throw-away database, never in the real one
  *
  * They live in `location.search`, so hash navigation keeps them.

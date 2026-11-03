@@ -1,5 +1,5 @@
 # Strings that check-names MUST allow (coined names and ordinary words that merely resemble deny-list terms).
-First Meridian Bank Fraud Dept
+First Wrenfield Bank Fraud Dept
 Kestrel Ridge Credit Union
 Federal Tax Recovery Unit
 National Benefits Administration

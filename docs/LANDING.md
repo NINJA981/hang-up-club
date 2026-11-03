@@ -2,7 +2,7 @@
 
 **Package:** `site/` (separate Vite package, built in Stage 3b).
 **Mode:** Persuade.
-**Structure:** the 3D_INSPIRATION §3.1 five beats, in ≤ 7 viewports at 900px tall.
+**Structure:** five beats, in ≤ 7 viewports at 900px tall.
 **Rules:** follow DESIGN.md (tokens, type, and "Appendix B: Landing page immersive plan"). CSS/SVG plus pre-rendered DOM capture only; no WebGL. The H1 is the LCP element. Initial JS ≤ 120 KB gz. No audio by default. Native scroll. No third-party requests (no CDN fonts, no analytics, no shields.io badge).
 
 **Who lands here.** Mostly **adult children** arriving from a LinkedIn post or a Show HN link, on a phone, with sound off. Second: older adults who were sent the link. The page must:
@@ -20,7 +20,7 @@
 
 The real product's call screen sits in a plain handset frame, on the right on desktop and below the H1 on phone. It runs a **muted, captioned practice call** on a loop:
 
-> ring → answer → "Hello, this is Dana from First Meridian Bank's fraud department." → "Your account has been compromised…" → Hang up at 0:06 → **The Cut** → "Hung up at 0:06. The scammer needed 0:40."
+> ring → answer → "Hello, this is Dana from First Wrenfield Bank's fraud department." → "Your account has been compromised…" → Hang up at 0:06 → **The Cut** → "Hung up at 0:06. The scammer needed 0:40."
 
 A visitor can also **take the call themselves**: a "Try the call" button switches the frame from the autoplay loop to an interactive call (S01 variant), with real Hang Up and call-back buttons. A small "Sound: Off" toggle lazy-loads the ≤ 150 KB of Opus clips for this call.
 
@@ -62,7 +62,7 @@ Left-aligned copy. One filled CTA ("Open the app"). The secondary is a quiet tex
 
 - **H1** (`landing-display`, 56→112 px, 650, −0.035em, 0.94 line height):
   **"Practise hanging up on scammers. Not on your pharmacy."**
-  The second sentence carries the novelty: decoys. No word is accented (bible ban #12). Size and the full stop do the work.
+  The second sentence carries the novelty: decoys. No word is accented. Size and the full stop do the work.
 - **Lead** (`lead` 24/34):
   "Hang Up Club gives your parents one realistic practice call a day. Some calls are scams and some are real, so they learn to tell the difference. The score is how early they spot the trick."
 - **Primary CTA:** "Open the app". Secondary (quiet): "Try the call". Toggle: "Sound: Off".
@@ -97,7 +97,7 @@ Both are linked to their PDFs. The 40% is a share of **loss reports**, not of do
 - **Heading:** "No server. Nothing to hack, nothing to sell."
 - **SVG diagram** (inline, ≤ 15 KB, theme-aware via `currentColor`):
   `Your phone` → link (the `#…` part never reaches any server) → `Their phone`. Calls, scores and cheers live on the device. A dashed empty box labelled "Server" is crossed out.
-- **How it's made, in 5 steps** (3D_INSPIRATION §3.7 template, with a number in every step; a real sequence, so numbering is allowed):
+- **How it's made, in 5 steps**:
   1. **The decision.** "Train judgement, not reflex. 8 of the 20 call scripts are real calls."
   2. **The naive version.** "In-browser TTS sounded like a GPS and took ~1–3 s per line on mid-range phones." *(Stage 2 replaces this with the spike's measured number, or removes the claim.)*
   3. **The trick.** "Every line is voiced at build time by a free local TTS, band-passed to 300–3,400 Hz telephone sound, and shipped as 16 kbps Opus. The whole call library is about 4 MB." *(Final size filled from `audio:check`.)*
@@ -128,15 +128,15 @@ This is the closing band on `call-bg` (the Line, dark in both themes), our re-ex
 - **OG title:** "Hang Up Club: practise hanging up on scammers"
 - **OG description:** "One realistic practice call a day for older adults. Some calls are real. Free, open source, no server."
 - **OG image:** 1200 × 630, captured from the real result screen ("Hung up at 0:06. The scammer needed 0:40.") with the H1 overlaid in DOM.
-- **LinkedIn hook (picks.json):** "My grandmother has never practised saying no to a scammer. So I built her a gym: one fake scam call a day, and her score is how fast she hangs up. Some calls are real, though, so she can't just hang up on everything."
+- **LinkedIn hook:** "My grandmother has never practised saying no to a scammer. So I built her a gym: one fake scam call a day, and her score is how fast she hangs up. Some calls are real, though, so she can't just hang up on everything."
 - **README one-liner:** "A flight simulator for phone scams, built for grandparents: one practice call a day, and some of them are real."
 
 ## Not on this page (and why)
 
 | Item | Why it's excluded |
 |---|---|
-| WebGL, Lenis, custom cursor, loader | Bible §11.9 and the CSS/SVG decision |
-| Testimonials, user counts, stars, press logos | None exist; inventing them is a hard fail (bible §9.3) |
+| WebGL, Lenis, custom cursor, loader | The CSS/SVG decision (DESIGN.md Appendix B) |
+| Testimonials, user counts, stars, press logos | None exist; inventing them is a hard fail |
 | Real bank or agency names or logos, even in "as seen in" form | The fictional-names rule |
-| Autoplay sound | 3D_INSPIRATION §3.6 |
+| Autoplay sound | Sound only after a tap |
 | A pricing section | It's free. Saying "free" once, in the trust line, is enough. |

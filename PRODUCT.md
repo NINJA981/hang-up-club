@@ -2,10 +2,9 @@
 
 <!-- impeccable:product-schema 1 -->
 
-> Provenance: written by the Stage 1 architect agent from the studio's council record
-> (`_studio/picks.json` entry `hang-up-club` and `_studio/council/L4-4-hang-up-club.md`).
-> No live product-owner interview was possible in this run, so every line below is
-> **inferred from that brief** and should be confirmed by the maintainer.
+> Provenance: written from the original one-page product brief. No product-owner
+> interview was held, so every line below is **inferred from that brief** and should be
+> confirmed by the maintainer.
 
 ## Platform
 

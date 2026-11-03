@@ -13,7 +13,7 @@ caller:
   voice: zira-calm
   bed: callcentre
 vars:
-  org: [First Meridian Bank, Kestrel Ridge Credit Union, Bellwick National Bank]
+  org: [First Wrenfield Bank, Kestrel Ridge Credit Union, Bellwick National Bank]
   amount: ['$212', '$68.40', '$145']
 lines:
   - id: hello

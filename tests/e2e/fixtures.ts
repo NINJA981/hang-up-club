@@ -4,7 +4,7 @@ import { expect, test as base, type Browser, type BrowserContext } from '@playwr
  * The day every e2e test runs on. `?seed=7` makes the scheduler deterministic only
  * for a given local date (the pick is seeded by profile id AND date), so without a
  * pinned date "today's call is S01" is true on one calendar day only. On 2026-10-27
- * the seeded pick is S01 "First Meridian Bank Fraud Dept" (variant org=0).
+ * the seeded pick is S01 "First Wrenfield Bank Fraud Dept" (variant org=0).
  *
  * The clock is installed, not frozen: time flows from this instant, so timers,
  * animation and the call clock behave normally.

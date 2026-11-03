@@ -12,8 +12,8 @@ Hang Up Club is an installable, offline PWA. An older adult takes one realistic 
 These forces shape the architecture:
 
 1. **No backend, no telemetry, no third-party requests.** Everything is static files. All state lives on the device (IndexedDB). Family links carry their data in URL fragments.
-2. **Audio realism is the product.** Calls must sound like a phone line, start instantly, and work offline. Robotic runtime TTS was the roast's biggest realism complaint ("sounds like a 2019 GPS").
-3. **Older users on mid- or low-end phones.** First-route JS ≤ 170 KB gz, LCP ≤ 2.0 s, INP ≤ 200 ms, CLS 0 (bible §8.2). Large type, 56px targets.
+2. **Audio realism is the product.** Calls must sound like a phone line, start instantly, and work offline. Robotic runtime TTS was the biggest realism complaint in early review ("sounds like a 2019 GPS").
+3. **Older users on mid- or low-end phones.** First-route JS ≤ 170 KB gz, LCP ≤ 2.0 s, INP ≤ 200 ms, CLS 0. Large type, 56px targets.
 4. **Content correctness is safety-critical.** Every scam template needs exactly one ASK and at least one flag before it. All names must be fictional. Every template is sourced. All of this is enforced in CI, not by review alone.
 5. **Determinism.** The daily scheduler, variant expansion, scoring and the demo capture must be reproducible from a seed and a fake clock.
 6. **No LLM.** The product needs no language model. Content is authored YAML; the only ML is TTS. The `claude-api` skill therefore does not apply. If an LLM feature is proposed later (for example, "explain this call I got"), it would be BYO-key, user-initiated, and recorded in a new ADR.
@@ -65,7 +65,7 @@ These forces shape the architecture:
 **Pros:** zero bytes.
 **Cons:** sounds unlike a phone call; inconsistent; a privacy hazard unless restricted to `localService`.
 
-**Choice.** A as the core path, B only for family-authored calls (picks.json scope 4), and C as the last-resort fallback restricted to `localService` voices.
+**Choice.** A as the core path, B only for family-authored calls, and C as the last-resort fallback restricted to `localService` voices.
 
 ## Trade-off analysis
 
@@ -88,7 +88,7 @@ Hand-written `injectManifest` costs ~100 lines more than `generateSW`. In return
 | `idb` | **8.0.4** | IndexedDB promise wrapper (~1.2 KB) |
 | `zod` | **4.6.7** | Validation of scenario JSON, link payloads and DB reads |
 | `canvas-confetti` | **1.9.4** | ≤ 60-particle burst (lazy, result screen only) |
-| `@number-flow/react` | **0.6.2** | Rolling digits for seconds and the streak (bible M5). Respects reduced motion. |
+| `@number-flow/react` | **0.6.2** | Rolling digits for seconds and the streak. Respects reduced motion. |
 | `qrcode` | **1.5.4** | Local QR for the join link (lazy, coach setup only) |
 | `lucide-react` | **1.60.0** | One icon set, 1.75px stroke at 20–24px |
 | `workbox-window` | **7.4.1** | SW registration |
@@ -106,7 +106,7 @@ Hand-written `injectManifest` costs ~100 lines more than `generateSW`. In return
 | `vite-plugin-pwa` | **2.0.0** | Manifest + `injectManifest` (peer `vite …^8`, `workbox-build ^7.4.1`) |
 | `workbox-build` | **7.4.1** | Peer of vite-plugin-pwa |
 | `@vite-pwa/assets-generator` | **2.0.0** | Icons: 192, 512, maskable, monochrome, apple-touch |
-| `tailwindcss`, `@tailwindcss/vite` | **4.3.3** | Tokens via `@theme inline` (bible §4.1 step 9) |
+| `tailwindcss`, `@tailwindcss/vite` | **4.3.3** | Tokens via `@theme inline` |
 | `typescript` | **6.0.3** | **Not 7.0.2.** `typescript-eslint` 8.72.0 declares peer `typescript >=4.8.4 <6.1.0`. Revisit when typescript-eslint supports 7. |
 | `eslint` | **10.13.0** | Lint |
 | `@eslint/js` | **10.0.1** | |
@@ -227,7 +227,7 @@ hang-up-club/
 
 ```
             ┌──────────── URL (hash) ────────────┐
-            │ #/today  #/call  #/result/:id      │  ← all screen state in URL (bible §6.12)
+            │ #/today  #/call  #/result/:id      │  ← all screen state in URL
             │ #/join?d=…  #/cheer?d=…            │  ← link payloads in FRAGMENT (never sent to server)
             │ #/family?d=…  #/r?d=…              │
             └───────────────┬────────────────────┘
@@ -345,7 +345,7 @@ Stage 2 runs a time-boxed spike of half a day:
 | Audio unit | Vitest with a fake `AudioContext` (hand-rolled stub recording `start(when)` calls) | gapless scheduling, branch reschedule, hang-up cut timing, fallback selection | AC-F2-2, AC-F5-4 |
 | Storage unit | Vitest + `fake-indexeddb` 6.2.6 | repo validation, quarantine, migrations | |
 | Content CI | `scenarios:check`, `check-names`, `audio:check`, `scenarios:stats` | AC-F3-1…6, AC-F5-1/2 | Blocking |
-| Token CI | culori script | every role pair in DESIGN.md meets its contrast target (AAA on call tokens); accent ΔE_OK ≥ 0.06 vs the bible §4.4 blocklist; grep bans raw palette utilities and off-token hex in `src/` | Blocking |
+| Token CI | culori script | every role pair in DESIGN.md meets its contrast target (AAA on call tokens); accent ΔE_OK ≥ 0.06 vs a blocklist of well-known brand colours; grep bans raw palette utilities and off-token hex in `src/` | Blocking |
 | E2E | Playwright 1.64.1, Chromium (+ WebKit for media and format fallback) | the full daily flow, offline, update prompt, links (join, cheer, family, result), callback, replay, reduced motion, keyboard-only | All AC-…(E) |
 | Accessibility | `@axe-core/playwright` 4.14.0 + custom checks (min font size via computed style; min target 56px via bounding boxes; AAA on `[data-surface=call]`) | every screen × light/dark × 375/768/1440 | Zero serious/critical |
 | Network | Playwright `page.on('request')` guard | asserts no off-origin requests in every e2e test | AC-F10-6 |
@@ -372,7 +372,7 @@ Stage 2 runs a time-boxed spike of half a day:
 | Name deny-list samples | `tests/fixtures/names/` | Positive and negative strings proving `check-names` catches real institutions and allows the coined set |
 | Real content | `scenarios/` itself | Treated as production fixtures. Every e2e run uses the real library with `?seed=` for determinism. |
 
-Fixture data must also be plausible and messy (bible P5): long fictional organisation names ("Kestrel Ridge Community Credit Union"), 1-character and 30-character coach names, amounts with cents, and RTL-safe text in coach names (rendered `dir="auto"`).
+Fixture data must also be plausible and messy: long fictional organisation names ("Kestrel Ridge Community Credit Union"), 1-character and 30-character coach names, amounts with cents, and RTL-safe text in coach names (rendered `dir="auto"`).
 
 ## Consequences
 

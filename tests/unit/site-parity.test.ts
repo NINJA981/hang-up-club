@@ -32,7 +32,7 @@ const manifest = AudioManifestSchema.parse(
 const template = library.templates.find((t) => t.id === 'S01-bank-code');
 if (!template) throw new Error('S01-bank-code is missing from the library');
 // The same variant site/scripts/sync-demo.mts renders.
-const s01 = resolveWithVars(template, { org: 'First Meridian Bank', address: 'Paati' }, 'S01-bank-code');
+const s01 = resolveWithVars(template, { org: 'First Wrenfield Bank', address: 'Paati' }, 'S01-bank-code');
 const durationOf = durationOfFrom(manifest);
 const appPlanned = appPlan(s01.lines, durationOf);
 const app = appMarkers(appPlanned);

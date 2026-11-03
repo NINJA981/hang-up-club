@@ -101,7 +101,7 @@ function build(id: string, vars: Record<string, string>, withClips: boolean) {
   };
 }
 
-const s01 = build('S01-bank-code', { org: 'First Meridian Bank', address: 'Paati' }, true);
+const s01 = build('S01-bank-code', { org: 'First Wrenfield Bank', address: 'Paati' }, true);
 const l01 = build('L01-pharmacy-refill', { time: 'six tonight', address: 'Paati' }, false);
 writeFileSync(
   resolve(here, '../src/demo/scenarios.json'),

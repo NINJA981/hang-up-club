@@ -1,5 +1,5 @@
 /**
- * Build gate for the landing page (bible 11.3 and DESIGN.md Appendix B). Runs after `vite build`.
+ * Build gate for the landing page. Runs after `vite build`.
  *
  *  1. Initial JavaScript <= 120 KB gzip, and no 3D chunk at all (the page ships zero WebGL).
  *  2. No WebGL / three / canvas-3d code in the output.
