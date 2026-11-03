@@ -80,7 +80,46 @@ export class CallAudioEngine implements Pick<CallPort, 'answer' | 'reschedule' |
 
   /** Inside the Answer gesture: iOS only lets audio start after a user action. */
   async unlock(): Promise<void> {
-    if (this.ctx.state === 'suspended') await this.ctx.resume();
+    if (this.needsResume()) await this.ctx.resume();
+    this.watchInterruptions();
+  }
+
+  /** iOS Safari reports "interrupted" (phone call, Siri, lock screen); other browsers "suspended". */
+  private needsResume(): boolean {
+    const state = this.ctx.state as AudioContextState | 'interrupted';
+    return state === 'suspended' || state === 'interrupted';
+  }
+
+  /**
+   * Freeze the call: suspending the context stops its clock, so every scheduled line waits with
+   * it and `nowMs()` stands still until `resume()`.
+   */
+  pause(): void {
+    if (this.ctx.state === 'running') void this.ctx.suspend().catch(() => undefined);
+  }
+
+  /** Thaw the call. If the browser refuses outside a gesture, the next tap resumes it. */
+  resume(): void {
+    if (this.needsResume()) void this.ctx.resume().catch(() => undefined);
+  }
+
+  private watching = false;
+
+  /**
+   * If the system pauses the context mid-call, resume it on the next tap or key press: iOS only
+   * allows a resume inside a user gesture.
+   */
+  private watchInterruptions(): void {
+    if (this.watching || typeof window === 'undefined' || typeof this.ctx.addEventListener !== 'function') return;
+    this.watching = true;
+    const resumeOnGesture = (): void => {
+      if (this.needsResume()) void this.ctx.resume().catch(() => undefined);
+    };
+    this.ctx.addEventListener('statechange', () => {
+      if (!this.needsResume()) return;
+      window.addEventListener('pointerdown', resumeOnGesture, { once: true, capture: true });
+      window.addEventListener('keydown', resumeOnGesture, { once: true, capture: true });
+    });
   }
 
   /**
@@ -124,7 +163,7 @@ export class CallAudioEngine implements Pick<CallPort, 'answer' | 'reschedule' |
     const bedDef = bed ? this.opts.manifest.beds[bed] : undefined;
     if (bedDef) {
       try {
-        const url = `/audio/${this.opts.format === 'opus' ? bedDef.opus : bedDef.aac}`;
+        const url = clipUrl(bedDef, this.opts.format);
         this.bedBuffer = await this.ctx.decodeAudioData(await this.opts.fetchBytes(url));
       } catch {
         this.bedBuffer = null; // a call without ambience is still a call

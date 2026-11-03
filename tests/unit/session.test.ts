@@ -11,6 +11,7 @@ import {
   type CallState,
   type SessionContext,
 } from '../../src/domain/call/session';
+import { createSilentPort } from '../../src/audio/silent';
 import { resolveVariant } from '../../src/domain/scenario/expand';
 import { CallController, type CallPort, type EndedState, type Timers } from '../../src/state/callController';
 import { MINI_LEGIT, MINI_SCAM, MINI_TERMS } from './helpers/fixtures';
@@ -263,6 +264,48 @@ describe('CallController', () => {
     expect(port.stopRing).toHaveBeenCalledTimes(1);
     c.answer();
     expect(c.state.status).toBe('live');
+  });
+  it('a hidden page pauses the call: a long gap never ends or scores it', () => {
+    const onEnded = vi.fn();
+    const { c, port } = controller(onEnded);
+    const pause = vi.fn();
+    const resume = vi.fn();
+    Object.assign(port, { pause, resume });
+    c.ring();
+    c.answer();
+    port.now = 3000;
+    c.tick();
+    c.pause();
+    expect(c.isPaused).toBe(true);
+    expect(pause).toHaveBeenCalledTimes(1);
+    // The audio clock would have run far past the end of the script while the tab was hidden.
+    port.now = 10 * 60_000;
+    expect(c.tick().status).toBe('live');
+    expect(onEnded).not.toHaveBeenCalled();
+    port.now = 3000; // a suspended context's clock stands still, so it reads where it stopped
+    c.resume();
+    expect(resume).toHaveBeenCalledTimes(1);
+    expect(c.tick().status).toBe('live');
+    expect(c.hangUp()?.tActionMs).toBe(3000);
+  });
+  it('pause and resume are no-ops outside a live call', () => {
+    const { c } = controller();
+    c.pause();
+    expect(c.isPaused).toBe(false);
+    c.resume();
+    expect(c.state.status).toBe('idle');
+  });
+  it('the silent port clock stops while paused', () => {
+    let t = 0;
+    const port = createSilentPort({ now: () => t });
+    port.answer([]);
+    t = 2000;
+    port.pause?.();
+    t = 60_000;
+    expect(port.nowMs()).toBe(2000);
+    port.resume?.();
+    t = 61_000;
+    expect(port.nowMs()).toBe(3000);
   });
   it('ignores answer before ringing, and a second ring', () => {
     const { c, port } = controller();

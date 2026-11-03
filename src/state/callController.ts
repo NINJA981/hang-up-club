@@ -29,6 +29,10 @@ export interface CallPort {
   cut(): void;
   /** The caller finished on their own. */
   finish(): void;
+  /** The page was hidden: freeze the call clock and its audio. */
+  pause?(): void;
+  /** The page is back: run the clock and audio on from where they froze. */
+  resume?(): void;
 }
 
 export interface Timers {
@@ -104,8 +108,31 @@ export class CallController {
 
   /** Advance the model to the audio clock. Call from requestAnimationFrame. */
   tick(): CallState {
-    if (this.state.status !== 'live') return this.state;
+    if (this.state.status !== 'live' || this.paused) return this.state;
     return this.settle(this.dispatch({ type: 'TICK', tMs: this.port.nowMs() }));
+  }
+
+  private paused = false;
+
+  get isPaused(): boolean {
+    return this.paused;
+  }
+
+  /**
+   * The page was hidden mid-call (another tab or app). The call clock and its audio stop, so the
+   * script cannot run out while the player is away and score a call they never got to act on.
+   */
+  pause(): void {
+    if (this.state.status !== 'live' || this.paused) return;
+    this.paused = true;
+    this.port.pause?.();
+  }
+
+  /** The page is visible again: the call carries on from where it stopped. */
+  resume(): void {
+    if (!this.paused) return;
+    this.paused = false;
+    if (this.state.status === 'live') this.port.resume?.();
   }
 
   /** Take reply chip `index` on whichever line currently offers replies. */

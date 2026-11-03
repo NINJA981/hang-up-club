@@ -49,9 +49,13 @@ export function clipFor(
   return manifest.clips[clipKey(line.voice, line.text)];
 }
 
-/** Public URL of a clip file for a format. */
-export function clipUrl(clip: AudioClip, format: AudioFormat): string {
-  return `/audio/${format === 'opus' ? clip.opus : clip.aac}`;
+/**
+ * Public URL of a clip file for a format. The file name comes from voice and text only, so the query
+ * carries the render identity (sha): a re-rendered clip gets a new URL, and the service worker's
+ * cache-first audio route can never serve the old audio for it.
+ */
+export function clipUrl(clip: Pick<AudioClip, 'opus' | 'aac' | 'sha'>, format: AudioFormat): string {
+  return `/audio/${format === 'opus' ? clip.opus : clip.aac}?v=${clip.sha.slice(0, 12)}`;
 }
 
 /**

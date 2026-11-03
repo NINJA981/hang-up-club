@@ -3,7 +3,7 @@ import { ExpirationPlugin } from 'workbox-expiration';
 import { cleanupOutdatedCaches, createHandlerBoundToURL, precacheAndRoute } from 'workbox-precaching';
 import { RangeRequestsPlugin } from 'workbox-range-requests';
 import { NavigationRoute, registerRoute } from 'workbox-routing';
-import { CacheFirst } from 'workbox-strategies';
+import { CacheFirst, NetworkFirst } from 'workbox-strategies';
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -16,7 +16,19 @@ precacheAndRoute(self.__WB_MANIFEST);
 cleanupOutdatedCaches();
 registerRoute(new NavigationRoute(createHandlerBoundToURL('/index.html')));
 
-export const AUDIO_CACHE = 'huc-audio-v1';
+/**
+ * Clip URLs carry their render sha (`?v=`, see clipUrl), so cache-first is safe for them. Bump the
+ * version when the URL scheme changes; older audio caches are deleted on activate.
+ */
+export const AUDIO_CACHE = 'huc-audio-v2';
+export const MANIFEST_CACHE = 'huc-audio-manifest';
+const MANIFEST_PATH = '/audio/audio-manifest.json';
+
+// The manifest names the current clips, so it must follow updates: network first, cache offline.
+registerRoute(
+  ({ url }) => url.origin === self.location.origin && url.pathname === MANIFEST_PATH,
+  new NetworkFirst({ cacheName: MANIFEST_CACHE, networkTimeoutSeconds: 4 }),
+);
 
 registerRoute(
   ({ url }) => url.origin === self.location.origin && url.pathname.startsWith('/audio/'),
@@ -26,6 +38,18 @@ registerRoute(
   }),
 );
 
+self.addEventListener('activate', (event: ExtendableEvent) => {
+  event.waitUntil(
+    (async () => {
+      const names = await caches.keys();
+      await Promise.all(
+        names
+          .filter((n) => n.startsWith('huc-audio-v') && n !== AUDIO_CACHE)
+          .map((n) => caches.delete(n)),
+      );
+    })(),
+  );
+});
 interface WarmMessage {
   type: 'WARM_AUDIO';
   urls: string[];
@@ -45,9 +69,15 @@ self.addEventListener('message', (event: ExtendableMessageEvent) => {
   }
   if (isWarm(data)) {
     // "Download all calls for offline": same-origin audio only.
-    const urls = data.urls.filter((u) => u.startsWith('/audio/'));
+    const urls = data.urls.filter((u) => u.startsWith('/audio/') && !u.startsWith(MANIFEST_PATH));
     event.waitUntil(
       (async () => {
+        // The manifest that names these clips goes into its own cache, so an offline start finds both.
+        try {
+          await (await caches.open(MANIFEST_CACHE)).add(MANIFEST_PATH);
+        } catch {
+          /* offline: the network-first route caches it on the next online start */
+        }
         const cache = await caches.open(AUDIO_CACHE);
         let done = 0;
         for (const url of urls) {

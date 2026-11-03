@@ -201,8 +201,17 @@ test.describe('offline (AC-F10-1, AC-F10-3)', () => {
     await page.getByRole('link', { name: 'Settings' }).click();
     await page.getByRole('button', { name: 'Download for offline' }).click();
     await expect(page.getByRole('button', { name: 'Downloaded' })).toBeVisible({ timeout: 90_000 });
-    const cached = await page.evaluate(async () => (await (await caches.open('huc-audio-v1')).keys()).length);
+    const cached = await page.evaluate(async () => (await (await caches.open('huc-audio-v2')).keys()).length);
     expect(cached, 'clips in the audio cache').toBeGreaterThan(300);
+    // The manifest is not in the cache-first audio cache: it has its own network-first cache.
+    const caches_ = await page.evaluate(async () => ({
+      clipCacheHasManifest: (await (await caches.open('huc-audio-v2')).keys()).some((r) =>
+        r.url.endsWith('/audio/audio-manifest.json'),
+      ),
+      manifestCached: (await (await caches.open('huc-audio-manifest')).keys()).length,
+      clipUrlsVersioned: (await (await caches.open('huc-audio-v2')).keys()).every((r) => /\?v=[0-9a-f]{12}$/.test(r.url)),
+    }));
+    expect(caches_).toEqual({ clipCacheHasManifest: false, manifestCached: 1, clipUrlsVersioned: true });
 
     await context.setOffline(true);
     await page.goto(REAL_URL);

@@ -484,8 +484,21 @@ export function CallLayer() {
       raf = requestAnimationFrame(loop);
     };
     raf = requestAnimationFrame(loop);
+    // A hidden page gets no frames while the audio clock runs on: freeze the call instead, so the
+    // script cannot end (and be scored) while the player is in another tab or app.
+    const onVisibility = (): void => {
+      if (document.visibilityState === 'hidden') session.controller.pause();
+      else session.controller.resume();
+    };
+    const onPageHide = (): void => {
+      session.controller.pause();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    window.addEventListener('pagehide', onPageHide);
     return () => {
       cancelAnimationFrame(raf);
+      document.removeEventListener('visibilitychange', onVisibility);
+      window.removeEventListener('pagehide', onPageHide);
     };
   }, [session, phase]);
 

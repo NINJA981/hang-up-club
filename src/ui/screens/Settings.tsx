@@ -3,6 +3,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { useApp, useAppSnapshot } from '../../app/AppContext';
 import { appBaseUrl, navigate } from '../../app/router';
 import { chooseAudioFormat } from '../../audio/formats';
+import { clipUrl } from '../../domain/audio/manifest';
 import { ICS_FILENAME, ICS_MIME, buildReminderIcs, isReminderTime } from '../../domain/reminders/ics';
 import { Page } from '../Shell';
 import { Button, Card } from '../parts/base';
@@ -50,9 +51,7 @@ function WarmAudio() {
     setProblem(undefined);
     const format = chooseAudioFormat(document.createElement('audio'));
     // Every clip the manifest holds, in the format this phone plays.
-    const urls = Object.values(content.manifest.clips).map(
-      (c) => `/audio/${format === 'opus' ? c.opus : c.aac}`,
-    );
+    const urls = Object.values(content.manifest.clips).map((c) => clipUrl(c, format));
     setProgress({ done: 0, total: urls.length });
     worker.postMessage({ type: 'WARM_AUDIO', urls });
   };

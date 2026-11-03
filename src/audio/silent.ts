@@ -23,6 +23,7 @@ export function createSilentPort(opts: SilentPortOptions = {}): CallPort {
     },
   };
   let t0 = 0;
+  let pausedAt: number | undefined;
   let handles: unknown[] = [];
   const clear = (): void => {
     for (const h of handles) timers.clearTimeout(h);
@@ -48,7 +49,15 @@ export function createSilentPort(opts: SilentPortOptions = {}): CallPort {
     reschedule() {
       /* nothing is scheduled: there is no sound */
     },
-    nowMs: () => Math.max(0, now() - t0),
+    nowMs: () => Math.max(0, (pausedAt ?? now()) - t0),
+    pause() {
+      pausedAt ??= now();
+    },
+    resume() {
+      if (pausedAt === undefined) return;
+      t0 += now() - pausedAt;
+      pausedAt = undefined;
+    },
     cut() {
       /* silence is already silent */
     },

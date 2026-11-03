@@ -78,8 +78,10 @@ describe('audio manifest', () => {
   it('finds a clip by voice and text, and builds its URL for each format', () => {
     const clip = clipFor(manifest, scam.lines[0] as ResolvedLine);
     expect(clip?.opus).toBe('hello.webm');
-    expect(clipUrl(clip as never, 'opus')).toBe('/audio/hello.webm');
-    expect(clipUrl(clip as never, 'aac')).toBe('/audio/hello.m4a');
+    const v = clip?.sha.slice(0, 12) ?? '';
+    expect(v).toHaveLength(12);
+    expect(clipUrl(clip as never, 'opus')).toBe(`/audio/hello.webm?v=${v}`);
+    expect(clipUrl(clip as never, 'aac')).toBe(`/audio/hello.m4a?v=${v}`);
     expect(clipFor(manifest, { voice: 'zira-calm', text: 'something else' })).toBeUndefined();
   });
   it('takes durations from the manifest and estimates when a clip is missing', () => {
@@ -215,6 +217,13 @@ describe('the call audio engine (AC-F2-2, ADR 3.2)', () => {
     await engine.unlock();
     expect(ctx.state).toBe('running');
     expect(ctx.resumed).toBe(1);
+  });
+  it('also resumes the iOS "interrupted" state', async () => {
+    const { engine, ctx } = build();
+    (ctx as unknown as { state: string }).state = 'interrupted';
+    await engine.unlock();
+    expect(ctx.resumed).toBe(1);
+    expect(ctx.state).toBe('running');
   });
 
   it('schedules every line at its exact time on the audio clock', async () => {

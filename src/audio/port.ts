@@ -24,5 +24,11 @@ export function createCallPort(engine: CallAudioEngine, ring: RingTone): CallPor
     finish: () => {
       engine.finish();
     },
+    pause: () => {
+      engine.pause();
+    },
+    resume: () => {
+      engine.resume();
+    },
   };
 }
