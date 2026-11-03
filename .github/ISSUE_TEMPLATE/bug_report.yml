@@ -1,0 +1,42 @@
+name: Bug report
+description: Something in the app or the landing page does not work as it should.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. Please do not paste anything personal: no real names, phone numbers or links that contain a
+        setup, cheer or family-call payload. Security problems go through the Security tab instead.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what you saw instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open the app
+        2. Tap "Take today's call"
+        3. ...
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device and browser
+      placeholder: e.g. Android 15, Chrome 142, installed as an app
+    validations:
+      required: true
+  - type: dropdown
+    id: installed
+    attributes:
+      label: Was the app installed to the home screen?
+      options: ['Yes', 'No, in a browser tab', "I don't know"]
+  - type: textarea
+    id: extra
+    attributes:
+      label: Screenshots or anything else

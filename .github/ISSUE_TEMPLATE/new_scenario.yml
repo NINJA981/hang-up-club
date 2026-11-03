@@ -1,0 +1,44 @@
+name: New call scenario
+description: Propose a practice call (a scam pattern or a realistic real call).
+labels: [scenario]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        See "How to write a scenario YAML" in CONTRIBUTING.md. Every caller and organisation must be made up,
+        and phone numbers must be (NXX) 555-01xx.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options: [Scam, Real call (decoy)]
+    validations:
+      required: true
+  - type: textarea
+    id: pattern
+    attributes:
+      label: The pattern
+      description: What happens on the call, and what the caller asks for (scam) or why it is safe (real call).
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Public source
+      description: An FTC, FBI IC3 or similar public consumer-advice page that describes this scam pattern.
+    validations:
+      required: true
+  - type: textarea
+    id: advice
+    attributes:
+      label: One sentence of advice
+      description: At most 140 characters, naming the safe action.
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety
+      options:
+        - label: The script describes only what public advice already describes, and names no real company, product or payment app.
+          required: true

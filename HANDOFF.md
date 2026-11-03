@@ -1,7 +1,45 @@
 # HANDOFF: Hang Up Club
 
-**Last updated:** 2026-10-28, end of Stage 4 (test engineering). See "Stage 4" at the end for the acceptance-criteria map, the bugs fixed and the measured results.
-**Next stage:** QA and ship (listen to the audio, real-device pass, WebKit, name checks). The landing page (3b) is in `site/`; see its section near the end.
+**Last updated:** 2026-11-04, release preparation on branch `release/linkedin` (v0.1.0). The section below is the
+current state; the stage sections after it are the history and keep their own dates.
+
+## Release v0.1.0 (2026-11-04)
+
+### What changed for the release
+
+| Area | Change | Test |
+|---|---|---|
+| Scoring | A call back on a real call that asked for nothing is the new outcome `cautious` (60 points, half credit). A call back before the first warning sign on a scam is `jumpy` (70 points, half credit). Before, "call back on every call" scored a perfect judgement rate | `scoring.test` (golden rows; two new 1,000-day simulations: call back at 0.5 s scores <= 0.65, call back after the flag < 0.9), `session.test`, `site-parity.test` |
+| Scoring | The late window is 2 s (was 10 s). Every scam ends 3.7 to 5.4 s after its ask, so the 50-point tier could never happen | `scoring.test` golden rows at ask + 2 s and + 2 s + 1 ms |
+| Links | Names accept ZWJ/ZWNJ and emoji tag sequences and are stored NFC; bidi overrides, zero-width spaces and a leading joiner are still rejected | `links.test` (Persian, Malayalam chillu, emoji family, flag tag sequence, NFC) |
+| PWA | The audio manifest has its own network-first cache (`huc-audio-manifest`); clip and bed URLs carry `?v=<sha>`; the audio cache is `huc-audio-v2` and older ones are deleted on activate | `audio.test`, `pwa.spec` (cache contents) |
+| Call | A hidden page pauses the call (`CallController.pause/resume`, context suspended, silent clock frozen), so it cannot run out and be scored in a background tab. `unlock()` also resumes iOS `interrupted`, and a later system pause resumes on the next tap | `session.test`, `audio.test` |
+| Storage | One transaction for attempt + tactic boxes, retried once; on failure the result screen says the call could not be saved. `navigator.storage.persist()` after setup. IndexedDB `blocked`/`blocking` handled, with a "close the other window" screen | `state.test`, `storage.test` |
+| Links UI | Join, cheer, family and result link screens show a retry message when a save fails. A join link on a set-up phone says it replaces the setup ("Replace my setup"). Result links say they are not proof | e2e not added (see gaps) |
+| Lows | Result-card and cheer ids are content hashes (no truncation collisions, no duplicate cheers). A device clock before 2024 no longer crashes the scheduler | `state.test`, `schedule.test` |
+| Content | "First Meridian Bank" is now "First Wrenfield Bank" (FDIC lists active "Meridian" banks and a US "Meridian Credit Union"; "Wrenfield" has 0 FDIC hits and no web hit). 8 clips re-rendered; site demo resynced | `pnpm check`, `site-parity.test` |
+| Copy | "This is practice, not protection" on Welcome, Settings ("What this app is") and in the README. DESIGN.md result and call-back copy now match the code | |
+| Docs | README rewritten; CONTRIBUTING (with the scenario YAML guide), CODE_OF_CONDUCT (Contributor Covenant 2.1), SECURITY, CHANGELOG, issue and PR templates, `.github/workflows/ci.yml`; references to private studio files removed from SPEC, PRODUCT, DESIGN, ADR and LANDING | |
+| Launch | `docs/launch/`: four phone screenshots and the 1280 x 640 social preview from the real build (`node scripts/capture-launch.mjs`), and `LAUNCH.md` | |
+
+### Not done (open before or after launch)
+
+- **Audio not reviewed by ear; SAPI redistribution terms unchecked.** Re-rendering with a CC BY Piper voice is the
+  clean fix (see Known issues below).
+- **No WebKit, Firefox or real-device run.** iOS audio unlock, AAC fallback, Add to Home Screen, finger drag and
+  vibration are untested on devices. The new pause-on-hidden and `interrupted` handling are unit-tested only.
+- **AC-F5-3** below 200 Hz (-19 dB at 100 Hz, -9 dB at 190 Hz) and **AC-F5-5** (Kitten voice pack) are not met.
+  **AC-F9-1** is gated at 100 ms, not 40 ms.
+- **The new link-screen states** (save failed, "Replace my setup") have no e2e test.
+- **A daily call that starts before midnight and ends after** is dated by its end (review finding 11, low).
+- **The NCUA locator** itself was not queried for the bank names (FDIC API and web search were).
+- **CI has never run on GitHub** (the repo has no remote). The workflow is written for `ubuntu-latest`; the SAPI
+  render test skips off Windows.
+- **Not deployed.** The landing page's `SITE_APP_URL`, `SITE_REPO_URL` and `SITE_URL` are unset.
+- **`docs/screenshots/`** (about 19 MB of Stage 3a/4 QA captures, tracked) still shows the old bank name.
+  The untracked re-run in `docs/screenshots/qa-r1/` (341 files, about 21 MB, same names) was left uncommitted.
+- **Git history** has another author identity and AI attribution trailers in the five commits before this
+  branch. Rewriting it is the owner's decision; nothing was rewritten.
 
 ## What is done
 
@@ -77,7 +115,7 @@ Two bugs found and fixed in this stage: the Cut was skipped on every second call
 
 ### Stage 3a known issues
 
-- **The BIBLE section 9 rubric was self-scored from the screenshots**, not by an independent critic. My scores: identity 9, typography 9, colour 9, layout 9, hierarchy 9, components 9, states and accessibility 9, motion 9, system states 9, responsive 9 (average 9.0). Weakest points: the notebook screens are sparse at 1440 (one centred column by design); the Welcome screen has an empty band above its buttons on tall phones; the loading sample wraps its label to two lines on a 390px phone. A critic pass should confirm or lower this.
+- **The design rubric was self-scored from the screenshots**, not by an independent critic. My scores: identity 9, typography 9, colour 9, layout 9, hierarchy 9, components 9, states and accessibility 9, motion 9, system states 9, responsive 9 (average 9.0). Weakest points: the notebook screens are sparse at 1440 (one centred column by design); the Welcome screen has an empty band above its buttons on tall phones; the loading sample wraps its label to two lines on a 390px phone. A critic pass should confirm or lower this.
 - **No sound was heard.** Calls ran with `?test=1` (silent audio) in every e2e and screenshot run, so the ring, voices, line click, ambience, cheer playback and vibration were never exercised in a browser here. (Stage 4: they now run through the real Web Audio graph in `audio.spec.ts`, `cheer.spec.ts`, `line.spec.ts` and `pwa.spec.ts`, with what is scheduled recorded. Still nobody has listened.)
 - **Chromium only**: no WebKit or Firefox, no real phone, and the slide-to-answer drag is tested with a mouse, not a finger.
 - **Not driven in a browser:** the install hint, the update prompt (`SKIP_WAITING`) and Periodic Background Sync. (Stage 4: the install hint and the update prompt now are, in `pwa.spec.ts`; Periodic Background Sync still is not.)
@@ -137,7 +175,7 @@ pnpm scenarios:stats
 - **`sw.ts` is verified only through e2e** (precache, offline shell reload). The `WARM_AUDIO` handler, range requests and the audio cache are not exercised by any test. Test them with the UI, on iOS Safari too.
 - **WebKit is not installed**, so iOS-like behaviour (Opus-in-WebM `canPlayType`, AAC fallback, `audio/mp4` cheer playback) is untested. Only Chromium ran.
 - **No test of the real `MediaRecorder`, `speechSynthesis` or `AudioContext`**; they are covered with hand-written stubs. A manual pass on a phone is needed.
-- **"First Meridian Bank"** needs the FDIC BankFind and NCUA exact-name check before launch; the other coined names need a trademark search (`scenarios/NAMES-REVIEW.md`).
+- **Bank names:** cleared in the release section ("First Meridian Bank" became "First Wrenfield Bank"); the other coined names still need a trademark search (`scenarios/NAMES-REVIEW.md`).
 - **The novelty score (6) is still provisional**: the GitHub, Devpost and Product Hunt sweep has not been done.
 - **Reminders** rely on the `.ics` file; the generator is tested against an RFC 5545 fixture but has not been opened in a real calendar app.
 - **PRODUCT.md is inferred**, not interviewed.

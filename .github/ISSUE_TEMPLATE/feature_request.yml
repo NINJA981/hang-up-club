@@ -1,0 +1,25 @@
+name: Feature request
+description: An idea that would help someone tell a scam call from a real one.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: Who is this for (the player or the family coach), and what gets in their way today?
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: Your idea
+    validations:
+      required: true
+  - type: checkboxes
+    id: fit
+    attributes:
+      label: Fits the project
+      options:
+        - label: It works without an account, a server or a network request beyond the app's own files.
+          required: true
+        - label: It keeps text large and controls easy to hit for older adults.

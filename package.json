@@ -91,6 +91,13 @@
     "workbox-build": "7.4.1",
     "yaml": "2.9.1"
   },
+  "size-limit": [
+    {
+      "name": "Entry chunk (gzip)",
+      "path": "dist/assets/index-*.js",
+      "limit": "110 kB"
+    }
+  ],
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild",
