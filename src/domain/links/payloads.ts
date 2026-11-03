@@ -10,13 +10,33 @@ import { isLocalDate } from '../time/dates';
  * rendered only as text.
  */
 
-/** Names typed by people: trimmed, 1–30 chars, no control characters. */
+/**
+ * Format characters a real name needs: the zero-width non-joiner and joiner (Persian, Malayalam and
+ * other scripts, emoji ZWJ sequences) and the emoji tag characters (subdivision flags). Every other
+ * format character, such as bidi overrides and zero-width spaces, stays rejected.
+ */
+const NAME_CHARS = /^(?:[^\p{Cc}\p{Cf}]|[\u200C\u200D\u{E0020}-\u{E007F}])+$/u;
+
+/** NFC form of a typed name, so the same name typed on two keyboards compares equal. */
+export function normaliseName(name: string): string {
+  return name.normalize('NFC').trim();
+}
+
+/**
+ * Names typed by people: NFC, trimmed, 1–30 chars, no control characters, and no leading joiner. A
+ * trailing ZWJ is allowed: Malayalam writes the old-style chillu as consonant + virama + ZWJ.
+ */
 const PersonName = z
   .string()
-  .trim()
-  .min(1)
-  .max(30)
-  .regex(/^[^\p{Cc}\p{Cf}]+$/u, 'No control characters');
+  .transform(normaliseName)
+  .pipe(
+    z
+      .string()
+      .min(1)
+      .max(30)
+      .regex(NAME_CHARS, 'No control characters')
+      .refine((s) => !/^[\u200C\u200D]/u.test(s), 'A name cannot start with a joiner'),
+  );
 
 const ShortText = (max: number) =>
   z

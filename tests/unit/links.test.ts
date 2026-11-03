@@ -448,3 +448,30 @@ describe('family calls become playable templates', () => {
     expect(validateFamilyTemplate(t)).toEqual([]);
   });
 });
+
+describe('names in links are real Unicode names (NFC, joiners inside words)', () => {
+  const base: JoinLinkV1 = { v: 1, t: 'join', coach: 'Arjun', address: 'Paati', cats: ['bank'] };
+  const names = {
+    persianZwnj: 'می\u200Cخواهم',
+    malayalamChilluZwj: '\u0D15\u0D4D\u200D',
+    emojiZwjFamily: 'Nana 👨\u200D👩\u200D👧',
+    flagTagSequence: 'Gran 🏴\u{E0067}\u{E0062}\u{E0065}\u{E006E}\u{E0067}\u{E007F}',
+  };
+  for (const [label, name] of Object.entries(names)) {
+    it(`round-trips ${label}`, async () => {
+      const payload = { ...base, coach: name, address: name };
+      const decoded = await decodePayload('join', await encodePayload('join', payload));
+      expect(decoded).toEqual({ ok: true, value: { ...payload, coach: name.normalize('NFC'), address: name.normalize('NFC') } });
+    });
+  }
+  it('stores names in NFC form', async () => {
+    const decomposed = 'Rene\u0301e';
+    const decoded = await decodePayload('join', await encodePayload('join', { ...base, coach: decomposed }));
+    expect(decoded.ok && decoded.value.coach).toBe('Ren\u00E9e');
+  });
+  it('still rejects bidi overrides, zero-width spaces and a leading joiner', async () => {
+    for (const bad of ['Ar\u202Ejun', 'Ar\u200Bjun', '\u200DArjun', '\u200C']) {
+      await expect(encodePayload('join', { ...base, coach: bad })).rejects.toMatchObject({ code: 'invalid' });
+    }
+  });
+});
