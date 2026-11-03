@@ -43,9 +43,7 @@ self.addEventListener('activate', (event: ExtendableEvent) => {
     (async () => {
       const names = await caches.keys();
       await Promise.all(
-        names
-          .filter((n) => n.startsWith('huc-audio-v') && n !== AUDIO_CACHE)
-          .map((n) => caches.delete(n)),
+        names.filter((n) => n.startsWith('huc-audio-v') && n !== AUDIO_CACHE).map((n) => caches.delete(n)),
       );
     })(),
   );

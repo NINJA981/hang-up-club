@@ -2,7 +2,16 @@ import type { Kind } from '../scenario/schema';
 import type { LocalDate } from '../time/dates';
 import { addDays } from '../time/dates';
 
-export const OUTCOMES = ['sharp', 'late', 'jumpy', 'caught', 'verified', 'stayed', 'missed', 'cautious'] as const;
+export const OUTCOMES = [
+  'sharp',
+  'late',
+  'jumpy',
+  'caught',
+  'verified',
+  'stayed',
+  'missed',
+  'cautious',
+] as const;
 export type Outcome = (typeof OUTCOMES)[number];
 export type Action = 'hangup' | 'callback' | 'none';
 
@@ -80,8 +89,15 @@ export function score(input: ScoreInput): ScoreResult {
 
   if (action === 'callback') {
     // A call back before any warning sign is as blind as a jumpy hang-up: same outcome, 70 points.
-    if (timing === 'before-flag') return { outcome: 'jumpy', points: 70, right: true, moment: 'shatter', timing };
-    return { outcome: 'verified', points: Math.min(100, base + VERIFY_BONUS), right: true, moment: 'cut', timing };
+    if (timing === 'before-flag')
+      return { outcome: 'jumpy', points: 70, right: true, moment: 'shatter', timing };
+    return {
+      outcome: 'verified',
+      points: Math.min(100, base + VERIFY_BONUS),
+      right: true,
+      moment: 'cut',
+      timing,
+    };
   }
   if (timing === 'before-flag')
     return { outcome: 'jumpy', points: base, right: true, moment: 'shatter', timing };

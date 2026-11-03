@@ -51,7 +51,9 @@ describe('SPEC 7.2 outcome table (AC-F4-1), golden rows', () => {
       expect(r.outcome).toBe(row.outcome);
       expect(r.points).toBe(row.points);
       expect(r.moment).toBe(row.moment);
-      expect(r.right).toBe(['sharp', 'late', 'jumpy', 'verified', 'stayed', 'cautious'].includes(row.outcome));
+      expect(r.right).toBe(
+        ['sharp', 'late', 'jumpy', 'verified', 'stayed', 'cautious'].includes(row.outcome),
+      );
     });
   }
 

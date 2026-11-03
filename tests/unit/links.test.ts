@@ -461,7 +461,10 @@ describe('names in links are real Unicode names (NFC, joiners inside words)', ()
     it(`round-trips ${label}`, async () => {
       const payload = { ...base, coach: name, address: name };
       const decoded = await decodePayload('join', await encodePayload('join', payload));
-      expect(decoded).toEqual({ ok: true, value: { ...payload, coach: name.normalize('NFC'), address: name.normalize('NFC') } });
+      expect(decoded).toEqual({
+        ok: true,
+        value: { ...payload, coach: name.normalize('NFC'), address: name.normalize('NFC') },
+      });
     });
   }
   it('stores names in NFC form', async () => {

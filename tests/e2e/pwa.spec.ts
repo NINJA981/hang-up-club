@@ -209,7 +209,9 @@ test.describe('offline (AC-F10-1, AC-F10-3)', () => {
         r.url.endsWith('/audio/audio-manifest.json'),
       ),
       manifestCached: (await (await caches.open('huc-audio-manifest')).keys()).length,
-      clipUrlsVersioned: (await (await caches.open('huc-audio-v2')).keys()).every((r) => /\?v=[0-9a-f]{12}$/.test(r.url)),
+      clipUrlsVersioned: (await (await caches.open('huc-audio-v2')).keys()).every((r) =>
+        /\?v=[0-9a-f]{12}$/.test(r.url),
+      ),
     }));
     expect(caches_).toEqual({ clipCacheHasManifest: false, manifestCached: 1, clipUrlsVersioned: true });
 

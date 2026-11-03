@@ -85,7 +85,8 @@ export function outcomeCopy(i: OutcomeCopyInput): OutcomeCopy {
     case 'cautious':
       return {
         headline: `You called ${i.trustedSource ?? 'a number you already trust'}.`,
-        subline: "Calling back is always safe. This one was real and asked for nothing, so you could have stayed on.",
+        subline:
+          'Calling back is always safe. This one was real and asked for nothing, so you could have stayed on.',
         icon: 'info',
       };
     case 'missed':

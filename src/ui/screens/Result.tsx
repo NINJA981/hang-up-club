@@ -235,8 +235,8 @@ export function ResultScreen() {
 
       {app.saveFailed === true ? (
         <p role="status" className="text-body text-text" data-testid="save-failed">
-          This phone could not save today&apos;s call, so your streak may not count it. Free up some
-          space, then take a practice call to check.
+          This phone could not save today&apos;s call, so your streak may not count it. Free up some space,
+          then take a practice call to check.
         </p>
       ) : null}
 
