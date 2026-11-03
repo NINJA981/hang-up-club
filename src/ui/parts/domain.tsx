@@ -67,6 +67,7 @@ export const OUTCOME_WORDS: Record<Outcome, string> = {
   verified: 'Called back',
   stayed: 'Stayed on, right call',
   missed: 'Hung up on a real call',
+  cautious: 'Called back on a real call',
 };
 
 export const OUTCOME_ICON_KEY: Record<Outcome, OutcomeCopy['icon']> = {
@@ -77,6 +78,7 @@ export const OUTCOME_ICON_KEY: Record<Outcome, OutcomeCopy['icon']> = {
   verified: 'check',
   stayed: 'check',
   missed: 'info',
+  cautious: 'info',
 };
 
 export function OutcomeTag({ outcome, className }: { outcome: Outcome; className?: string }) {

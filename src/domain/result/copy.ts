@@ -82,6 +82,12 @@ export function outcomeCopy(i: OutcomeCopyInput): OutcomeCopy {
         subline: "Staying on was right. They didn't ask for anything.",
         icon: 'check',
       };
+    case 'cautious':
+      return {
+        headline: `You called ${i.trustedSource ?? 'a number you already trust'}.`,
+        subline: "Calling back is always safe. This one was real and asked for nothing, so you could have stayed on.",
+        icon: 'info',
+      };
     case 'missed':
       return {
         headline: 'That one was real.',
@@ -120,6 +126,7 @@ export function resultCardSentence(c: ResultCardCopyInput): string {
         ? `${c.name} hung up ${into} into ${c.title}.`
         : `${c.name} hung up on ${c.title}.`;
     case 'verified':
+    case 'cautious':
       return `${c.name} hung up on ${c.title} and called the real number.`;
     case 'caught':
       return `${c.name} stayed on ${c.title} until the scammer asked.`;

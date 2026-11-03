@@ -58,19 +58,19 @@
       "moment": "shatter"
     },
     {
-      "name": "scam hang up at ask + 10 s is still 70",
+      "name": "scam hang up at ask + 2 s is still 70",
       "kind": "scam",
       "action": "hangup",
-      "tActionMs": 50000,
+      "tActionMs": 42000,
       "outcome": "late",
       "points": 70,
       "moment": "shatter"
     },
     {
-      "name": "scam hang up at ask + 10 s + 1 ms drops to 50",
+      "name": "scam hang up at ask + 2 s + 1 ms drops to 50",
       "kind": "scam",
       "action": "hangup",
-      "tActionMs": 50001,
+      "tActionMs": 42001,
       "outcome": "late",
       "points": 50,
       "moment": "shatter"
@@ -102,13 +102,13 @@
       "moment": "fade"
     },
     {
-      "name": "scam call back before the flag is verified at 70",
+      "name": "scam call back before the flag is jumpy at 70",
       "kind": "scam",
       "action": "callback",
       "tActionMs": 3000,
-      "outcome": "verified",
+      "outcome": "jumpy",
       "points": 70,
-      "moment": "cut"
+      "moment": "shatter"
     },
     {
       "name": "scam call back between flag and ask is 100",
@@ -123,7 +123,7 @@
       "name": "scam call back just after the ask is 70 + 10",
       "kind": "scam",
       "action": "callback",
-      "tActionMs": 45000,
+      "tActionMs": 41500,
       "outcome": "verified",
       "points": 80,
       "moment": "cut"
@@ -146,12 +146,12 @@
       "moment": "fade"
     },
     {
-      "name": "legit call back is verified at 90",
+      "name": "legit call back without the lesson is cautious at 60",
       "kind": "legit",
       "action": "callback",
       "tActionMs": 12000,
-      "outcome": "verified",
-      "points": 90,
+      "outcome": "cautious",
+      "points": 60,
       "moment": "fade"
     },
     {

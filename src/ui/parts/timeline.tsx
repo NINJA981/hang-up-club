@@ -49,9 +49,9 @@ export function Timeline(p: TimelineProps) {
   const pct = (ms: number): number => Math.min(100, Math.max(0, (ms / domain) * 100));
   const youPct = pct(youMs);
   const askPct = p.tAskMs !== undefined ? pct(p.tAskMs) : undefined;
-  const ok = p.outcome !== 'missed' && p.outcome !== 'caught' && p.outcome !== 'late';
+  const ok = p.outcome !== 'missed' && p.outcome !== 'caught' && p.outcome !== 'late' && p.outcome !== 'cautious';
   const MarkerIcon =
-    p.outcome === 'missed' ? Info : p.outcome === 'caught' ? Flag : p.outcome === 'late' ? Clock : Check;
+    p.outcome === 'missed' || p.outcome === 'cautious' ? Info : p.outcome === 'caught' ? Flag : p.outcome === 'late' ? Clock : Check;
   const ticks: number[] = [];
   for (let t = 0; t <= domain; t += tickStep(domain)) ticks.push(t);
   const dur = instant ? 0 : 0.6;

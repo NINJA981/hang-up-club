@@ -2,12 +2,17 @@ import type { Kind } from '../scenario/schema';
 import type { LocalDate } from '../time/dates';
 import { addDays } from '../time/dates';
 
-export const OUTCOMES = ['sharp', 'late', 'jumpy', 'caught', 'verified', 'stayed', 'missed'] as const;
+export const OUTCOMES = ['sharp', 'late', 'jumpy', 'caught', 'verified', 'stayed', 'missed', 'cautious'] as const;
 export type Outcome = (typeof OUTCOMES)[number];
 export type Action = 'hangup' | 'callback' | 'none';
 
-/** SPEC §7.2: "late" pays 70 within this window after the ask, 50 after. */
-export const LATE_WINDOW_MS = 10_000;
+/**
+ * SPEC §7.2: "late" pays 70 within this window after the ask, 50 after. Every scam's coda ends
+ * 3.7 to 5.4 s after its ask, so the window must be shorter than that for the 50 tier to exist.
+ */
+export const LATE_WINDOW_MS = 2_000;
+/** A call back on a real call that had no lesson in it: safe, but it cost the caller a call. */
+export const CAUTIOUS_POINTS = 60;
 export const VERIFY_BONUS = 10;
 
 export interface ScoreInput {
@@ -52,12 +57,11 @@ export function score(input: ScoreInput): ScoreResult {
   if (kind === 'legit') {
     if (action === 'none') return { outcome: 'stayed', points: 100, right: true, moment: 'fade' };
     if (action === 'callback') {
-      return {
-        outcome: 'verified',
-        points: input.callbackIsTheLesson === true ? 100 : 90,
-        right: true,
-        moment: 'fade',
-      };
+      // L04-style calls ask you to call back, so that is the lesson. On any other real call a call
+      // back is safe but unneeded: it scores half, so "call back on everything" cannot top the table.
+      return input.callbackIsTheLesson === true
+        ? { outcome: 'verified', points: 100, right: true, moment: 'fade' }
+        : { outcome: 'cautious', points: CAUTIOUS_POINTS, right: true, moment: 'fade' };
     }
     return { outcome: 'missed', points: 20, right: false, moment: 'fade' };
   }
@@ -75,8 +79,9 @@ export function score(input: ScoreInput): ScoreResult {
     timing === 'before-flag' ? 60 : timing === 'before-ask' ? 100 : t - tAsk <= LATE_WINDOW_MS ? 70 : 50;
 
   if (action === 'callback') {
-    const points = timing === 'before-flag' ? 70 : Math.min(100, base + VERIFY_BONUS);
-    return { outcome: 'verified', points, right: true, moment: 'cut', timing };
+    // A call back before any warning sign is as blind as a jumpy hang-up: same outcome, 70 points.
+    if (timing === 'before-flag') return { outcome: 'jumpy', points: 70, right: true, moment: 'shatter', timing };
+    return { outcome: 'verified', points: Math.min(100, base + VERIFY_BONUS), right: true, moment: 'cut', timing };
   }
   if (timing === 'before-flag')
     return { outcome: 'jumpy', points: base, right: true, moment: 'shatter', timing };
@@ -99,6 +104,7 @@ export function judgementCredit(outcome: Outcome): number {
     case 'stayed':
       return 1;
     case 'jumpy':
+    case 'cautious':
       return 0.5;
     case 'caught':
     case 'missed':
@@ -106,7 +112,7 @@ export function judgementCredit(outcome: Outcome): number {
   }
 }
 
-/** Judgement rate over a list of outcomes: (sharp + late + verified + stayed + ½ jumpy) ÷ calls. */
+/** Judgement rate over a list of outcomes: (sharp + late + verified + stayed + ½ jumpy + ½ cautious) ÷ calls. */
 export function judgementRateOf(outcomes: readonly Outcome[]): number | undefined {
   if (outcomes.length === 0) return undefined;
   return outcomes.reduce((s, o) => s + judgementCredit(o), 0) / outcomes.length;

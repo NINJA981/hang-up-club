@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { resolveVariant } from '../../src/domain/scenario/expand';
+import { callbackIsTheLesson } from '../../src/domain/scenario/library';
 import { pickDaily, type HistoryEntry } from '../../src/domain/schedule/daily';
 import { estimateDurationMs, markers, planTimeline } from '../../src/domain/scenario/timeline';
 import {
@@ -50,7 +51,7 @@ describe('SPEC 7.2 outcome table (AC-F4-1), golden rows', () => {
       expect(r.outcome).toBe(row.outcome);
       expect(r.points).toBe(row.points);
       expect(r.moment).toBe(row.moment);
-      expect(r.right).toBe(['sharp', 'late', 'jumpy', 'verified', 'stayed'].includes(row.outcome));
+      expect(r.right).toBe(['sharp', 'late', 'jumpy', 'verified', 'stayed', 'cautious'].includes(row.outcome));
     });
   }
 
@@ -63,7 +64,7 @@ describe('scoring details', () => {
   const scam = { kind: 'scam', ...golden.scamMarkers } as const;
 
   it('exposes the late window and verify bonus from the spec', () => {
-    expect(LATE_WINDOW_MS).toBe(10_000);
+    expect(LATE_WINDOW_MS).toBe(2_000);
     expect(VERIFY_BONUS).toBe(10);
   });
   it('reports where the action fell for a scam', () => {
@@ -116,7 +117,7 @@ describe('scoring details', () => {
 
 describe('judgement rate', () => {
   it('credits right calls fully, jumpy by half and the rest not at all', () => {
-    expect(OUTCOMES.map(judgementCredit)).toEqual([1, 1, 0.5, 0, 1, 1, 0]);
+    expect(OUTCOMES.map(judgementCredit)).toEqual([1, 1, 0.5, 0, 1, 1, 0, 0.5]);
   });
   it('is the mean credit', () => {
     expect(judgementRateOf(['sharp', 'stayed', 'caught', 'missed'])).toBe(0.5);
@@ -146,6 +147,7 @@ describe('anti-gaming simulation (AC-F4-2)', () => {
   function simulate(
     profileId: string,
     policy: (m: ReturnType<typeof markers>, kind: 'scam' | 'legit') => { action: Action; t?: number },
+    lessons = false,
   ) {
     const history: HistoryEntry[] = [];
     const outcomes: Outcome[] = [];
@@ -170,6 +172,7 @@ describe('anti-gaming simulation (AC-F4-2)', () => {
       if (move.t !== undefined) input.tActionMs = move.t;
       if (m.tFlagMs !== undefined) input.tFlagMs = m.tFlagMs;
       if (m.tAskMs !== undefined) input.tAskMs = m.tAskMs;
+      if (lessons && callbackIsTheLesson(t)) input.callbackIsTheLesson = true;
       outcomes.push(score(input).outcome);
       if (r.kind === 'legit') legit++;
       history.push({ localDate: today, scenarioId: pick.templateId, kind: r.kind });
@@ -200,6 +203,29 @@ describe('anti-gaming simulation (AC-F4-2)', () => {
           : { action: 'none' },
       );
       expect(rate, id).toBeGreaterThanOrEqual(0.95);
+    }
+  });
+
+  it('calling back on everything at 0.5 s scores at most 0.65: real calls are cautious, scams jumpy', () => {
+    for (const id of ['sim-a', 'sim-b', 'sim-c']) {
+      const { rate, outcomes } = simulate(id, () => ({ action: 'callback', t: 500 }), true);
+      expect(rate, id).toBeLessThanOrEqual(0.65);
+      expect(outcomes).toContain('cautious');
+      expect(outcomes).not.toContain('sharp');
+    }
+  });
+
+  it('calling back on everything, even after listening for the flag, stays well below the thoughtful policy', () => {
+    for (const id of ['sim-a', 'sim-b', 'sim-c']) {
+      const { rate } = simulate(
+        id,
+        (m, kind) =>
+          kind === 'scam' && m.tFlagMs !== undefined
+            ? { action: 'callback', t: m.tFlagMs + 200 }
+            : { action: 'callback', t: Math.round(m.tEndMs / 2) },
+        true,
+      );
+      expect(rate, id).toBeLessThan(0.9);
     }
   });
 

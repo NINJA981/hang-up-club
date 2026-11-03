@@ -3,7 +3,7 @@
 > **One realistic practice call a day, and some of them are real.**
 > A flight simulator for phone scams, built for grandparents. About 40% of the calls are legitimate calls you should *not* hang up on. You score on judgement: "Hung up at 0:06. The scammer needed 0:40." Families set it up and cheer by link, with no account and no server.
 
-**Authority.** The `refined_scope`, `signature_moment` and `risks` in `_studio/picks.json` (slug `hang-up-club`) are authoritative. This spec adds the studio's weakness fix (§4) on top of them. Where the two disagree, picks.json wins, and the conflict is noted inline.
+**Authority.** This spec is the source of truth for v0.1. It started from a one-page product brief (scope, signature moment and risks); §4 lists what was added to answer that brief's weakest points.
 
 **Status:** Stage 1 (architect). No code exists yet.
 
@@ -29,11 +29,11 @@ So the skill to train is not hanging up fast. It is **telling a scam from a real
 | **Player** (older adult, 65–90) | Has a phone or tablet that family set up. May have reduced vision, hearing or fine motor control. Is not a "tech person". | "Help me notice when a call is a trick, without making me feel stupid." |
 | **Coach** (adult child or grandchild) | Worried about a parent or grandparent. Installs and configures the app on the player's device, or sends a link. Lives in the family group chat. | "Let me set this up once, keep Grandma practising, and know how she's doing, without becoming her IT department or her nag." |
 
-The coach is the distribution channel and the retention engine (council risk: "the person installing it is the adult child, not the 75-year-old"). The design treats the coach as a first-class user (§4.1).
+The coach is the distribution channel and the retention engine (an early review risk: "the person installing it is the adult child, not the 75-year-old"). The design treats the coach as a first-class user (§4.1).
 
 ## 3. Daily trigger
 
-A PWA cannot ring like a real phone and cannot schedule local notifications without a push server, which we do not run (picks.json risk). We stack four triggers instead. None of them needs a server.
+A PWA cannot ring like a real phone and cannot schedule local notifications without a push server, which we do not run. We stack four triggers instead. None of them needs a server.
 
 1. **Morning routine card.** Opening the app (the home-screen icon) shows "Today's call is ready" as the only primary action.
 2. **Calendar reminder.** Settings → "Remind me every day" downloads a locally generated `.ics` file. It contains a daily recurring event at a time the player chooses, titled "Hang Up Club: today's practice call", with the app URL. The phone's own calendar app then does the ringing.
@@ -44,9 +44,9 @@ At most **one scored call per day** (refined scope item 6). Unscored "practice a
 
 ---
 
-## 4. Weakness fix: how this spec answers the council's lowest scores
+## 4. Weakness fix: how this spec answers the brief's lowest scores
 
-The council scored **Utility 4** ("the daily habit is invented by the product… by week 6 the 20 scripts feel repetitive") and **Novelty 6** ("KnowBe4 Spot the Vish already does voiced call drills, for enterprises"). This spec answers both explicitly.
+An early review scored **Utility 4** ("the daily habit is invented by the product… by week 6 the 20 scripts feel repetitive") and **Novelty 6** ("KnowBe4 Spot the Vish already does voiced call drills, for enterprises"). This spec answers both explicitly.
 
 ### 4.1 The family-coach loop is first-class (Utility)
 
@@ -57,7 +57,7 @@ The coach's journey is a full product surface with its own screens and acceptanc
 | Set up | On their own phone, picks what the player is called ("Paati", "Grandma", "Nana"), chooses scenario types, records a ≤ 2.5 s cheer, and optionally writes a **family call** | Opens one link, or scans one QR code. The app greets them by name: "Arjun set this up for you." | Coach Setup (F7), join link |
 | Cheer | Records a cheer in their own voice | After a good call, hears "Nice one, Paati!" in the grandchild's actual voice | Cheer link, signature moment (F9) |
 | Report back | Receives result cards in the family chat and saves them to a local **Coach inbox** | Taps "Send to family" after a call. It opens the phone's share sheet with a link and a one-line message. | Result card (F8), Coach inbox |
-| Refresh | Sends a **new cheer** or a new **family call** (a custom scenario that can use real family names) whenever they like | Has fresh content and a reason to come back. This fights the "content treadmill" roast. | Cheer link, family-call link |
+| Refresh | Sends a **new cheer** or a new **family call** (a custom scenario that can use real family names) whenever they like | Has fresh content and a reason to come back. This fights the "content treadmill" criticism. | Cheer link, family-call link |
 | Remind | Sends the `.ics` reminder, or sets it up during install | The calendar rings every morning | Reminder (§3) |
 
 Everything travels in **URL fragments** (`#…`). Browsers never send the fragment to a server, so even the static host never sees the content (§10).
@@ -65,10 +65,10 @@ Everything travels in **URL fragments** (`#…`). Browsers never send the fragme
 ### 4.2 About 40% of calls are legitimate, and decoys are first-class (Novelty + anti-gaming)
 
 - **The library** is 20 templates: **12 scam** and **8 legitimate**. The daily scheduler targets a **40% legitimate** rate. Scenario coverage is in §5.
-- **Decoys are scored with their own outcomes** (`stayed`, `verified`, `missed`). A player who hangs up on everything gets "missed" on 40% of days, so their judgement rate falls to about 60% or lower (§7.3). The exploit from the roast ("hang up on every call in 0.5 s") no longer pays.
+- **Decoys are scored with their own outcomes** (`stayed`, `verified`, `missed`). A player who hangs up on everything gets "missed" on 40% of days, so their judgement rate falls to about 60% or lower (§7.3). The obvious exploit ("hang up on every call in 0.5 s") no longer pays, and neither does "call back on every call" (§7.2).
 - **Decoys teach as much as scams.** Every decoy's replay explains *why it was safe*: "They didn't ask for anything. They told you to call the number you already have."
-- **The legitimate-bank decoy** (L04) is the genuine First Meridian Bank fraud team telling the player to hang up and call the number on their card. It teaches the one behaviour that defeats every bank-impersonation scam, and it pairs with the second call button (F2).
-- **Novelty.** The judgement score is measured against the scammer's **ASK moment**, uses decoys, and adds a call-back-to-verify action. This framing is not in the enterprise prior art. The council's caveat stands: novelty is provisional until a follow-up sweep of GitHub, Devpost and Product Hunt. That sweep is tracked in HANDOFF.md.
+- **The legitimate-bank decoy** (L04) is the genuine First Wrenfield Bank fraud team telling the player to hang up and call the number on their card. It teaches the one behaviour that defeats every bank-impersonation scam, and it pairs with the second call button (F2).
+- **Novelty.** The judgement score is measured against the scammer's **ASK moment**, uses decoys, and adds a call-back-to-verify action. This framing is not in the enterprise prior art. The review's caveat stands: novelty is provisional until a follow-up sweep of GitHub, Devpost and Product Hunt. That sweep is tracked in HANDOFF.md.
 
 ### 4.3 The scenario library maps to current FTC and FBI categories, with sources
 
@@ -101,11 +101,11 @@ See ADR-0001 §4 for the full pipeline. In summary:
 
 ### 4.5a Every caller name and organisation is fictional
 
-- **Organisations** are coined names such as "First Meridian Bank", "Tollan Valley Power & Light" and "Parcelwise Delivery".
+- **Organisations** are coined names such as "First Wrenfield Bank", "Tollan Valley Power & Light" and "Parcelwise Delivery".
 - **Government-style callers** use invented agencies, such as "Federal Tax Recovery Unit" and "National Benefits Administration". No real agency is ever named.
 - **Phone numbers** come only from the NANP fictional block `NXX-555-0100` to `NXX-555-0199`.
 - **Enforcement.** `scripts/check-names.ts` fails CI if any script, UI string or asset contains a name on the deny-list. The deny-list covers the top 250 US banks and credit unions by assets, US federal agencies, the top 100 consumer brands, carriers and couriers, and big-tech companies, plus a manual review log.
-- **"First Meridian Bank"** is required verbatim by picks.json. A web search on 2026-10-20 found **no institution with that exact name**. A similarly named "Meridian Bank" (Malvern, PA) exists. This is logged as a known issue: run an FDIC BankFind and NCUA check before launch, and if there is an exact match, the name must change (picks.json allows it: "never use real bank names").
+- **"First Wrenfield Bank"** replaced the earlier working name "First Meridian Bank" on 2026-11-04. FDIC BankFind lists 14 institutions and 448 history rows containing "Meridian", including the active Meridian Bank (Malvern, PA), and Meridian Credit Union (Ottumwa, IA) is a US credit union, so a scam call from "First Wrenfield Bank" could be read as one of them. "Wrenfield" has 0 FDIC institution and history hits and no web result for a bank or credit union. See `scenarios/NAMES-REVIEW.md`.
 
 ---
 
@@ -143,7 +143,7 @@ Every caller below is fictional. "Ask" is the scammer's request, which defines t
 
 | ID | Scenario | FTC / IC3 category (source) | Fictional caller (examples of `{org}`) | First red flag → ASK | Tactics |
 |---|---|---|---|---|---|
-| S01 | Bank "fraud department": read back the code | FTC business impersonation, banks: #1 phone loss type, 40% [FTC-OA-2025 p.24, p.26]. IC3 phishing/spoofing [IC3-2025 p.45]. | First Meridian Bank Fraud Dept, Kestrel Ridge Credit Union, Bellwick National Bank | "Your account has been compromised" → "read me the code we just texted you" | authority, urgency, code-request, isolation |
+| S01 | Bank "fraud department": read back the code | FTC business impersonation, banks: #1 phone loss type, 40% [FTC-OA-2025 p.24, p.26]. IC3 phishing/spoofing [IC3-2025 p.45]. | First Wrenfield Bank Fraud Dept, Kestrel Ridge Credit Union, Bellwick National Bank | "Your account has been compromised" → "read me the code we just texted you" | authority, urgency, code-request, isolation |
 | S02 | Bank "security": move money to a safe account / crypto ATM | FTC bank impersonation, "keep it safe" [FTC-OA-2025 p.24] | Same bank set, "Security Team" | "Your savings are at risk right now" → "withdraw cash and deposit it at this kiosk" | authority, fear, unusual-payment, secrecy |
 | S03 | Grandchild in jail: bail money | FTC family/friend impersonation [FTC-OA-2025 p.27]. IC3 Confidence/Romance incl. grandparent and distress scams [IC3-2025 p.40]. | "It's me…" (no name, so the victim supplies it) plus fake "Attorney Mark Ellison" | "Please don't tell Mom" → "buy gift cards / a courier will pick up cash" | secrecy, urgency, unusual-payment, fear |
 | S04 | Tax agency: arrest warrant | FTC government impersonation, 23% of phone losses [FTC-OA-2025 p.26]. IC3 Government Impersonation, 8,628 complaints from 60+ [IC3-2025 p.47]. | Federal Tax Recovery Unit | "A warrant has been issued" → "pay today with gift cards" | authority, fear, urgency, unusual-payment |
@@ -163,7 +163,7 @@ Every caller below is fictional. "Ask" is the scammer's request, which defines t
 | L01 | Prescription refill is ready | Gives information. Asks for nothing. "Pick up any time." | Alder Lane Pharmacy |
 | L02 | Clinic needs to move your appointment | Offers choices. Asks only "Does Thursday work?" | Riverbend Family Clinic |
 | L03 | Grandchild calls to say hello | No emergency, no money, no secrecy | "It's Sam!" (fictional; coach-configured family calls can use real names) |
-| L04 | **Real** bank fraud alert | Asks nothing. Says: "Please hang up and call the number on the back of your card." | First Meridian Bank Fraud Dept (the same name as S01, on purpose) |
+| L04 | **Real** bank fraud alert | Asks nothing. Says: "Please hang up and call the number on the back of your card." | First Wrenfield Bank Fraud Dept (the same name as S01, on purpose) |
 | L05 | Dentist reminder (automated) | Automated. "Press 1 to confirm" is optional, and no personal info is asked. | Northgate Dental |
 | L06 | Library: your hold is ready | Information only | Fernhill Public Library |
 | L07 | Utility planned maintenance notice | Same company name as S10, but no payment and no threat. "Visit or call the number on your bill." | Tollan Valley Power & Light |
@@ -199,7 +199,7 @@ These ten tactics are the vocabulary of the red-flag replay and of spaced repeti
 
 ## 6. MVP features
 
-Features F1–F7 map to the refined scope items 1–7 in picks.json, plus the weakness fix.
+Features F1–F7 map to the seven scope items of the brief, plus the weakness fix.
 
 | # | Feature | Scope item |
 |---|---|---|
@@ -214,7 +214,7 @@ Features F1–F7 map to the refined scope items 1–7 in picks.json, plus the we
 | F9 | Signature moment: the call screen shatters, the timeline shows the cut against the red ASK marker, and the grandchild's cheer plays | signature_moment |
 | F10 | Installable offline PWA with app shell and full audio library cached, an offline banner, an update prompt and the reminder `.ics` | 1, 7 |
 
-**Second-button label (F2).** It is "Hang up and call the number on my card" for bank and health-card templates, as picks.json requires. Other templates use their own `callback.label`:
+**Second-button label (F2).** It is "Hang up and call the number on my card" for bank and health-card templates, as the brief requires. Other templates use their own `callback.label`:
 
 - "Hang up and call the number on my bill" (utility)
 - "Hang up and call the pharmacy's number" (pharmacy)
@@ -240,16 +240,18 @@ All times are milliseconds from the moment the call is answered, along the path 
 |---|---|---|---|---|---|
 | Scam | Hang Up | t < tFlag | `jumpy` | 60 | "You hung up before they gave anything away." |
 | Scam | Hang Up | tFlag ≤ t < tAsk | `sharp` | 100 | "Hung up at 0:06. The scammer needed 0:40." |
-| Scam | Hang Up | tAsk ≤ t < tEnd | `late` | 70 if t − tAsk ≤ 10 s, otherwise 50 | "Hung up 4 s after they asked for the code." |
+| Scam | Hang Up | tAsk ≤ t < tEnd | `late` | 70 if t − tAsk ≤ 2 s, otherwise 50 (every scam ends 3.7 to 5.4 s after its ask, so both tiers occur) | "Hung up 4 s after they asked for the code." |
 | Scam | (none) | the call reaches tEnd | `caught` | 0 | "They got to the ask, and you were still on the line." |
-| Scam | Call back | any t | `verified` | as for Hang Up at t, +10 (max 100). Jumpy gets 70. | "You called the number on your card. That beats every bank scam." |
+| Scam | Call back | t ≥ tFlag | `verified` | as for Hang Up at t, +10 (max 100) | "You called the number on your card. That beats this scam every time." |
+| Scam | Call back | t < tFlag | `jumpy` | 70 | "You hung up before they gave anything away." |
 | Legit | (none) | the caller ends at tEnd | `stayed` | 100 | "That was the real pharmacy. Staying on was right." |
-| Legit | Call back | any t | `verified` | 100 for L04, 90 otherwise | "Calling back on a number you trust is always safe." |
+| Legit | Call back | L04 (the call asks you to call back) | `verified` | 100 | "Calling back on a number you trust is always safe." |
+| Legit | Call back | any other real call | `cautious` | 60 | "Calling back is always safe. This one was real and asked for nothing, so you could have stayed on." |
 | Legit | Hang Up | any t | `missed` | 20 | "That one was real. They didn't ask you for anything." |
 
-- **Right calls** are `sharp`, `late`, `jumpy`, `verified` (scam) and `stayed`, `verified` (legit). Right calls trigger a cheer; the full shatter plays only on `sharp` and `verified` (see F9).
-- **Judgement rate (30 days)** = (sharp + late + verified + stayed) ÷ calls. `jumpy` counts as half.
-- **Anti-gaming check.** A unit test simulates "always hang up at 0.5 s" over 1,000 seeded days. Its judgement rate must be ≤ 0.65. A thoughtful policy (hang up after the first flag, stay on calls with no flag) must reach ≥ 0.95.
+- **Right calls** are `sharp`, `late`, `jumpy`, `verified` (scam) and `stayed`, `verified`, `cautious` (legit). None of them is unsafe. Right calls trigger a cheer; the full shatter plays only on `sharp` and `verified` (see F9).
+- **Judgement rate (30 days)** = (sharp + late + verified + stayed) ÷ calls. `jumpy` and `cautious` count as half: a blind hang-up or a call back on a real call is safe, but it is not judgement.
+- **Anti-gaming check.** A unit test simulates "always hang up at 0.5 s" over 1,000 seeded days. Its judgement rate must be ≤ 0.65. A thoughtful policy (hang up after the first flag, stay on calls with no flag) must reach ≥ 0.95. "Always call back at 0.5 s" must also score ≤ 0.65, and "always call back, after the flag on scams" must stay below 0.9.
 
 ### 7.3 Daily scheduler
 
@@ -269,7 +271,7 @@ All times are milliseconds from the moment the call is answered, along the path 
 ### 7.5 Streak
 
 - The streak counts consecutive local days with a completed **scored** daily call, whatever the outcome. Practice beats perfection, so a miss never breaks the streak.
-- **One automatic rest day per calendar week (Mon–Sun)** keeps the streak alive. This is gentler than the defence's "a miss costs the streak". picks.json only says a hang-up on a legitimate call "is a miss", so this choice does not conflict with it.
+- **One automatic rest day per calendar week (Mon–Sun)** keeps the streak alive. This is gentler than "a miss costs the streak". The brief only says a hang-up on a legitimate call "is a miss", so this choice does not conflict with it.
 - The day boundary is local midnight.
 
 ---
@@ -481,7 +483,7 @@ Test levels: **U** = Vitest unit, **E** = Playwright e2e (Chromium plus WebKit w
 - **AC-F9-1 (E)** On a `sharp` or `verified` outcome, the sequence in DESIGN.md §Signature runs: shards begin ≤ 40 ms after the press, confetti stays ≤ 60 particles, the timeline draws and the headline reads "Hung up at m:ss. The scammer needed m:ss." The full sequence takes ≤ 2.0 s, and any tap jumps to the end state.
 - **AC-F9-2 (E)** Under `prefers-reduced-motion: reduce` there are no shards and no confetti, only a 150 ms crossfade to the same end state.
 - **AC-F9-3 (E)** If a cheer exists, it starts at +1.6 s with a caption bubble. If not, no audio plays and the bubble does not appear.
-- **AC-F9-4 (M)** A frame strip of ≥ 10 frames is captured for design QA (bible §9.1).
+- **AC-F9-4 (M)** A frame strip of ≥ 10 frames is captured for design QA.
 
 ### F10: PWA and offline
 - **AC-F10-1 (E)** After first load and SW activation, `context.setOffline(true)` → reload → take today's call → result. Everything works, including audio.
@@ -495,7 +497,7 @@ Test levels: **U** = Vitest unit, **E** = Playwright e2e (Chromium plus WebKit w
 - **AC-X-1 (A)** axe reports zero serious or critical violations on every screen, in light and dark, at 375, 768 and 1440 px.
 - **AC-X-2 (A)** No text below 18px anywhere, and body copy is ≥ 20px. This is checked by a computed-style scan in e2e.
 - **AC-X-3 (E)** Every interactive element is reachable by keyboard and has a visible focus ring.
-- **AC-X-4** Performance: the first-route JS is ≤ 170 KB gz, LCP ≤ 2.0 s on mid-tier mobile, CLS 0, INP ≤ 200 ms (bible §8.2).
+- **AC-X-4** Performance: the first-route JS is ≤ 170 KB gz, LCP ≤ 2.0 s on mid-tier mobile, CLS 0, INP ≤ 200 ms.
 
 ---
 
@@ -503,13 +505,13 @@ Test levels: **U** = Vitest unit, **E** = Playwright e2e (Chromium plus WebKit w
 
 This is for the README hero GIF and the LinkedIn video. It must work **muted**, because LinkedIn autoplays without sound. Every spoken line therefore appears as an in-product caption.
 
-It is captured deterministically from the real app in demo mode: `?demo=signature&seed=7` loads the S01 variant "First Meridian Bank Fraud Dept" and a demo cheer, with Playwright stepping a fake clock. Viewport 390 × 844 at DPR 2, in a plain device frame on the stone background.
+It is captured deterministically from the real app in demo mode: `?demo=signature&seed=7` loads the S01 variant "First Wrenfield Bank Fraud Dept" and a demo cheer, with Playwright stepping a fake clock. Viewport 390 × 844 at DPR 2, in a plain device frame on the stone background.
 
 | # | Time | Shot | On screen | Audio (if unmuted) |
 |---|---|---|---|---|
-| 1 | 0.0–1.0 s | Incoming call, static framing | Dark call screen: "First Meridian Bank Fraud Dept", "(614) 555-0148" in mono, a ring pulse around the green Answer control, and the small label "Practice call" | Synth ringtone |
+| 1 | 0.0–1.0 s | Incoming call, static framing | Dark call screen: "First Wrenfield Bank Fraud Dept", "(614) 555-0148" in mono, a ring pulse around the green Answer control, and the small label "Practice call" | Synth ringtone |
 | 2 | 1.0–1.4 s | A thumb taps the green Answer button | Controls switch to the in-call layout. The timer starts at 0:00. | Line click, faint call-centre murmur |
-| 3 | 1.4–4.2 s | Captions roll (26px) | "Hello, this is Dana from First Meridian Bank's fraud department." | Band-passed voice |
+| 3 | 1.4–4.2 s | Captions roll (26px) | "Hello, this is Dana from First Wrenfield Bank's fraud department." | Band-passed voice |
 | 4 | 4.2–7.0 s | Caption 2. The timer passes 0:05. | "Your account has been compromised, and we need to act quickly." | Voice |
 | 5 | 7.0 s | The thumb slams the red **Hang up** button. The timer reads 0:06. | Button press (scale .95) | Line cut |
 | 6 | 7.0–7.8 s | **Shatter.** The dark call screen splits into shards that fall away, and ≤ 60 moss-and-stone confetti pieces burst from the button. | The stone result screen is revealed underneath | (none) |
@@ -521,13 +523,13 @@ It is captured deterministically from the real app in demo mode: `?demo=signatur
 Two notes on the script:
 
 - **The ASK line.** The signature moment's line "I'll need the code we just texted you" is shown as the ASK marker's label at 0:40. She hung up at the first red flag, 34 seconds before the scammer got there. That gap is the point of the score.
-- **Tooling.** Capture uses the studio pre-render kit (`_studio/inspo/3d/prerender-kit/capture.mjs`), adapted to a DOM screenshot loop (§6.2 of 3D_INSPIRATION: screenshot the wrapper element). Encoding uses the tested ffmpeg commands: GIF ≤ 3 MB at 800 px, MP4 1:1 and 4:5 for LinkedIn.
+- **Tooling.** Capture is a Playwright DOM screenshot loop that screenshots the wrapper element. Encoding uses the tested ffmpeg commands: GIF ≤ 3 MB at 800 px, MP4 1:1 and 4:5 for LinkedIn.
 
 ---
 
-## 14. Risks (from picks.json, with mitigations)
+## 14. Risks (from the brief, with mitigations)
 
-| Risk (picks.json) | Mitigation in this spec |
+| Risk | Mitigation in this spec |
 |---|---|
 | A PWA cannot ring like a real call, and iOS push needs the app on the home screen first, so the habit depends on family nudges | §3: four stacked triggers. §4.1: the coach loop is first-class, with fresh cheer and family-call links. |
 | Content-authoring load (decoys plus red-flag tagging) | YAML templates with variables (§5.2). The CI schema checks every flag and ask (AC-F3-2). Family calls add content over time. The template budget is fixed at 20. |
