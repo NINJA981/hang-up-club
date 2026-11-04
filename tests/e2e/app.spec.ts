@@ -322,6 +322,10 @@ test.describe('the family loop', () => {
     await p.getByRole('button', { name: 'Start' }).click();
     await p.getByRole('button', { name: 'Yes, I hear it' }).click();
     await expect(p.getByRole('heading', { level: 1 })).toContainText('Paati');
+    // The same link on a phone that is already set up says it replaces the setup before it does.
+    await p.goto(`${(baseURL ?? '').replace(/\/$/, '')}/?test=1${link.slice(link.indexOf('#'))}`);
+    await expect(p.getByTestId('join-replaces')).toContainText('This replaces your current setup');
+    await expect(p.getByRole('button', { name: 'Replace my setup' })).toBeVisible();
     await fresh.close();
   });
 

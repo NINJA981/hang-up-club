@@ -154,7 +154,8 @@ test.describe('answer, hang up, and the clips (AC-F1-3, AC-F2-2, AC-F6-3)', () =
 test.describe('when a clip cannot be fetched (AC-F5-4)', () => {
   // Route interception does not see requests the service worker answers, so keep it out of the way.
   test.use({ serviceWorkers: 'block' });
-  const CLIPS = /\/audio\/.*\.(webm|m4a)$/;
+  // Clip URLs carry their render sha as ?v=..., so the pattern allows a query.
+  const CLIPS = /\/audio\/.*\.(webm|m4a)(\?.*)?$/;
 
   test('the phone speaks the line with a local voice', async ({ page }) => {
     await instrumentAudio(page, { voices: [VOICE] });

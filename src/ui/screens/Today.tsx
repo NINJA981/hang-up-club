@@ -72,7 +72,8 @@ function InstallHint() {
   const install = useStore(installStore, (s) => s);
   const [guide, setGuide] = useState(false);
   const days = new Set(app.attempts.map((a) => a.localDate)).size;
-  const earned = app.attempts.some((a) => a.outcome === 'sharp' || a.outcome === 'verified') || days >= 2;
+  // Offer the install after the first call that went right (anything but caught or missed), or a second day.
+  const earned = app.attempts.some((a) => a.outcome !== 'caught' && a.outcome !== 'missed') || days >= 2;
   if (install.standalone || app.settings.installHintDismissed === true || !earned) return null;
   if (!install.canPrompt && !install.ios) return null;
   return (

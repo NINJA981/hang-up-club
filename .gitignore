@@ -19,3 +19,6 @@ Thumbs.db
 # Tooling caches
 node_modules/.tmp/
 *.tsbuildinfo
+
+# local QA captures (kept out of the repo)
+docs/screenshots/qa-r1/

@@ -66,7 +66,8 @@ shipped as about 3.7 MB of Opus audio, so calls start at once and work offline.
 - **Everything stays on the device.** Profile, settings, calls, streak, cheers and family calls are stored in the
   browser's IndexedDB. The only thing in `localStorage` is the theme, so the first paint has the right colours.
 - **No account, no server, no analytics, no error reporting, no cloud voices.** Fonts and audio are the app's own
-  files. Web Speech (used only when a clip cannot play) is restricted to the phone's built-in voices.
+  files. Web Speech (used only when a clip cannot play) is restricted to the phone's built-in voices. The only
+  links out are the FTC and FBI source pages behind "Why this matters", opened only when tapped.
 - **Links carry their data in the URL fragment** (`#...`), which browsers never send to a server. A result leaves
   the phone only when the player taps "Send to family".
 - **The microphone** is used only on the coach's "Record a cheer" step, after a tap, for at most 2.5 seconds.
